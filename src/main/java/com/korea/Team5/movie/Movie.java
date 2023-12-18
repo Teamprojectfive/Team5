@@ -21,5 +21,11 @@ public class Movie {
 
     private String content;
 
+    private String genre;
+
+    private String age;
+
     private String movieRelease;
+
+    private String image;
 }
