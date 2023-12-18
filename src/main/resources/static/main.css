@@ -1,13 +1,13 @@
 body {
     background: black;
     margin: 0;
-    overflow: hidden;
+    overflow: auto;
     font-family: Arial, sans-serif;
 }
 
 .main_container{
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 .baner_container{
@@ -32,7 +32,7 @@ body {
     height: 100px;
     object-fit: cover;
     mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent); /* For compatibility with older browsers */
+    -webkit-mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent);
 }
 
 .title_container{
@@ -104,14 +104,138 @@ body {
     top:2px;
 }
 
-.video {
+.video_container {
+    background-color: #313137;
+    opacity: 1;
+}
+.video video {
     width: 100%;
-    height: 500px;
+    height: 50%;
+    object-fit: cover;
+    opacity: 1;
 }
 
-.video video {
+.movie_title_container{
+    position: absolute;
+    color: white;
+    top: 45%;
+    left: 6%;
+    font-size: 35px;
+}
+
+.movie_title{
+    font-size: 60px;
+}
+
+.movie_view_btn {
+    padding: 9px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    border-radius: 7px;
+    z-index: 9999;
+    position: absolute;
+    top: 105%;
+    left: 11%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease 0s;
+    margin-left: 11px;
+}
+
+.movie_view_btn:hover{
+    background: gray;
+}
+
+.serch_container{
+    display: flex;
+    position: absolute;
+    top: 27%;
+    left: 6%;
+    height: 6.2%;
+}
+
+.serch{
+    width: 300px;
+    height: 100%;
+    border: 0;
+    border-radius: 4px;
+    outline: none;
+    padding-left: 10px;
+    background-color: rgb(233, 233, 233);
+    font-size: 17px;
+    margin: auto;
+}
+
+
+.button {
+    padding: 1em 1.6em;
+    font-size: 1em;
+    font-weight: 400;
+    font-family: "Helvetica", "Arial", sans-serif;
+    border-radius: 5px;
+    cursor: pointer;
+    appearance: none;
+    border: none;
+    color: #ffffff;
+    height: 61px;
+  }
+
+  .button-first {
+    background: linear-gradient(to right, #4a8ea5, #a8bfc7);
+    box-shadow: 0 2px 25px rgba(229, 93, 135, 0.5);
+  }
+
+  .button-first:active {
+    background: linear-gradient(
+      to right,
+      rgba(95, 195, 228, 0.9),
+      rgba(63, 113, 129, 0.9)
+    );
+  }
+
+  .button:focus {
+    outline: none;
+  }
+
+  particle {
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    position: fixed;
+    opacity: 0;
+  }
+
+  .frame {
+    color: #333;
+    font-family: "Open Sans", Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+.card_container {
+    position: relative;
+    display: flex;
+    height: 600px;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: -411px;
+ }
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.card {
+    width: 202px;
+    height: 296px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
