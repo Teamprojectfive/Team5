@@ -34,10 +34,10 @@ public class SecurityConfig {
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/"))
+                        .defaultSuccessUrl("/main"))
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessUrl("/main")
                         .invalidateHttpSession(true))
 
                 // 서큐리티도 중요함!. 아웃로그인방식을쓰기에 이렇게해야함! 고정이라고생각하면됨.

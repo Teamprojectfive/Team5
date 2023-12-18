@@ -15,7 +15,7 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    //이게 메인페이지 메서드
+
     @GetMapping("/main")
     public String movie(Model model, @RequestParam(value="page", defaultValue="0") int page){
         Page<Movie> paging = this.movieService.list(page);
@@ -23,7 +23,7 @@ public class MovieController {
         return "main";
     }
 
-    @GetMapping("/detail/{id}")
+    @GetMapping("/movie/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id){
         Movie movie = this.movieService.getMovie(id);
 

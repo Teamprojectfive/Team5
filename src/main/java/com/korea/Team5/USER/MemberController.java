@@ -50,6 +50,6 @@ public class MemberController {
             memberService.create(memberCreateForm.getLoginId(), memberCreateForm.getNickName(), memberCreateForm.getPassword1(), memberCreateForm.getEmail()
                               , memberCreateForm.getPhone());
 
-            return "main";
+            return "redirect:/main";
       }
 }

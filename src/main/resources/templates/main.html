@@ -1,34 +1,103 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
-<div th:each="movie, loop : ${paging}" style="width: 200px; margin: 10px; border: 1px solid #ccc; padding: 10px; text-align: center; box-sizing: border-box; display: inline-block;">
-    <a th:href="@{|/movie/detail/${movie.id}|}"><h2 th:text="${movie.name}"></a></h2>
-    <a th:href="@{|/movie/detail/${movie.id}|}">
-        <img th:src="${movie.image}" alt="Movie Image" style="max-width: 100%; height: auto;">
-    </a>
-</div>
-<!-- 페이징처리 시작 -->
-<div th:if="${!paging.isEmpty()}"
-    <ul class="pagination justify-content-center">
-        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-            <a class="page-link" th:if="${paging.number > 0}"
-               th:href="@{|?page=${paging.number-1}|}">
-                <img src="https://png.pngtree.com/png-vector/20190420/ourlarge/pngtree-vector-left-arrow-icon-png-image_966660.jpg" alt="">
-            </a>
-        </li>
-        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-            th:if="${page >= paging.number-5 and page <= paging.number+5}"
-            th:classappend="${page == paging.number} ? 'active'"
-            class="page-item">
-            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-        </li>
-        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                <img src="https://us.123rf.com/450wm/get4net/get4net1709/get4net170902116/86784978-%EC%98%A4%EB%A5%B8%EC%AA%BD-%ED%99%94%EC%82%B4%ED%91%9C.jpg" alt="">
-            </a>
-        </li>
-    </ul>
-</div>
-<!-- 페이징처리 끝 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div class="main_container">
+    <!-- 배너컨테이터 -->
+    <div class="baner_container" id="bannerContainer">
+        <div class="baner">
+            <img src="https://cdn.pixabay.com/photo/2017/11/24/10/43/ticket-2974645_1280.jpg" alt="img">
+        </div>
+        <div class="baner">
+            <img src="https://cdn.pixabay.com/photo/2016/09/14/08/18/film-1668918_1280.jpg" alt="img">
+        </div>
+        <div class="baner">
+            <img src="https://cdn.pixabay.com/photo/2014/02/02/17/40/photographs-256888_1280.jpg" alt="img">
+        </div>
+    </div>
+    <!-- 배너컨테이터 여기까지-->
 
+    <!-- 로그인컨테이너 -->
+    <div class="title_container">
+        <div class="logo">
+            <i class="fa-solid fa-video"></i>
+            Logo
+        </div>
+        <div class="nav_container">
+            <div>영화</div>
+            <div>소개</div>
+            <div>극장</div>
+        </div>
+        <div class="login_container">
+            <a class="Sign_in" role="button"  sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
+            <a class="Sign_in" role="button" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Sign_out</a>
+            <a class="Sing_up" role="button" th:href="@{/member/signup}">Sing_up</a>
+        </div>
+    </div>
+    <!-- 로그인컨테이너 여기까지-->
+    s
+    <!-- 비디오컨테이너 -->
+    <div class="video_container">
+        <div class="video_bg" style="background-image: url('pexels-blockhaus-malung-19298575 (Original).mp4');"></div>
+        <div class="movie_title_container">
+            <h1 class="movie_title"><strong>숲 속: 죽음의 숲</strong></h1>
+            <button id="movie_view_btn" class="movie_view_btn">예고편 보기</button>
+        </div>
+        <div class="video">
+            <video loop autoplay muted>
+                <source src="pexels-blockhaus-malung-19298575 (Original).mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+    <!-- 비디오컨테이너 여기까지 -->
+
+    <!-- 검색컨테이너 -->
+    <section class="frame">
+        <div class="serch_container">
+            <input class="serch" type="text" placeholder="검색">&nbsp;
+            <button class="button button-first" data-type="square"> 검색</button>
+        </div>
+    </section>
+    <!-- 검색컨테이너 여기까지 -->
+    <div class="card_container">
+        <ul>
+            <li th:each="movie, loop : ${paging}" style="width: 200px; margin: 10px; border: 1px solid #ccc; padding: 10px; text-align: center; box-sizing: border-box; display: inline-block;" class="card">
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <img  src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
+                </a>
+            </li>
+        </ul>
+        <!-- 페이징처리 시작 -->
+        <div th:if="${paging != null and !paging.isEmpty()}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                    <a class="page-link" th:if="${paging.number > 0}"
+                       th:href="@{|?page=${paging.number-1}|}">
+                        <span>이전</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                    th:classappend="${page == paging.number} ? 'active'"
+                    class="page-item">
+                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                </li>
+                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                        <span>다음</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- 페이징처리 끝 -->
+    </div>
 </div>
+</body>
+<script src="main.js"></script>
 </html>
