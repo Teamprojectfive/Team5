@@ -14,9 +14,6 @@ public class MainController {
             return "redirect:/main";
       }
 
-      @GetMapping("/main")
-      public String main(){
-            return "main";
-      }
+
 
 }

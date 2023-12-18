@@ -1,5 +1,34 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
-    <h2>일하</h2>
+<div th:each="movie, loop : ${paging}" style="width: 200px; margin: 10px; border: 1px solid #ccc; padding: 10px; text-align: center; box-sizing: border-box; display: inline-block;">
+    <a th:href="@{|/movie/detail/${movie.id}|}"><h2 th:text="${movie.name}"></a></h2>
+    <a th:href="@{|/movie/detail/${movie.id}|}">
+        <img th:src="${movie.image}" alt="Movie Image" style="max-width: 100%; height: auto;">
+    </a>
+</div>
+<!-- 페이징처리 시작 -->
+<div th:if="${!paging.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+            <a class="page-link" th:if="${paging.number > 0}"
+               th:href="@{|?page=${paging.number-1}|}">
+                <img src="https://png.pngtree.com/png-vector/20190420/ourlarge/pngtree-vector-left-arrow-icon-png-image_966660.jpg" alt="">
+            </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+            th:if="${page >= paging.number-5 and page <= paging.number+5}"
+            th:classappend="${page == paging.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                <img src="https://us.123rf.com/450wm/get4net/get4net1709/get4net170902116/86784978-%EC%98%A4%EB%A5%B8%EC%AA%BD-%ED%99%94%EC%82%B4%ED%91%9C.jpg" alt="">
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- 페이징처리 끝 -->
+
 </div>
 </html>
