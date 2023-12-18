@@ -31,8 +31,8 @@ body {
     width: 100%;
     height: 100px;
     object-fit: cover;
-    mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to left, transparent, black 40%, black 60%, transparent);
+    -webkit-mask-image: linear-gradient(to left, transparent, black 40%, black 60%, transparent);
 }
 
 .title_container{
@@ -106,11 +106,33 @@ body {
 
 .video_container {
     background-color: #313137;
-    opacity: 1;
+    position: relative;
+    overflow: hidden;
+    height: 85vh;
 }
+
+.video_container::before,
+.video_container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    background: linear-gradient(to left, transparent, black 40%, black 70%, transparent);
+}
+
+.video_container::before {
+    left: -130px;
+}
+
+.video_container::after {
+    right: -130px;
+}
+
+
 .video video {
     width: 100%;
-    height: 50%;
+    height: 100%;
     object-fit: cover;
     opacity: 1;
 }
@@ -221,6 +243,7 @@ body {
  }
 
 ul {
+    display: flex;
     list-style: none;
     padding: 0;
 }
@@ -228,7 +251,7 @@ ul {
 .card {
     width: 202px;
     height: 296px;
-    margin: 10px;
+    margin: 35px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;

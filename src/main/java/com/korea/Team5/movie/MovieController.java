@@ -15,19 +15,15 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/movie")
 public class MovieController {
 
     private final MovieService movieService;
 
-
-
-
-    @GetMapping("/list")
+    @GetMapping("/main")
     public String movie(Model model, @RequestParam(value="page", defaultValue="0") int page){
         Page<Movie> paging = this.movieService.list(page);
         model.addAttribute("paging", paging);
-        return "movie";
+        return "main";
     }
 
     @GetMapping("/detail/{id}")
