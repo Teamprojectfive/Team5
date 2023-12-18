@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}">
-<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 <div layout:fragment="content" class="container my-3">
     <head>
         <meta charset="UTF-8">
         <title>회원가입</title>
     </head>
-    <body>
-    <div>
-
-    </div>
+    <div class="container my-3">
     <div class="my-3 border-bottom">
         <div>
             <h4>회원가입</h4>
         </div>
     </div>
-    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+    <form th:action="@{/member/signup}" th:object="${memberCreateForm}" method="post">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <label for="loginId" class="form-label">아이디</label>
@@ -39,10 +35,10 @@
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label">휴대전화번호</label>
-            <input type="tel" th:field="*{phone}" class="form-control">
+            <input type="tel" th:field="*{phone}" class="form-control" pattern="[0-9]*" title="숫자만 입력하세요">
         </div>
         <button type="submit" class="btn btn-primary">signup</button>
     </form>
-    </body>
+    </div>
 </div>
 </html>
