@@ -24,12 +24,9 @@ public class MovieController {
     }
 
     @GetMapping("/movie/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Long id){
+    public String detail(Model model, @PathVariable("id") Integer id){
         Movie movie = this.movieService.getMovie(id);
-
-
         model.addAttribute("movie", movie);
-
 
         return "movieDetail";
     }

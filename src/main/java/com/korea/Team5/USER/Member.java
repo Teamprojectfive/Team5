@@ -1,9 +1,12 @@
 package com.korea.Team5.USER;
 
 
+import com.korea.Team5.Review.Review;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -26,4 +29,6 @@ public class Member {
 
   private String email;
 
+  @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+  private List<Review> reviewList;
  }

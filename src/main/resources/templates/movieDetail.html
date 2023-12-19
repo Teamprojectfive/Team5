@@ -5,14 +5,25 @@
     <title>Title</title>
 </head>
 <body>
+<!-- 폼을 이용한 HTML 코드 -->
+<div class="login_container">
+    <a class="Sing_up" role="button" th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
+</div>
 <p>제목</p><h1 th:text="${movie.name}"></h1>
 <p>개봉일</p><span th:text="${movie.movieRelease}"></span>
 <img th:src="${movie.image}" alt="">
 <p>영화 설명</p><span th:text="${movie.content}"></span>
 
-<!-- 여기에 다른 화면 요소들을 추가할 수 있음 -->
+<h5 th:text="|${#lists.size(movie.reviewList)}개의 답변이 있습니다.|"></h5>
 <div>
-    <a th:href="@{"></a>
+    <ul th:each="review : ${movie.reviewList}" >
+        <li th:text="${review.subject}"></li>
+        <li th:text="${review.content}"></li>
+        <li th:text="${review.rating}"></li>
+        <li th:text="${review.starRating}"></li>
+    </ul>
+
 </div>
+<!-- 여기에 다른 화면 요소들을 추가할 수 있음 -->
 </body>
 </html>
