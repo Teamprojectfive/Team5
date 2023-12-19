@@ -1,9 +1,12 @@
 package com.korea.Team5.USER;
 
+import com.korea.Team5.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,5 +34,16 @@ public class MemberService {
   public boolean isDuplicated(String loginId, String email, String nickName, String phone) {
     return memberRepository.existsByLoginIdOrEmailOrNickNameOrPhone(loginId, email, nickName, phone);
   }
+
+
+  public Member getMember(String loginId) {
+    Optional<Member> member = this.memberRepository.findByloginId(loginId);
+    if (member.isPresent()) {
+      return member.get();
+    } else {
+      throw new DataNotFoundException("member not found");
+    }
+  }
+
 
 }

@@ -16,7 +16,6 @@ public class Review {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer Id;
 
-
   private String subject;//제목
 
   private String content;//내용
@@ -29,8 +28,10 @@ public class Review {
 
   private LocalDateTime createDate;//등록시간
   @ManyToOne
-  private Member member;
+  private Member member;//사용자와연결
 
   @ManyToOne
-  private Movie movie;
+  private Movie movie;//무비와연결
+
+  private LocalDateTime modifyDate;//수정일시
 }

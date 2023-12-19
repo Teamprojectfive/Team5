@@ -1,5 +1,6 @@
 package com.korea.Team5.movie;
 
+import com.korea.Team5.Review.ReviewForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class MovieController {
     }
 
     @GetMapping("/movie/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id){
+    public String detail(Model model, @PathVariable("id") Integer id , ReviewForm reviewForm){
         Movie movie = this.movieService.getMovie(id);
         model.addAttribute("movie", movie);
 

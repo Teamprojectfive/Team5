@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -31,4 +32,6 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE)
     private List<Review> reviewList;
+
+    private LocalDateTime modifyDate;
 }
