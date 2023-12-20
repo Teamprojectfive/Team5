@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Review {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer Id;
+  private Integer id;
 
   private String subject;//제목
 
@@ -27,6 +27,7 @@ public class Review {
   private String starRating;//별점
 
   private LocalDateTime createDate;//등록시간
+
   @ManyToOne
   private Member member;//사용자와연결
 
