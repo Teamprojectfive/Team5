@@ -31,4 +31,6 @@ public class Member {
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<Review> reviewList;
+
+
  }
