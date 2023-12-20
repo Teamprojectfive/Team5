@@ -15,17 +15,19 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/movie")
 public class MovieController {
 
     private final MovieService movieService;
 
-    @GetMapping("/main")
-    public String movie(Model model, @RequestParam(value="page", defaultValue="0") int page){
-        Page<Movie> paging = this.movieService.list(page);
-        model.addAttribute("paging", paging);
-        return "main";
-    }
 
+
+    @GetMapping("/list")
+    public String list(Model model){
+        List<Movie> movieList = this.movieService.list();
+        model.addAttribute("movieList", movieList);
+        return "movieList";
+    }
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id){
         Movie movie = this.movieService.getMovie(id);
@@ -36,6 +38,8 @@ public class MovieController {
 
         return "movieDetail";
     }
+
+
 
 
 

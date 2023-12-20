@@ -16,7 +16,12 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    public Page<Movie> list(int page){
+    public List<Movie> list(){
+        return this.movieRepository.findAll();
+    }
+
+
+    public Page<Movie> mainList(int page){
         Pageable pageable = PageRequest.of(page, 4);
         return this.movieRepository.findAll(pageable);
     }

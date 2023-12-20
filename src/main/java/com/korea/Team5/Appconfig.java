@@ -16,11 +16,7 @@ public class Appconfig {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         return restTemplateBuilder
-                .rootUri("http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml")
-                .additionalInterceptors((request, body, execution) -> {
-                    request.getHeaders().add("key", apiKey);
-                    return execution.execute(request, body);
-                })
+                .rootUri("http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json")
                 .build();
     }
 }
