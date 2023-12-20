@@ -290,12 +290,12 @@ section.list_container{
   }
 
 .right {
-    right: 3%;
+    right: 0%;
 
 }
 
 .left {
-    left: 3%;
+    left: 0%;
 }
 
 
@@ -303,6 +303,5 @@ section.list_container{
 @media screen and(min-width: 1800px){
 
 }
-
 
 

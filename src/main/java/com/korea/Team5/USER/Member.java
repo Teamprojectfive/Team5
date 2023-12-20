@@ -1,14 +1,17 @@
 package com.korea.Team5.USER;
 
 
+import com.korea.Team5.Review.Review;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
-public class User {
+public class Member {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer UserId;
@@ -26,4 +29,8 @@ public class User {
 
   private String email;
 
-}
+  @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+  private List<Review> reviewList;
+
+
+ }

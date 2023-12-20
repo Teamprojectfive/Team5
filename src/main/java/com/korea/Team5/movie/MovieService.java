@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +20,7 @@ public class MovieService {
         return this.movieRepository.findAll(pageable);
     }
 
-    public Movie getMovie(Long id){
+    public Movie getMovie(Integer id){
         Optional<Movie> movie = this.movieRepository.findById(id);
         if(movie.isPresent()){
             return movie.get();

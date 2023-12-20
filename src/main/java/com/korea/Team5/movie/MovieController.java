@@ -1,16 +1,13 @@
 package com.korea.Team5.movie;
 
+import com.korea.Team5.Review.ReviewForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.swing.*;
-import java.util.List;
 
 
 @Controller
@@ -19,6 +16,7 @@ public class MovieController {
 
     private final MovieService movieService;
 
+
     @GetMapping("/main")
     public String movie(Model model, @RequestParam(value="page", defaultValue="0") int page){
         Page<Movie> paging = this.movieService.list(page);
@@ -26,13 +24,10 @@ public class MovieController {
         return "main";
     }
 
-    @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Long id){
+    @GetMapping("/movie/detail/{id}")
+    public String detail(Model model, @PathVariable("id") Integer id , ReviewForm reviewForm){
         Movie movie = this.movieService.getMovie(id);
-
-
         model.addAttribute("movie", movie);
-
 
         return "movieDetail";
     }
