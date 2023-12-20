@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Movie {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

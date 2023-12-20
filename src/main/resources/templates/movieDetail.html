@@ -12,9 +12,6 @@
 <div class="login_container">
     <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
 </div>
-<div class="login_container">
-    <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{|/review/modify/${movie.id}|}">리뷰수정</a>
-</div>
 <p>제목</p><h1 th:text="${movie.name}"></h1>
 <p>개봉일</p><span th:text="${movie.movieRelease}"></span>
 <img th:src="${movie.image}" alt="">
@@ -22,13 +19,34 @@
 
 <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>
 <div class="my-3">
-    <ul th:each="review : ${movie.reviewList}" >
+    <ul th:each="review : ${movie.reviewList}">
         <li th:text="${review.subject}"></li>
         <li th:text="${review.content}"></li>
         <li th:text="${review.rating}"></li>
         <li th:text="${review.starRating}"></li>
+        <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+           th:data-uri="@{|/review/vote/${review.id}|}" style="text-decoration: none; color: #007bff;">
+            추천
+            <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}" style="margin-left: 5px;"></span>
+        </a>
+        <div>
+            <a class="Sing_up" role="button"  th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}" th:href="@{|/review/modify/${review.id}|}" >리뷰수정</a>
+            <a class="Sing_up" role="button"  th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}" th:href="@{|/review/delete/${review.id}|}" >리뷰삭제</a>
+        </div>
     </ul>
 </div>
+
 <!-- 여기에 다른 화면 요소들을 추가할 수 있음 -->
+<script type='text/javascript'>
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 추천하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+</script>
 </body>
 </html>
+

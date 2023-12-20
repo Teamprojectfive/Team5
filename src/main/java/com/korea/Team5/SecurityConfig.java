@@ -39,7 +39,6 @@ public class SecurityConfig {
                         .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                         .logoutSuccessUrl("/main")
                         .invalidateHttpSession(true))
-
                 // 서큐리티도 중요함!. 아웃로그인방식을쓰기에 이렇게해야함! 고정이라고생각하면됨.
                 .oauth2Login((oauth2Login) -> oauth2Login //OAuth2 로그인을 설정하는 메서드
                         .loginPage("/member/login")
@@ -57,8 +56,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
       }
 
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-      return authenticationConfiguration.getAuthenticationManager();
-    }
+      @Bean
+      AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+      }
 }

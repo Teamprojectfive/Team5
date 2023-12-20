@@ -17,14 +17,13 @@ public class ReviewService {
       private final ReviewRepository reviewRepository;
 
 
-      public void create(Movie movie, String subject, String content, String rating, String voter, String starRating, Member member){
+      public void create(Movie movie, String subject, String content, String rating,String starRating, Member member){
 
         Review review= new Review();
         review.setSubject(subject);
         review.setContent(content);
         review.setCreateDate(LocalDateTime.now());
         review.setRating(rating);
-        review.setVoter(voter);
         review.setStarRating(starRating);
         review.setMovie(movie);
         review.setMember(member);
@@ -40,15 +39,24 @@ public class ReviewService {
         }
       }
 
-      public void modify(Review review,String subject,String content,String voter,String rating,String starRating){
+      public void modify(Review review,String subject,String content,String rating,String starRating){
         review.setSubject(subject);
         review.setContent(content);
-        review.setVoter(voter);
         review.setRating(rating);
         review.setStarRating(starRating);
         review.setModifyDate(LocalDateTime.now());
         this.reviewRepository.save(review);
       }
+
+      public void delete(Review review){
+        this.reviewRepository.delete(review);
+      }
+
+
+    public void vote(Review review, Member member){
+      review.getVoter().add(member);
+      this.reviewRepository.save(review);
+    }
 
 
 
