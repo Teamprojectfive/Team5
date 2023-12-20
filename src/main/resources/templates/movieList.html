@@ -1,15 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h1 th:each="movie : ${movieList}">안농하세요
-    <div th:text="${movie.name}"></div>
-    <div th:text="${movie.genre}"></div>
-    <div th:text="${movie.movieRelease}"></div>
-</h1>
+<div th:each="movie : ${movieList}" style="margin-bottom: 20px; border: 1px solid #ddd; padding: 10px;">
+    <h1 th:text="${movie.id}"></h1>
+    <div style="font-weight: bold;" th:text="${movie.name}"></div>
+    <p style="margin: 5px 0 0 0;">설명 : <span th:text="${movie.content}"></span></p>
+    <p style="margin: 5px 0 0 0;">장르 : <span th:text="${movie.genre}"></span></p>
+    <p style="margin: 5px 0 0 0;">출연진 : <span th:text="${movie.cast}"></span></p>
+    <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.movieRelease}"></span></p>
 
+    <div style="margin-top: 10px;">
+        <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+           th:data-uri="@{|/movie/vote/${movie.id}|}" style="text-decoration: none; color: #007bff;">
+            추천
+            <span class="badge rounded-pill bg-success" th:text="${#lists.size(movie.voter)}" style="margin-left: 5px;"></span>
+        </a>
+        <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+    </div>
+
+
+
+
+</div>
+<script type='text/javascript'>
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 추천하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+
+</script>
 </body>
 </html>

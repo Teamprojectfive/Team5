@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -34,12 +34,13 @@
             <div>극장</div>
         </div>
         <div class="login_container">
-            <a class="Sign_in" role="button" href="">Sign_in</a>
-            <a class="Sing_up" role="button" href="">Sing_up</a>
+            <a class="Sign_in" role="button" sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
+            <a class="Sign_in" role="button" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Sign_out</a>
+            <a class="Sing_up" role="button" th:href="@{/member/signup}">Sing_up</a>
         </div>
     </div>
     <!-- 로그인컨테이너 여기까지-->
-
+    s
     <!-- 비디오컨테이너 -->
     <div class="video_container">
         <div class="video_bg" style="background-image: url('pexels-blockhaus-malung-19298575 (Original).mp4');"></div>
@@ -64,39 +65,62 @@
         </div>
     </section>
     <!-- 검색컨테이너 여기까지 -->
-    <div class="card_container">
-    <ul>
-        <li th:each="movie, loop : ${paging}" style="width: 200px; margin: 10px; border: 1px solid #ccc; padding: 10px; text-align: center; box-sizing: border-box; display: inline-block;" class="card">
-            <a th:href="@{|/movie/detail/${movie.id}|}">
-            <img  src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
-            </a>
-        </li>
-    </ul>
-        <!-- 페이징처리 시작 -->
-        <div th:if="${!paging.isEmpty()}">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                    <a class="page-link" th:if="${paging.number > 0}"
-                       th:href="@{|?page=${paging.number-1}|}">
-                        <span>이전</span>
-                    </a>
-                </li>
-                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                    th:classappend="${page == paging.number} ? 'active'"
-                    class="page-item">
-                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-                </li>
-                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                        <span>다음</span>
-                    </a>
-                </li>
+    <section class="card_container">
+        <div class="list_container">
+            <ul th:each="movie, loop : ${paging}" class="list">
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img th:text="${movie.name}" src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img th:text="${movie.name}"
+                             src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 2">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 3">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 4">
+                    </li>
+                </a>
             </ul>
+            <div class="card_btn">
+                <button class="left"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="right"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
         </div>
-        <!-- 페이징처리 끝 -->
-</div>
+    </section>
 </div>
 </body>
 <script src="main.js"></script>
 </html>
+<!-- 페이징처리 시작 -->
+<!--        <div th:if="${!paging.isEmpty()}">-->
+<!--            <ul class="pagination justify-content-center">-->
+<!--                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">-->
+<!--                    <a class="page-link" th:if="${paging.number > 0}"-->
+<!--                       th:href="@{|?page=${paging.number-1}|}">-->
+<!--                        <span>이전</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"-->
+<!--                    th:if="${page >= paging.number-5 and page <= paging.number+5}"-->
+<!--                    th:classappend="${page == paging.number} ? 'active'"-->
+<!--                    class="page-item">-->
+<!--                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>-->
+<!--                </li>-->
+<!--                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">-->
+<!--                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">-->
+<!--                        <span>다음</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+<!-- 페이징처리 끝 -->

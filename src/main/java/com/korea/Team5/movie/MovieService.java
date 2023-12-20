@@ -1,6 +1,7 @@
 package com.korea.Team5.movie;
 
 import com.korea.Team5.DataNotFoundException;
+import com.korea.Team5.USER.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,13 +27,18 @@ public class MovieService {
         return this.movieRepository.findAll(pageable);
     }
 
-    public Movie getMovie(Long id){
+    public Movie getMovie(Integer id){
         Optional<Movie> movie = this.movieRepository.findById(id);
         if(movie.isPresent()){
             return movie.get();
         } else {
             throw new DataNotFoundException("movie not found");
         }
+    }
+
+    public void vote(Movie movie, Member member){
+        movie.getVoter().add(member);
+        this.movieRepository.save(movie);
     }
 
 }

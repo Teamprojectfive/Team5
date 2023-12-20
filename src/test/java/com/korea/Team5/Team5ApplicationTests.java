@@ -1,10 +1,13 @@
 package com.korea.Team5;
 
+import com.korea.Team5.USER.Member;
 import com.korea.Team5.movie.Movie;
 import com.korea.Team5.movie.MovieRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Set;
 
 @SpringBootTest
 
@@ -16,17 +19,20 @@ class Team5ApplicationTests {
 	@Test
 	void contextLoads() {
 		Movie m = new Movie();
+
 		m.setName("터미네이터");
 		m.setContent("영화설명1");
 		m.setMovieRelease("1984-12-22");
+		m.setGenre("액션");
+		m.setCast("정우성");
 		m.setImage("https://movie-phinf.pstatic.net/20191030_118/1572411669676j0Arb_JPEG/movie_image.jpg");
-
 		this.movieRepository.save(m);
 
 		Movie m2 = new Movie();
 		m2.setName("영화제목2");
 		m2.setContent("영화설명2");
 		m2.setMovieRelease("2013-12-13");
+
 		this.movieRepository.save(m2);
 
 		Movie m3 = new Movie();
@@ -78,5 +84,7 @@ class Team5ApplicationTests {
 		m10.setMovieRelease("2013-12-13");
 		this.movieRepository.save(m10);
 	}
+
+
 
 }

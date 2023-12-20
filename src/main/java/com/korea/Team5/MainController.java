@@ -23,11 +23,13 @@ public class MainController {
             return "redirect:/main";
       }
 
+
     @GetMapping("/main")
     public String main(Model model, @RequestParam(value="page", defaultValue="0") int page){
         Page<Movie> paging = this.movieService.mainList(page);
         model.addAttribute("paging", paging);
         return "main";
     }
+
 
 }
