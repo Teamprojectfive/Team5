@@ -1,0 +1,38 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:layout="" layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="navbar.css">
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav layout:fragment="content">
+    <div class="login_container">
+        <i class="fa-solid fa-video"></i>
+        <span class="m_p">M</span><span class="m_o">o</span><span class="m_v">v</span><span class="m_i">i</span><span class="m_e">e</span>
+    </div>
+    <div class="sub_nav">
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1">영화</div>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
+                <li ><a  href="#">Top100</a></li>
+                <li ><a  href="#">장르</a></li>
+            </ul>
+        </div>
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1">소개</div>
+        </div>
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1">극장</div>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
+                <li><a href="#">지역</a></li>
+                <li><a href="#">위치</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="main.css">
 </head>
@@ -25,33 +27,49 @@
     <!-- 로그인컨테이너 -->
     <div class="title_container">
         <div class="logo">
-            <i class="fa-solid fa-video"></i>
-            Logo
+             <span class="icon-container">
+                 <i class="fa-solid fa-video"></i>
+             </span>
+             <span class="m_p" style="color:red;">M</span><span class="m_o">o</span><span class="m_v">v</span><span class="m_i">i</span><span class="m_e">e</span>
         </div>
-        <div class="nav_container">
-            <div>영화</div>
-            <div>소개</div>
-            <div>극장</div>
+        <div class="sub_nav">
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="btn m-1" style="color:white; background-color:black;">영화</div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
+                    <li ><a  href="#">Top100</a></li>
+                    <li ><a  href="#">장르</a></li>
+                </ul>
+            </div>
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="btn m-1"  style="color:white; background-color:black;">소개</div>
+            </div>
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="btn m-1"  style="color:white; background-color:black;">극장</div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
+                    <li><a href="#">지역</a></li>
+                    <li><a href="#">위치</a></li>
+                </ul>
+            </div>
         </div>
         <div class="login_container">
-            <a class="Sign_in" role="button" href="">Sign_in</a>
-            <a class="Sing_up" role="button" href="">Sing_up</a>
+            <a class="Sign_in" role="button" sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
+            <a class="Sign_in" role="button" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Sign_out</a>
+            <a class="Sing_up" role="button" th:href="@{/member/signup}">Sing_up</a>
         </div>
     </div>
     <!-- 로그인컨테이너 여기까지-->
-    s
+
     <!-- 비디오컨테이너 -->
-    <div class="video_container">
+    <div class="video_container" >
         <div class="video_bg" style="background-image: url('pexels-blockhaus-malung-19298575 (Original).mp4');"></div>
         <div class="movie_title_container">
-            <h1 class="movie_title"><strong>숲 속: 죽음의 숲</strong></h1>
+            <h1 class="movie_title"><strong style="z-index:99;">마블 공식 예고편</strong></h1>
             <button id="movie_view_btn" class="movie_view_btn">예고편 보기</button>
         </div>
         <div class="video">
-            <video loop autoplay muted>
-                <source src="pexels-blockhaus-malung-19298575 (Original).mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <div style="position: relative; height:0; padding-bottom: 56.25%; margin: 40px 0px;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/ybhXVSAdIRE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; width:100%; height:100%; z-index:99;"></iframe>
+            </div>
         </div>
     </div>
     <!-- 비디오컨테이너 여기까지 -->
