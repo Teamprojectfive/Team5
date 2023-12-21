@@ -28,6 +28,16 @@ public class Member {
 
   private String email;
 
+  // 소셜 로그인 정보
+  private String socialProvider;  // Google, Kakao, Naver 등
+
+
+
+
+
+
+
+
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<Review> reviewList;

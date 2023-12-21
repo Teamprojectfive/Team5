@@ -3,10 +3,12 @@ package com.korea.Team5.USER;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -52,5 +54,26 @@ public class MemberController {
                               , memberCreateForm.getPhone());
 
             return "redirect:/main";
+      }
+
+      @PostMapping("/google")
+      public ResponseEntity<String> googleLogin(@RequestBody Member request) {
+            Member member = memberService.saveOrUpdateSocialMember(request.getLoginId(), request.getNickName(), "Google");
+            // 처리 결과에 따라 적절한 ResponseEntity를 반환
+            return ResponseEntity.ok("Google login successful for member with ID: " + member.getId());
+      }
+
+      @PostMapping("/kakao")
+      public ResponseEntity<String> kakaoLogin(@RequestBody Member request) {
+            Member member = memberService.saveOrUpdateSocialMember(request.getLoginId(), request.getNickName(), "Kakao");
+            // 처리 결과에 따라 적절한 ResponseEntity를 반환
+            return ResponseEntity.ok("Kakao login successful for member with ID: " + member.getId());
+      }
+
+      @PostMapping("/naver")
+      public ResponseEntity<String> naverLogin(@RequestBody Member request) {
+            Member member = memberService.saveOrUpdateSocialMember(request.getLoginId(), request.getNickName(),"Naver");
+            // 처리 결과에 따라 적절한 ResponseEntity를 반환
+            return ResponseEntity.ok("Naver login successful for member with ID: " + member.getId());
       }
 }

@@ -19,6 +19,7 @@ public class UserService {
     User user = socialRepository.findById(googleId)
             .orElse(new User());
     //엔티티정보를 다끌어서 저장후에 업데이트하기위해서 이렇게 했습니다.
+
     user.setSocialId(googleId);
     user.setEmail(email);
     user.setNickname(nickname);

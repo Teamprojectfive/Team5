@@ -1,5 +1,4 @@
 package com.korea.Team5.Review;
-import com.korea.Team5.Social.User;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.movie.Movie;
 import jakarta.persistence.*;

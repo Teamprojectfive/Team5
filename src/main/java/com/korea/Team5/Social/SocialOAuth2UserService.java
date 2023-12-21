@@ -1,5 +1,6 @@
 package com.korea.Team5.Social;
 
+import com.korea.Team5.USER.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -12,13 +13,14 @@ import java.util.Map;
 
 @Service
 public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-      private final UserService userService;
+
+      private final MemberService memberService;
 
 
 
   @Autowired
-  public SocialOAuth2UserService(UserService userService) {
-    this.userService =  userService;
+  public SocialOAuth2UserService(MemberService memberService) {
+    this.memberService =  memberService;
     //위에서말씀드린 그대로구요.
   }
 
@@ -27,14 +29,14 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
   // 고정적으로 이렇게 가져가야합니다. 크게 수정하지않고 이대로사용해서 바로사용가능할것입니다.
   // 굳이 소셜로그인 엔티티를 수정하지않는이상 기능구현에있어서 큰 오류는없을겁니다.
   @Override
-  public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-    System.out.println("asdasd");// 제가 이 메서드가 실행되는지 출력문을통해서 확인한거기에 이출력문은 생략하셔도됩니다//
-    OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+      System.out.println("asdasd");// 제가 이 메서드가 실행되는지 출력문을통해서 확인한거기에 이출력문은 생략하셔도됩니다//
+      OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
 
 
 
-    String clientId = userRequest.getClientRegistration().getClientId();
-    String clientName = userRequest.getClientRegistration().getClientName();
+      String clientId = userRequest.getClientRegistration().getClientId();
+      String clientName = userRequest.getClientRegistration().getClientName();
 
     OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
@@ -55,13 +57,13 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     System.out.println("User Authorities: " + oAuth2User.getAuthorities());
     if (clientName.equals("Google")) {
       // Google 로그인 사용자 정보 추출
-      String googleId = oAuth2User.getAttribute("sub");
-      String email = oAuth2User.getAttribute("email");
-      String nickname = oAuth2User.getAttribute("name");
+      String socialProvider = userRequest.getClientRegistration().getClientName();
+      String loginId = oAuth2User.getAttribute("sub");
+      String nickName = oAuth2User.getAttribute("name");
 
       // Save or update Google information in the database
-      userService.saveOrUpdateGoogle(googleId, email, nickname);
-      System.out.println("Google User Saved: " + googleId + ", " + email + ", " + nickname);
+      memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName);
+      System.out.println("Google User Saved: " + loginId + ", " + socialProvider + ", " + nickName);
 
     } else if (clientName.equals("kakao")) {
       // Kakao 로그인 사용자 정보 추출
@@ -74,7 +76,7 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       String nickname = (String) attributes.get("nickname");
 
       // Save or update Kakao information in the database
-      userService.saveOrUpdateKakao(String.valueOf(kakaoId), email, nickname);
+      memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName);
       // Save or update Kakao information in the database
       System.out.println("Kakao User Saved: " + kakaoId + ", " + email + ", " + nickname);
 

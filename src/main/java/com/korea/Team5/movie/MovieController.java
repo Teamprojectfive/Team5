@@ -1,18 +1,14 @@
 package com.korea.Team5.movie;
 
-import com.korea.Team5.Review.ReviewForm;
-import com.korea.Team5.Social.User;
 import com.korea.Team5.Social.UserService;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
