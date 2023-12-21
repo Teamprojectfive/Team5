@@ -84,19 +84,28 @@
     <!-- 검색컨테이너 여기까지 -->
     <section class="card_container">
         <div class="list_container">
-            <ul class="list">
-                <li class="card">
-                    <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
-                </li>
-                <li class="card">
-                    <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 2">
-                </li>
-                <li class="card">
-                    <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 3">
-                </li>
-                <li class="card">
-                    <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 4">
-                </li>
+            <ul th:each="movie, loop : ${paging}" class="list">
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img th:text="${movie.name}" src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img th:text="${movie.name}"
+                             src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 2">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 3">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 4">
+                    </li>
+                </a>
             </ul>
             <div class="card_btn">
                 <button class="left"><i class="fa-solid fa-chevron-left"></i></button>
@@ -105,7 +114,6 @@
         </div>
     </section>
 </div>
-</body>
 </body>
 <script src="main.js"></script>
 </html>
