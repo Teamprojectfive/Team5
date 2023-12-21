@@ -1,0 +1,44 @@
+body{
+    margin: 0;
+    background-color: white;
+}
+nav{
+    width: 200vh;
+    height: 20vh;
+}
+.login_container{
+    display: felx;
+    justify-content: flex-start;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 34px;
+    color: black;
+}
+
+.sub_nav{
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn {
+    background: white;
+    border: 0px;
+    font-size: 27px;
+    color: black;
+}
+.btn:hover{
+    background: rgb(204, 204, 204);
+}
+
+.p-2{
+    background: white;
+}
+
+ul{
+    display: flex;
+}

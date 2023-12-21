@@ -1,26 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html >
+<html lang="en" xmlns:layout="" layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="navbar.css">
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <div class="container-fluid">
-        <a class="d-flex align-items-center" th:href="@{/}">movie</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">로그아웃</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/member/signup}">회원가입</a>
-                </li>
+<nav layout:fragment="content">
+    <div class="login_container">
+        <i class="fa-solid fa-video"></i>
+        <span class="m_p">M</span><span class="m_o">o</span><span class="m_v">v</span><span class="m_i">i</span><span class="m_e">e</span>
+    </div>
+    <div class="sub_nav">
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1">영화</div>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
+                <li ><a  href="#">Top100</a></li>
+                <li ><a  href="#">장르</a></li>
+            </ul>
+        </div>
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1">소개</div>
+        </div>
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1">극장</div>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
+                <li><a href="#">지역</a></li>
+                <li><a href="#">위치</a></li>
             </ul>
         </div>
     </div>
