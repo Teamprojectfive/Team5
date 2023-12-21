@@ -1,6 +1,4 @@
 package com.korea.Team5.Social;
-
-
 import com.korea.Team5.DataNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +47,7 @@ public class UserService {
     return socialRepository.save(user);
   }
 
+
   public User getUser(String socialId) {
     Optional<User> user = this.socialRepository.findBysocialId(socialId);
     if (user.isPresent()) {
@@ -57,5 +56,6 @@ public class UserService {
       throw new DataNotFoundException("member not found");
     }
   }
+
 
 }

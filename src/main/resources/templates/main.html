@@ -29,7 +29,7 @@
             Logo
         </div>
         <div class="nav_container">
-            <div>영화</div>
+            <a th:href="@{/movie/list}">영화</a>
             <div>소개</div>
             <div>극장</div>
         </div>
@@ -87,6 +87,25 @@
                 <li class="card">
                     <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 4">
                 </li>
+                    <li class="card">
+                        <img th:text="${movie.name}" src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img th:text="${movie.name}"
+                             src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 2">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 3">
+                    </li>
+                </a>
+                <a th:href="@{|/movie/detail/${movie.id}|}">
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 4">
+                    </li>
                 </a>
             </ul>
             <div class="card_btn">
@@ -101,3 +120,28 @@
 </html>
 
 
+
+<!-- 페이징처리 시작 -->
+<!--        <div th:if="${!paging.isEmpty()}">-->
+<!--            <ul class="pagination justify-content-center">-->
+<!--                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">-->
+<!--                    <a class="page-link" th:if="${paging.number > 0}"-->
+<!--                       th:href="@{|?page=${paging.number-1}|}">-->
+<!--                        <span>이전</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"-->
+<!--                    th:if="${page >= paging.number-5 and page <= paging.number+5}"-->
+<!--                    th:classappend="${page == paging.number} ? 'active'"-->
+<!--                    class="page-item">-->
+<!--                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>-->
+<!--                </li>-->
+<!--                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">-->
+<!--                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">-->
+<!--                        <span>다음</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+<!-- 페이징처리 끝 -->

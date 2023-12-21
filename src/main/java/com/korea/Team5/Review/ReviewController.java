@@ -1,6 +1,4 @@
 package com.korea.Team5.Review;
-
-
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import com.korea.Team5.movie.Movie;
@@ -29,7 +27,7 @@ public class ReviewController {
   private final ReviewService reviewService;
   private final MemberService memberService;
 
-
+  //리뷰생성
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/create/{id}")
   public String createReview(Model model, @PathVariable("id") Integer movieId, ReviewForm reviewForm) {
@@ -38,7 +36,7 @@ public class ReviewController {
 
     return "/Review/review_form";
   }
-
+  //리뷰 생성
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/create/{id}")
   public String createReview(Model model, @PathVariable("id") Integer movieId,
@@ -56,12 +54,34 @@ public class ReviewController {
     return String.format("redirect:/movie/detail/%s", movieId);
 
   }
+  //리뷰삭제
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/delete/{id}")
+  public String reviewDelete(Principal principal, @PathVariable("id") Integer id) {
+    Review review = this.reviewService.getReview(id);
+    if (!review.getMember().getLoginId().equals(principal.getName())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+    }
+    this.reviewService.delete(review);
+    return String.format("redirect:/movie/detail/%s", review.getMovie().getId());
+  }
 
+  //리뷰추천
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/vote/{id}")
+  public String reviewVote(Principal principal, @PathVariable("id") Integer id) {
+    Review review = this.reviewService.getReview(id);
+    Member member = this.memberService.getMember(principal.getName());
+    this.reviewService.vote(review, member);
+    return String.format("redirect:/movie/detail/%s", review.getMovie().getId());
+  }
+
+
+  //리뷰수정
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/modify/{id}")
   public String reviewModify(ReviewForm reviewForm, @PathVariable("id") Integer id, Principal principal) {
     Review review = this.reviewService.getReview(id);
-
     if (!review.getMember().getLoginId().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
     }
@@ -69,10 +89,12 @@ public class ReviewController {
     reviewForm.setContent(review.getContent());
     reviewForm.setRating(review.getRating());
     reviewForm.setStarRating(review.getStarRating());
+
+
     return "/Review/reviewModify_form";
   }
 
-
+  //리뷰수정
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/modify/{id}")
   public String reviewModify(@Valid ReviewForm reviewForm, BindingResult bindingResult,
@@ -89,24 +111,5 @@ public class ReviewController {
     return String.format("redirect:/movie/detail/%s", review.getMovie().getId());
   }
 
-
-  @PreAuthorize("isAuthenticated()")
-  @GetMapping("/delete/{id}")
-  public String reviewDelete(Principal principal, @PathVariable("id") Integer id){
-    Review review = this.reviewService.getReview(id);
-    if(!review.getMember().getLoginId().equals(principal.getName())){
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
-    }
-    this.reviewService.delete(review);
-    return String.format("redirect:/movie/detail/%s",review.getMovie().getId());
-  }
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/vote/{id}")
-    public String reviewVote(Principal principal, @PathVariable("id") Integer id){
-      Review review = this.reviewService.getReview(id);
-      Member member = this.memberService.getMember(principal.getName());
-      this.reviewService.vote(review, member);
-      return String.format("redirect:/movie/detail/%s", review.getMovie().getId());
-    }
 
 }

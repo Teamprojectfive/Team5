@@ -10,9 +10,11 @@
 </div>
 <!-- 폼을 이용한 HTML 코드 -->
 <div class="login_container">
-    <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
+    <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
+       th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
 </div>
-<p>제목</p><h1 th:text="${movie.name}"></h1>
+<p>제목</p>
+<h1 th:text="${movie.name}"></h1>
 <p>개봉일</p><span th:text="${movie.movieRelease}"></span>
 <img th:src="${movie.image}" alt="">
 <p>영화 설명</p><span th:text="${movie.content}"></span>
@@ -27,23 +29,32 @@
         <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
            th:data-uri="@{|/review/vote/${review.id}|}" style="text-decoration: none; color: #007bff;">
             추천
-            <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}" style="margin-left: 5px;"></span>
+            <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}"
+                  style="margin-left: 5px;"></span>
         </a>
         <div>
-            <a class="Sing_up" role="button"  th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}" th:href="@{|/review/modify/${review.id}|}" >리뷰수정</a>
-            <a class="Sing_up" role="button"  th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}" th:href="@{|/review/delete/${review.id}|}" >리뷰삭제</a>
+            <a class="Sing_up" role="button"
+               th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
+               th:href="@{|/review/modify/${review.id}|}">리뷰수정</a>
+            <a class="Sing_up" role="button"
+               th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
+               th:href="@{|/review/delete/${review.id}|}">리뷰삭제</a>
         </div>
     </ul>
 </div>
-
 <!-- 여기에 다른 화면 요소들을 추가할 수 있음 -->
 <script type='text/javascript'>
     const recommend_elements = document.getElementsByClassName("recommend");
     Array.from(recommend_elements).forEach(function(element) {
         element.addEventListener('click', function() {
-            if(confirm("정말로 추천하시겠습니까?")) {
+            const isRecommended = element.querySelector('span').innerText.includes('추천');
+            console.log(isRecommended);
+            const confirmMessage = isRecommended ? "정말로 취소하시겠습니까?" : "정말로 추천하시겠습니까?";
+            console.log(confirmMessage );
+
+            if (confirm(confirmMessage)) {
                 location.href = this.dataset.uri;
-            };
+            }
         });
     });
 </script>
