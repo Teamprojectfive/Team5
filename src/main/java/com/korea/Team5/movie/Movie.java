@@ -41,5 +41,7 @@ public class Movie {
     private LocalDateTime modifyDate;
 
     @ManyToMany
-    Set<Member> voter;
+    private Set<Member> voter;
+
+
 }

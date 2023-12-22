@@ -3,8 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* 추가적인 스타일링은 여기에 작성하세요 */
+        .card {
+            margin-bottom: 20px;
+        }
+        .poster {
+            width: 100%;
+            height: auto;
+            max-height: 400px; /* 포스터의 최대 높이를 조절합니다. 필요에 따라 조정하세요. */
+        }
+    </style>
 </head>
 <body>
+<!-- Dummy 리스트 출력 -->
+<div class="container">
+    <h2>Dummy 리스트</h2>
+    <div class="row">
+        <div th:each="dummy : ${dummyList}" class="col-md-3">
+            <!-- 카드 형태로 표시 -->
+            <div class="card">
+                <h1 th:text="${dummy.id}"></h1>
+                <img class="poster" th:src="${dummy.image}" alt="Poster">
+                <div class="card-body">
+                    <div class="card-info" th:text="${dummy.name}"></div>
+                    <!-- 더미 엔티티에 맞는 추가 정보 표시 -->
+                    <p class="card-info">컨텐츠 : <span th:text="${dummy.content}"></span></p>
+                    <p class="card-info">장르 : <span th:text="${dummy.genre}"></span></p>
+                    <p class="card-info">등급 : <span th:text="${dummy.age}"></span></p>
+                    <p class="card-info">개봉일 : <span th:text="${dummy.movieRelease}"></span></p>
+                    <p class="card-info">출연진 : <span th:text="${dummy.cast}"></span></p>
+                    <a th:href="@{|/movie/detail/${dummy.id}|}">상세보기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:each="movie : ${movieList}" style="margin-bottom: 20px; border: 1px solid #ddd; padding: 10px;">
     <h1 th:text="${movie.id}"></h1>
     <div style="font-weight: bold;" th:text="${movie.name}"></div>
@@ -12,19 +48,14 @@
     <p style="margin: 5px 0 0 0;">장르 : <span th:text="${movie.genre}"></span></p>
     <p style="margin: 5px 0 0 0;">출연진 : <span th:text="${movie.cast}"></span></p>
     <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.movieRelease}"></span></p>
-
     <div style="margin-top: 10px;">
         <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
            th:data-uri="@{|/movie/vote/${movie.id}|}" style="text-decoration: none; color: #007bff;">
             추천
             <span class="badge rounded-pill bg-success" th:text="${#lists.size(movie.voter)}" style="margin-left: 5px;"></span>
         </a>
-        <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+
     </div>
-
-
-
-
 </div>
 <script type='text/javascript'>
     const recommend_elements = document.getElementsByClassName("recommend");
