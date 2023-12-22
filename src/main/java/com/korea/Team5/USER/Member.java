@@ -23,15 +23,17 @@ public class Member {
   @Column(unique = true)
   private String nickName;
 
+
+
   @Column(unique = true)
   private String phone;
 
   private String email;
 
+  private String name;
+
   // 소셜 로그인 정보
   private String socialProvider;  // Google, Kakao, Naver 등
-
-
 
 
 

@@ -1,6 +1,5 @@
 package com.korea.Team5.movie;
 
-import com.korea.Team5.Social.UserService;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import java.util.List;
 public class MovieController {
     private final MovieService movieService;
     private final MemberService memberService;
-    private final UserService userService;
 
     @GetMapping("/list")
     public String list(Model model) {

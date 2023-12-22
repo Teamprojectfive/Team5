@@ -31,8 +31,7 @@ public class Review {
   @ManyToMany
   Set<Member> voter;
 
-  @ManyToOne
-  private User user;//소셜사용자와연결
+
 
 
   @ManyToOne

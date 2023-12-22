@@ -33,7 +33,9 @@
             <div>소개</div>
             <div>극장</div>
         </div>
+
         <div class="login_container">
+            <a class="mypage" role="button" th:href="@{/member/mypage}">mypage</a>
             <a class="Sign_in" role="button" sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
             <a class="Sign_in" role="button" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Sign_out</a>
             <a class="Sing_up" role="button" th:href="@{/member/signup}">Sing_up</a>
