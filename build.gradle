@@ -40,6 +40,9 @@ dependencies {
 
 
 
+	implementation files('libs/kobis-opcl-rest-v1.0.jar')
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:3.1.5'
 
