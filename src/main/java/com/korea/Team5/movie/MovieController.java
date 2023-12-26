@@ -3,8 +3,7 @@ package com.korea.Team5.movie;
 import com.korea.Team5.Review.ReviewForm;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
-import com.korea.Team5.Dummy.dummyMovie;
-import com.korea.Team5.Dummy.dummyMovieService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,16 +23,16 @@ public class MovieController {
 
     private final MovieService movieService;
     private final MemberService memberService;
-    private final dummyMovieService dummyMovieService;
+
 
 
     @GetMapping("/list")
     public String list(Model model) {
 
         List<Movie> movieList = this.movieService.list();
-        List<dummyMovie> dummyMovieList = this.dummyMovieService.list();
+
         model.addAttribute("movieList", movieList);
-        model.addAttribute("dummyList", dummyMovieList);
+
 
         return "movieList";
     }

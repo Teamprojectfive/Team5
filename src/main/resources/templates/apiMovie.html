@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Movie Detail</title>
+</head>
+<body>
+<h1>Movie Detail</h1>
+<table>
+    <thead>
+    <tr>
+        <th>누적관객수</th>
+        <th>Boxoffice Type</th>
+        <th>영화이름</th>
+        <!-- Add other fields as needed -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="movie : ${movies}">
+        <td th:text="${movie.audiAcc}"></td>
+        <td th:text="${movie.boxofficeType}"></td>
+        <td th:text="${movie.movieNm}"></td>
+        <!-- Add other fields as needed -->
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

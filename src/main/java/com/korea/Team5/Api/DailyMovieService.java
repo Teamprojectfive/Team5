@@ -29,22 +29,17 @@ public class DailyMovieService {
     }
 
     @Transactional
-    public void fetchDataAndSaveToDatabase(String targetDt) {
+    public List<DailyMovie> fetchDataAndSaveToDatabase(String targetDt) {
         // API 호출 및 데이터 가져오는 로직
         String url = apiUrl + "?key=" + apiKey + "&targetDt=" + targetDt;
-//        String movies = restTemplate.getForObject(url, String.class);
-//       List<DailyMovie> movies = restTemplate.getForObject(url, BoxOfficeResult.class).getDailyBoxOfficeList();
-//        String movies = restTemplate.getForObject(url, BoxOfficeResult.class).getBoxofficeType();
         ResponseEntity<DailyBoxOfficeList> responseEntity = restTemplate.getForEntity(url, DailyBoxOfficeList.class);
-
-//        System.out.println("API: " + movies);
-//        System.out.println(responseEntity);
         List<DailyMovie> movies = responseEntity.getBody().getBoxOfficeResult().getDailyBoxOfficeList();
         for (DailyMovie movie : movies) {
-
             movie.setModificationDateTime(LocalDateTime.now());
             this.dailyMovieRepository.save(movie);
         }
+        return movies;
     }
+
 }
 
