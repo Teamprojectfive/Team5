@@ -5,6 +5,9 @@ import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.movie.Movie;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -72,4 +75,8 @@ public class ReviewService {
 
   }
 
+  public Page<Review> getList(int page) {
+    Pageable pageable = PageRequest.of(page, 10);
+    return this.reviewRepository.findAll(pageable);
+  }
 }

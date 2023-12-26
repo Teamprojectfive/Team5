@@ -77,11 +77,5 @@ public class MemberController {
     }
   }
 
- /* @PostMapping("/duplicate")
-  public String checkNickname(){
-
-
-
-  }*/
 
 }

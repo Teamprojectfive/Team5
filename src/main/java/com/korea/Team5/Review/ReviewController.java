@@ -1,19 +1,18 @@
 package com.korea.Team5.Review;
+
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import com.korea.Team5.movie.Movie;
 import com.korea.Team5.movie.MovieService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -27,10 +26,19 @@ public class ReviewController {
   private final ReviewService reviewService;
   private final MemberService memberService;
 
+
+  @GetMapping("/list")
+  public String list(Model model, @RequestParam(value="page", defaultValue="0") int page ,Movie movie) {
+    Page<Review> paging = this.reviewService.getList(page);
+    model.addAttribute("paging", paging);
+    model.addAttribute("movie",movie);
+    return "movieDetail";
+  }
+
   //리뷰생성
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/create/{id}")
-  public String createReview(Model model, @PathVariable("id") Integer movieId, ReviewForm reviewForm) {
+  public String createReview(Model model, @PathVariable("id") Integer movieId, ReviewForm reviewForm,Member member) {
     Movie movie = movieService.getMovie(movieId);
     model.addAttribute("movie", movie);
 
@@ -70,6 +78,7 @@ public class ReviewController {
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/vote/{id}")
   public String reviewVote(Principal principal, @PathVariable("id") Integer id) {
+
     Review review = this.reviewService.getReview(id);
     Member member = this.memberService.getMember(principal.getName());
     this.reviewService.vote(review, member);

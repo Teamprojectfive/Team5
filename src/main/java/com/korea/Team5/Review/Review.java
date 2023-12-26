@@ -29,7 +29,7 @@ public class Review {
   private Member member;//사용자와연결
 
   @ManyToMany
-  Set<Member> voter;
+  Set<Member> voter; // 추천 ,좋아요
 
 
 

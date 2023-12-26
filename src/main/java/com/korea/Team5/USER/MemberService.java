@@ -67,4 +67,9 @@ public class MemberService {
     Optional<Member> existingMember = memberRepository.findByNickName(nickName);
     return existingMember.isPresent();
   }
+
+  public boolean isSocialMemberExists(String loginId) {
+    Optional<Member> existingMember = memberRepository.findByloginId(loginId);
+    return existingMember.isPresent();
+  }
 }

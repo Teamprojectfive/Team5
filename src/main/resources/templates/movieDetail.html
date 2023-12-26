@@ -21,18 +21,19 @@
 
 <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>
 <div class="my-3">
-    <ul th:each="review : ${movie.reviewList}">
+    <ul th:if="${paging != null}" th:each="review : ${paging}">
         <li th:text="${review.subject}"></li>
         <li th:text="${review.content}"></li>
         <li th:text="${review.rating}"></li>
         <li th:text="${review.starRating}"></li>
         <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-           th:data-uri="@{|/review/vote/${review.id}|}" style="text-decoration: none; color: #007bff;">
+           th:data-uri="@{|/review/vote/${review.id}|}" style="text-decoration: none; color: #007bff;"
+        >
             추천
             <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}"
                   style="margin-left: 5px;"></span>
         </a>
-        <div>
+        <div th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
             <a class="Sing_up" role="button"
                th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
                th:href="@{|/review/modify/${review.id}|}">리뷰수정</a>
@@ -42,21 +43,41 @@
         </div>
     </ul>
 </div>
-<!-- 여기에 다른 화면 요소들을 추가할 수 있음 -->
-<script type='text/javascript'>
-    const recommend_elements = document.getElementsByClassName("recommend");
-    Array.from(recommend_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            const isRecommended = element.querySelector('span').innerText.includes('추천');
-            console.log(isRecommended);
-            const confirmMessage = isRecommended ? "정말로 취소하시겠습니까?" : "정말로 추천하시겠습니까?";
-            console.log(confirmMessage );
 
-            if (confirm(confirmMessage)) {
-                location.href = this.dataset.uri;
+<!-- 여기에 다른 화면 요소들을 추가할 수 있음 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+   var isLoggedIn = /*[[${#authentication.getPrincipal()}]]*/ false;
+   /*]]>*/
+   console.log(isLoggedIn);
+   const recommend_elements = document.getElementsByClassName("recommend");
+
+   Array.from(recommend_elements).forEach(function(element) {
+       element.addEventListener('click', function() {
+            if (isLoggedIn === 'anonymousUser') {
+               if(confirm('로그인이 필요한 기능입니다.')) {
+                     location.href = "/member/login";
+                }
+            }else {
+                const isRecommended = element.dataset.recommended === "true";
+                const confirmMessage = isRecommended ? "정말로 취소하시겠습니까?" : "정말로 추천하시겠습니까?";
+
+                console.log("isRecommended:", isRecommended);
+                console.log("confirmMessage:", confirmMessage);
+
+                if (confirm(confirmMessage)) {
+                                  // Toggle recommended status
+                    element.dataset.recommended = (element.dataset.recommended === "true") ? "false" : "true";
+
+                                    // Update the text content of the span
+                    const spanElement = element.querySelector('span');
+                    spanElement.innerText = (element.dataset.recommended === "true") ? "추천" : "취소";
+
+                    location.href = element.dataset.uri;
+                }
             }
-        });
-    });
+       });
+   });
 </script>
 </body>
 </html>

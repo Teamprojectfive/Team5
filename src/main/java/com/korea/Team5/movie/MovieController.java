@@ -39,6 +39,7 @@ public class MovieController {
     public String movieVote(Principal principal, @PathVariable("id") Integer id){
         Movie movie = this.movieService.getMovie(id);
         Member member = this.memberService.getMember(principal.getName());
+
         this.movieService.vote(movie, member);
         return "redirect:/movie/list";
     }

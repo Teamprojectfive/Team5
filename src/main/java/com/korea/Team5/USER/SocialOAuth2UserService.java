@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Service
@@ -55,10 +56,13 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     // Kakao는 id, kakao_account.email, nickname 등을 제공하고, Naver는 id, response.email, response.nickname, response.name 등 서로상이함.
     // 이러한 다양한 속성을 효과적으로 다루기 위해 맵을 사용했고 구글은 속성자체가 꽤나단순해서 이렇게해줬습니다.
     System.out.println("User Authorities: " + oAuth2User.getAuthorities());
+
+    String loginId = null;
+
     if (clientName.equals("Google")) {
       // Google 로그인 사용자 정보 추출
 
-      String loginId = oAuth2User.getAttribute("sub");
+      loginId = oAuth2User.getAttribute("sub");
       String socialProvider = userRequest.getClientRegistration().getClientName();
       String nickName = oAuth2User.getAttribute("nickname");
       String name = oAuth2User.getAttribute("name1");
@@ -72,58 +76,69 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     } else if (clientName.equals("kakao")) {
       // Kakao 로그인 사용자 정보 추출
-
-
       //아마 여기서 맵해쉬를쓴부분은 디버그를사용해서 어디에 엔티티정보가 담겨져있는지 확인후에 NAME이름을 정해줘야하는데
       // 프로퍼티스에담겨있는걸확인해서 네임이름은 저걸로꼭해줘야합니다.
-
       Map attributes = oAuth2User.getAttributes();
-
       Long id = (Long) attributes.get("id");
-      String idAsString = String.valueOf(id);
+      loginId = String.valueOf(id);
       Map properties = (Map) attributes.get("properties");
       String nickName = (String) properties.get("nickname");
       String socialProvider = userRequest.getClientRegistration().getClientName();
       String name = (String) properties.get("name");
-
-      if (memberService.isNickNameDuplicated(nickName)) {
+      if (memberService.isSocialMemberExists(loginId)) {
+        // 이미 등록된 소셜 사용자인 경우에 대한 처리를 여기에 추가
+        // 예시로 로그에 출력하는 코드를 추가했습니다.
+        System.out.println("Social User Already Exists: " + loginId);
+        // 중복 처리 로직을 추가하거나 세션에 정보를 추가
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        session.setAttribute("existingSocialUser", loginId);
+      }
+      if (!memberService.isSocialMemberExists(loginId) && !memberService.isNickNameDuplicated(nickName)) {
+        // Save or update Naver information in the database
+        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName, name);
+        System.out.println("Naver User Saved: " + loginId + ", " + ", " + socialProvider + "," + nickName);
+      } else if (!memberService.isSocialMemberExists(loginId) && memberService.isNickNameDuplicated(nickName)) {
         // 중복된 경우에 대한 처리를 여기에 추가
         // 예시로 로그에 출력하는 코드를 추가했습니다.
         System.out.println("NickName is duplicated: " + nickName);
         // 중복 처리 로직을 추가하거나 세션에 정보를 추가
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         session.setAttribute("duplicatedNickName", nickName);
-      } else {
-        // Saveorupdate Kakao information in the database
-        memberService.saveOrUpdateSocialMember(idAsString, socialProvider, nickName, name);
-        // Save or update Kakao information in the database
-        System.out.println("Kakao User Saved: " + id + ", " + socialProvider + ", " + nickName);
       }
     } else if (clientName.equals("Naver")) {
       // 네이버 로그인 사용자 정보 추출
       // 네이버 로그인 사용자 정보 추출
       Map<String, Object> response = (Map<String, Object>) oAuth2User.getAttribute("response");
-      String loginId = response.get("id").toString();
+      loginId = response.get("id").toString();
       String socialProvider = userRequest.getClientRegistration().getClientName();
       String nickname = response.get("nickname").toString();
       String name = response.get("name").toString();
 
+      if (memberService.isSocialMemberExists(loginId)) {
+        // 이미 등록된 소셜 사용자인 경우에 대한 처리를 여기에 추가
+        // 예시로 로그에 출력하는 코드를 추가했습니다.
+        System.out.println("Social User Already Exists: " + loginId);
+        // 중복 처리 로직을 추가하거나 세션에 정보를 추가
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        session.setAttribute("existingSocialUser", loginId);
+      }
 
-      if (memberService.isNickNameDuplicated(nickname)) {
+
+
+      if (!memberService.isSocialMemberExists(loginId) && !memberService.isNickNameDuplicated(nickname)) {
+        // Save or update Naver information in the database, 사용자 아이디가 등록되어있지않거나,닉네임이 중복되어있지않을떄
+        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickname, name);
+        System.out.println("Naver User Saved: " + loginId + ", " + ", " + socialProvider + "," + nickname);
+      } else if (!memberService.isSocialMemberExists(loginId) && memberService.isNickNameDuplicated(nickname)) {
         // 중복된 경우에 대한 처리를 여기에 추가
         // 예시로 로그에 출력하는 코드를 추가했습니다.
         System.out.println("NickName is duplicated: " + nickname);
         // 중복 처리 로직을 추가하거나 세션에 정보를 추가
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         session.setAttribute("duplicatedNickName", nickname);
-      } else {
-        // Save or update Naver information in the database
-        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickname, name);
-        System.out.println("Naver User Saved: " + loginId + ", " + ", " + socialProvider + "," + nickname);
-
       }
     }
-    return oAuth2User;
-  }
 
+    return new SocialMember(loginId,"", new ArrayList<>(), oAuth2User.getAttributes());
+  }
 }
