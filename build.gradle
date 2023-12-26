@@ -35,6 +35,7 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+
 	implementation files('libs/kobis-opcl-rest-v1.0.jar')
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
