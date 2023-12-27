@@ -37,8 +37,16 @@ public class MovieService {
         }
     }
 
+    public void saveMovie(Movie movie){
+        this.movieRepository.save(movie);
+    }
+
     public void vote(Movie movie, Member member){
         movie.getVoter().add(member);
+        this.movieRepository.save(movie);
+    }
+    public void voteCancle(Movie movie, Member member){
+        movie.getVoter().remove(member);
         this.movieRepository.save(movie);
     }
 

@@ -39,5 +39,7 @@ public class Movie {
 
 
     @ManyToMany
-    Set<Member> voter;
+    private Set<Member> voter;
+
+
 }
