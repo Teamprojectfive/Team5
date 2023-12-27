@@ -21,7 +21,7 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
 
 
-  public void create(Movie movie, String subject, String content, String rating, String starRating, Member member) {
+  public void create(Movie movie, String subject, String content, int rating, String starRating, Member member) {
     Review review = new Review();
     review.setSubject(subject);
     review.setContent(content);
@@ -44,7 +44,7 @@ public class ReviewService {
   }
 
 
-  public void modify(Review review, String subject, String content, String rating, String starRating) {
+  public void modify(Review review, String subject, String content, int rating, String starRating) {
     review.setSubject(subject);
     review.setContent(content);
     review.setRating(rating);

@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -77,11 +78,12 @@ public class ReviewController {
   //리뷰추천
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/vote/{id}")
-  public String reviewVote(Principal principal, @PathVariable("id") Integer id) {
+  public String reviewVote(Principal principal, @PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
 
     Review review = this.reviewService.getReview(id);
     Member member = this.memberService.getMember(principal.getName());
-    this.reviewService.vote(review, member);
+    boolean doNotVote = this.reviewService.vote(review, member);
+    redirectAttributes.addFlashAttribute("doNotVote", doNotVote);
     return String.format("redirect:/movie/detail/%s", review.getMovie().getId());
   }
 

@@ -19,7 +19,7 @@ public class Review {
   private String content;//내용
 
 
-  private String rating;//평점
+  private int rating;//평점
 
   private String starRating;//별점
 
@@ -30,8 +30,6 @@ public class Review {
 
   @ManyToMany
   Set<Member> voter; // 추천 ,좋아요
-
-
 
 
   @ManyToOne

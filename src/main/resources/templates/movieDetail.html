@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -21,13 +22,13 @@
 
 <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>
 <div class="my-3">
-    <ul th:if="${paging != null}" th:each="review : ${paging}">
+    <ul th:each="review : ${paging}">
         <li th:text="${review.subject}"></li>
         <li th:text="${review.content}"></li>
         <li th:text="${review.rating}"></li>
         <li th:text="${review.starRating}"></li>
         <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-           th:data-uri="@{|/review/vote/${review.id}|}" style="text-decoration: none; color: #007bff;"
+           th:data-uri="@{|/review/vote/${review.id}|}" th:data-recommended="${doNotVote}" style="text-decoration: none; color: #007bff;"
         >
             추천
             <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}"
@@ -43,6 +44,28 @@
         </div>
     </ul>
 </div>
+<!-- 페이징처리 시작 -->
+<div th:if="${!paging.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{|?page=${paging.number-1}|}">
+                <span>이전</span>
+            </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+            th:classappend="${page == paging.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                <span>다음</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- 페이징처리 끝 -->
 
 <!-- 여기에 다른 화면 요소들을 추가할 수 있음 -->
 <script th:inline="javascript">
@@ -52,6 +75,9 @@
    console.log(isLoggedIn);
    const recommend_elements = document.getElementsByClassName("recommend");
 
+    /*element는 배열 elements의 각 요소임
+    Array.from(recommend_elements)는 recommend_element를 배열로 반환시킨거임*/
+
    Array.from(recommend_elements).forEach(function(element) {
        element.addEventListener('click', function() {
             if (isLoggedIn === 'anonymousUser') {
@@ -59,23 +85,20 @@
                      location.href = "/member/login";
                 }
             }else {
-                const isRecommended = element.dataset.recommended === "true";
-                const confirmMessage = isRecommended ? "정말로 취소하시겠습니까?" : "정말로 추천하시겠습니까?";
+            const isRecommended = element.dataset.recommended === "true";
+            console.log(isRecommended);
+            const confirmMessage = isRecommended ? "추천을 취소하시겠습니까?" : "정말로 추천하시겠습니까?";
 
-                console.log("isRecommended:", isRecommended);
-                console.log("confirmMessage:", confirmMessage);
+            console.log("isRecommended:", isRecommended);
+            console.log("confirmMessage:", confirmMessage);
 
-                if (confirm(confirmMessage)) {
-                                  // Toggle recommended status
+                   if (confirm(confirmMessage)) {
+                    // Toggle recommended status
                     element.dataset.recommended = (element.dataset.recommended === "true") ? "false" : "true";
-
-                                    // Update the text content of the span
-                    const spanElement = element.querySelector('span');
-                    spanElement.innerText = (element.dataset.recommended === "true") ? "추천" : "취소";
 
                     location.href = element.dataset.uri;
                 }
-            }
+             }
        });
    });
 </script>
