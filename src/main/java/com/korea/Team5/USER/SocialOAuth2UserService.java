@@ -104,6 +104,8 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 중복 처리 로직을 추가하거나 세션에 정보를 추가
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         session.setAttribute("duplicatedNickName", nickName);
+
+        throw new OAuth2AuthenticationException("Social login is blocked.");
       }
     } else if (clientName.equals("Naver")) {
       // 네이버 로그인 사용자 정보 추출
@@ -136,9 +138,12 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 중복 처리 로직을 추가하거나 세션에 정보를 추가
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         session.setAttribute("duplicatedNickName", nickname);
+
+        throw new OAuth2AuthenticationException("Social login is blocked.");
       }
     }
 
     return new SocialMember(loginId,"", new ArrayList<>(), oAuth2User.getAttributes());
   }
+
 }
