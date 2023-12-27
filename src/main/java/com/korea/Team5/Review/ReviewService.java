@@ -21,12 +21,11 @@ public class ReviewService {
   private final ReviewRepository reviewRepository;
 
 
-  public void create(Movie movie, String subject, String content, int rating, String starRating, Member member) {
+  public void create(Movie movie, String subject, String content, int starRating, Member member) {
     Review review = new Review();
     review.setSubject(subject);
     review.setContent(content);
     review.setCreateDate(LocalDateTime.now());
-    review.setRating(rating);
     review.setStarRating(starRating);
     review.setMovie(movie);
     review.setMember(member);
@@ -44,10 +43,9 @@ public class ReviewService {
   }
 
 
-  public void modify(Review review, String subject, String content, int rating, String starRating) {
+  public void modify(Review review, String subject, String content, int starRating) {
     review.setSubject(subject);
     review.setContent(content);
-    review.setRating(rating);
     review.setStarRating(starRating);
     review.setModifyDate(LocalDateTime.now());
     this.reviewRepository.save(review);

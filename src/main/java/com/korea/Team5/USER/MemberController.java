@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,7 +63,7 @@ public class MemberController {
   }
 
   @GetMapping("/duplicate")
-  public String checkNickname(HttpSession session) {
+  public String checkNickname(HttpSession session, Model model) {
 
     // 세션에서 중복된 닉네임 가져오기
     String duplicatedNickName = (String) session.getAttribute("duplicatedNickName");
@@ -70,6 +71,7 @@ public class MemberController {
     if (duplicatedNickName != null) {
       // 중복이면 재설정 폼으로 이동
       session.removeAttribute("duplicatedNickName");
+
       return "/LoginandSignup/socialIndex_form";
     } else {
       // 중복이 아니면 메인으로 리다이렉트

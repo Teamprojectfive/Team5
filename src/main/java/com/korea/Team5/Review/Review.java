@@ -19,9 +19,7 @@ public class Review {
   private String content;//내용
 
 
-  private int rating;//평점
-
-  private String starRating;//별점
+  private int starRating;
 
   private LocalDateTime createDate;//등록시간
 

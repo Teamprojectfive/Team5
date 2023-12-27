@@ -14,10 +14,8 @@ public class ReviewForm {
       private String content;
 
 
+      private int starRating;
 
-      private int rating;
-
-      private String starRating;
 
 
 
