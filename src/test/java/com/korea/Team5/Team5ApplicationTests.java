@@ -1,19 +1,20 @@
 package com.korea.Team5;
 
-import com.korea.Team5.USER.Member;
+import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.movie.Movie;
 import com.korea.Team5.movie.MovieRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Set;
-
 @SpringBootTest
 
 class Team5ApplicationTests {
 	@Autowired
 	private MovieRepository movieRepository;
+
+	private ReviewService reviewService;
+
 
 
 	@Test

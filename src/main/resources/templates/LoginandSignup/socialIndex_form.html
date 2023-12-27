@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Index Form</title>
+</head>
+<body>
+<div>
+    <a th:href="@{/main}">Logo</a>
+</div>
+<h1>닉네임 재설정</h1>
+<div>
+    <label for="nickname" class="form-label">닉네임</label>
+    <input type="text">
+</div>
+<p>Social login successful for member with ID: <span th:text="${id}"></span></p>
+<!-- Add other content as needed -->
+</body>
+</html>

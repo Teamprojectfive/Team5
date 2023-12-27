@@ -1,6 +1,5 @@
 package com.korea.Team5.movie;
 
-
 import com.korea.Team5.Review.Review;
 import com.korea.Team5.USER.Member;
 import jakarta.persistence.*;
@@ -10,13 +9,10 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import jakarta.persistence.ManyToMany;
-
 @Entity
 @Getter
 @Setter
 public class Movie {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -39,6 +35,8 @@ public class Movie {
     private List<Review> reviewList;
 
     private LocalDateTime modifyDate;
+
+
 
     @ManyToMany
     private Set<Member> voter;
