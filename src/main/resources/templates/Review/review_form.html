@@ -4,6 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .star-rating {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .star:hover, .star.active {
+            color: gold;
+        }
+    </style>
 </head>
 <body>
 <div>
@@ -15,15 +25,53 @@
     <div th:replace="~{form_errors :: formErrorsFragment}"></div>
     <input type="text" name="subject" id="subject" placeholder="Subject">
     <textarea name="content" id="content" placeholder="Content"></textarea>
-    <input type="text" name="voter" id="voter" placeholder="Voter">
-    <input type="text" name="rating" id="rating" placeholder="Rating">
-    <input type="text" name="starRating" id="starRating" placeholder="Star Rating">
+    <!-- 별점 입력 -->
+    <div class="star-rating">
+        <span class="star" data-rating="1">&#9734;</span>
+        <span class="star" data-rating="2">&#9734;</span>
+        <span class="star" data-rating="3">&#9734;</span>
+        <span class="star" data-rating="4">&#9734;</span>
+        <span class="star" data-rating="5">&#9734;</span>
+        <input type="hidden" name="starRating" id="starRating" value="0">
+    </div>
     <!-- id 변수 전달을 위한 hidden 필드 -->
     <input type="hidden" name="id" th:value="${movie.id}">
     <!-- 제출 버튼 -->
     <button type="submit">리뷰 등록</button>
+
 </form>
+<script>
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('starRating');
 
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            const rating = star.getAttribute('data-rating');
+            highlightStars(rating);
+        });
 
+        star.addEventListener('mouseout', () => {
+            const currentRating = ratingInput.value || 0;
+            highlightStars(currentRating);
+        });
+
+        star.addEventListener('click', () => {
+            const rating = star.getAttribute('data-rating');
+            ratingInput.value = rating;
+            highlightStars(rating);
+        });
+    });
+
+    function highlightStars(rating) {
+        stars.forEach(star => {
+            const starRating = star.getAttribute('data-rating');
+            if (starRating <= rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+</script>
 </body>
 </html>

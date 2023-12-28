@@ -30,7 +30,7 @@ public class VideoService {
     @Transactional
     public List<Video> videoListSaveDataBase(){
         String url = apiUrl + "?key=" + apiKey;
-        ResponseEntity<Video> responseEntity = restTemplate.getForEntity(url, Video)
+        return null;
     }
 
 }

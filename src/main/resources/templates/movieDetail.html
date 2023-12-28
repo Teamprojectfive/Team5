@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
 </head>
 <body>
 <div>
@@ -10,25 +12,121 @@
 </div>
 <!-- 폼을 이용한 HTML 코드 -->
 <div class="login_container">
-    <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
+    <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
+       th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
 </div>
-<div class="login_container">
-    <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{|/review/modify/${movie.id}|}">리뷰수정</a>
-</div>
-<p>제목</p><h1 th:text="${movie.name}"></h1>
+<p>제목</p>
+<h1 th:text="${movie.name}"></h1>
 <p>개봉일</p><span th:text="${movie.movieRelease}"></span>
 <img th:src="${movie.image}" alt="">
 <p>영화 설명</p><span th:text="${movie.content}"></span>
 
 <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>
-<div class="my-3">
-    <ul th:each="review : ${movie.reviewList}" >
-        <li th:text="${review.subject}"></li>
-        <li th:text="${review.content}"></li>
-        <li th:text="${review.rating}"></li>
-        <li th:text="${review.starRating}"></li>
+<div class="container my-3">
+    <div class="row">
+        <div class="col-md-8">
+            <div th:each="review : ${paging}" class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${review.subject}"></h5>
+                    <p class="card-text" th:text="${review.content}"></p>
+
+                    <!-- 별점 -->
+                    <div class="star-rating" th:if="${review.starRating != null}" th:attr="data-rating=${review.starRating}">
+                        <svg height="25" width="23" class="star" th:each="star : ${#numbers.sequence(1, 5)}">
+                            <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
+                            <polygon th:if="${star} &lt;= ${review.starRating}" points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2" />
+                        </svg>
+                    </div>
+
+                    <!-- 추천 버튼 -->
+                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                       th:data-uri="@{|/review/vote/${review.id}|}" th:data-recommended="${doNotVote}" style="text-decoration: none; color: #007bff;">
+                        추천
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}"
+                              style="margin-left: 5px;"></span>
+                    </a>
+
+                    <!-- 수정 및 삭제 링크 -->
+                    <div th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
+                        <a class="Sing_up btn btn-sm btn-info" role="button"
+                           th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
+                           th:href="@{|/review/modify/${review.id}|}">리뷰 수정</a>
+                        <a class="Sing_up btn btn-sm btn-danger" role="button"
+                           th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
+                           th:href="@{|/review/delete/${review.id}|}" onclick="return confirmDelete();">리뷰 삭제</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 페이징처리 시작 -->
+<div th:if="${!paging.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{|?page=${paging.number-1}|}">
+                <span>이전</span>
+            </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+            th:classappend="${page == paging.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                <span>다음</span>
+            </a>
+        </li>
     </ul>
 </div>
+<!-- 페이징처리 끝 -->
+
 <!-- 여기에 다른 화면 요소들을 추가할 수 있음 -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+   var isLoggedIn = /*[[${#authentication.getPrincipal()}]]*/ false;
+   /*]]>*/
+   console.log(isLoggedIn);
+   const recommend_elements = document.getElementsByClassName("recommend");
+
+    /*element는 배열 elements의 각 요소임
+    Array.from(recommend_elements)는 recommend_element를 배열로 반환시킨거임*/
+
+   Array.from(recommend_elements).forEach(function(element) {
+       element.addEventListener('click', function() {
+            if (isLoggedIn === 'anonymousUser') {
+               if(confirm('로그인이 필요한 기능입니다.')) {
+                     location.href = "/member/login";
+                }
+            }else {
+            const isRecommended = element.dataset.recommended === "true";
+            console.log(isRecommended);
+            const confirmMessage = isRecommended ? "추천을 취소하시겠습니까?" : "정말로 추천하시겠습니까?";
+
+            console.log("isRecommended:", isRecommended);
+            console.log("confirmMessage:", confirmMessage);
+
+                   if (confirm(confirmMessage)) {
+                    // Toggle recommended status
+                    element.dataset.recommended = (element.dataset.recommended === "true") ? "false" : "true";
+
+                    location.href = element.dataset.uri;
+                }
+             }
+       });
+   });
+</script>
+<script>
+    function confirmDelete() {
+        // 확인 메시지 표시
+        var isConfirmed = confirm("리뷰를 삭제하시겠습니까?");
+
+        // 사용자가 "확인"을 선택한 경우에만 삭제 진행
+        return isConfirmed;
+    }
+</script>
 </body>
 </html>
+
