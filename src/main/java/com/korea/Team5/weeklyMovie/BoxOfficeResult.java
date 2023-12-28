@@ -1,4 +1,4 @@
-package com.korea.Team5.Api;
+package com.korea.Team5.weeklyMovie;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,5 +10,6 @@ import java.util.List;
 public class BoxOfficeResult {
     private String boxofficeType;
     private String showRange;
-    private List<DailyMovie> dailyBoxOfficeList;
+    private String yearWeekTime;
+    private List<WeeklyMovie> weeklyBoxOfficeList;
 }
