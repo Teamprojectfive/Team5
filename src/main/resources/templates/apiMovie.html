@@ -9,7 +9,7 @@
     <thead>
     <tr>
         <th>누적관객수</th>
-        <th>Boxoffice Type</th>
+
         <th>영화이름</th>
         <!-- Add other fields as needed -->
     </tr>
@@ -17,12 +17,14 @@
     <tbody>
     <tr th:each="movie : ${movies}">
         <td th:text="${movie.audiAcc}"></td>
-        <td th:text="${movie.boxofficeType}"></td>
         <td th:text="${movie.movieNm}"></td>
         <!-- Add other fields as needed -->
     </tr>
     </tbody>
+
 </table>
+
+
 
 
 </body>

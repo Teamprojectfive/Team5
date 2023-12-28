@@ -1,6 +1,6 @@
 package com.korea.Team5;
 
-import com.korea.Team5.Api.DailyMovieService;
+import com.korea.Team5.weeklyMovie.WeeklyMovieService;
 import com.korea.Team5.Social.SocialOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ public class SecurityConfig {
   private SocialOAuth2UserService socialOAuth2UserService;
   @Autowired
 
-  private DailyMovieService dailyMovieService;
+  private WeeklyMovieService weeklyMovieService;
 
 
 

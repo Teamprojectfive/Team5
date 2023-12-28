@@ -3,9 +3,6 @@ package com.korea.Team5.movie;
 import com.korea.Team5.Review.ReviewForm;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
-
-
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,11 +24,15 @@ public class MovieController {
     private final MovieService movieService;
     private final MemberService memberService;
 
+
+
     @GetMapping("/list")
     public String list(Model model) {
 
         List<Movie> movieList = this.movieService.list();
-        model.addAttribute("movieList", movieList);
+
+
+
         int gap = 20;
         int start = 0;
         int end = start + gap;
@@ -50,7 +51,6 @@ public class MovieController {
 
 
         model.addAttribute("movieList", movieList);
-
 
 
         return "movieList";
@@ -88,4 +88,3 @@ public class MovieController {
 
 
 }
-
