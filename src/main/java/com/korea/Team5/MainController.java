@@ -10,26 +10,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 @RequiredArgsConstructor
 @Controller
 
 public class MainController {
 
-    private final MovieService movieService;
+  private final MovieService movieService;
 
 
-     @GetMapping
-      public String root(){
-            return "redirect:/main";
-      }
+  @GetMapping
+  public String root() {
+    return "redirect:/main";
+  }
 
 
-    @GetMapping("/main")
-    public String main(Model model, @RequestParam(value="page", defaultValue="0") int page){
-        Page<Movie> paging = this.movieService.mainList(page);
-        model.addAttribute("paging", paging);
-        return "main";
-    }
+  @GetMapping("/main")
+  public String main(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+    Page<Movie> paging = this.movieService.mainList(page);
+    model.addAttribute("paging", paging);
+    return "main";
+  }
 
 
 

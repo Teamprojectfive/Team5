@@ -1,14 +1,11 @@
 package com.korea.Team5.USER;
-
-
 import com.korea.Team5.Review.Review;
-import com.korea.Team5.movie.Movie;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @Setter
@@ -26,16 +23,21 @@ public class Member {
   @Column(unique = true)
   private String nickName;
 
+
+
   @Column(unique = true)
   private String phone;
 
   private String email;
+
+  private String name;
+
+  // 소셜 로그인 정보
+  private String socialProvider;  // Google, Kakao, Naver 등
 
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<Review> reviewList;
 
 
-
-
- }
+}

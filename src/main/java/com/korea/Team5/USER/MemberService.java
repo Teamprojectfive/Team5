@@ -3,7 +3,6 @@ package com.korea.Team5.USER;
 import com.korea.Team5.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,21 +12,21 @@ import java.util.Optional;
 public class MemberService {
 
   private final MemberRepository memberRepository;
-  private final PasswordEncoder passwordEncoder;
 
-  public Member create(String loginId, String nickName, String password, String email, String phone){
-        Member member = new Member();
 
-        member.setLoginId(loginId);
-        member.setNickName(nickName);
-         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        member.setPassword(passwordEncoder.encode(password));
-        member.setEmail(email);
-        member.setPhone(phone);
+  public Member create(String loginId, String nickName, String password, String email, String phone) {
+    Member member = new Member();
 
-        this.memberRepository.save(member);
+    member.setLoginId(loginId);
+    member.setNickName(nickName);
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    member.setPassword(passwordEncoder.encode(password));
+    member.setEmail(email);
+    member.setPhone(phone);
 
-        return member;
+    this.memberRepository.save(member);
+
+    return member;
 
   }
 
@@ -45,5 +44,32 @@ public class MemberService {
     }
   }
 
+  // 통합 메서드로 소셜 로그인 정보 저장 또는 업데이트
+  // 소셜 로그인 정보 저장 또는 업데이트
+  public Member saveOrUpdateSocialMember(String loginId, String socialProvider, String nickName, String name) {
+    // 소셜 로그인 사용자 정보를 가져오거나 생성합니다.
+    Member member = memberRepository.findByloginId(loginId)
+            .orElse(new Member());
 
+    // 공통 속성 설정
+    member.setLoginId(loginId);
+    member.setNickName(nickName);
+    member.setSocialProvider(socialProvider);
+    ;
+    member.setName(name);
+    // 소셜 로그인 사용자 정보를 저장 또는 업데이트합니다.
+    return memberRepository.save(member);
+
+
+  }
+
+  public boolean isNickNameDuplicated(String nickName) {
+    Optional<Member> existingMember = memberRepository.findByNickName(nickName);
+    return existingMember.isPresent();
+  }
+
+  public boolean isSocialMemberExists(String loginId) {
+    Optional<Member> existingMember = memberRepository.findByloginId(loginId);
+    return existingMember.isPresent();
+  }
 }
