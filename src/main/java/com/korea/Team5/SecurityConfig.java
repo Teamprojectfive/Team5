@@ -1,7 +1,6 @@
 package com.korea.Team5;
 
 
-import com.korea.Team5.MovieApi.ApiService;
 import com.korea.Team5.Social.SocialOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,6 @@ public class SecurityConfig {
   @Autowired
   private SocialOAuth2UserService socialOAuth2UserService;
   @Autowired
-  private ApiService apiService;
 
 
   @Bean
