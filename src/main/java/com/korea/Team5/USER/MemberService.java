@@ -59,11 +59,9 @@ public class MemberService {
     member.setLoginId(loginId);
     member.setNickName(nickName);
     member.setSocialProvider(socialProvider);
-    ;
     member.setName(name);
     // 소셜 로그인 사용자 정보를 저장 또는 업데이트합니다.
     return memberRepository.save(member);
-
 
   }
 
@@ -77,7 +75,7 @@ public class MemberService {
     return existingMember.isPresent();
   }
 
-  // 닉네임 업데이트 메서드 추가
+  // 소셜로그인 닉네임 업데이트 메서드 추가
   public void updateNickname(String loginId, String newNickname, String socialProvider) {
 
     if (loginId == null) {
@@ -96,6 +94,7 @@ public class MemberService {
   public Member updateMember(String loginId, String nickName, String phone, String email,LocalDateTime createDate) {
     // 트랜잭션 내에서 일어나는 작업
     Optional<Member> existingMember = memberRepository.findByloginId(loginId);
+    Optional<Member> existingnickName = memberRepository.findByNickName(nickName);
 
     Member member = null;
     if (existingMember.isPresent()) {

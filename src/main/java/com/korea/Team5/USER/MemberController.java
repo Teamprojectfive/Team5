@@ -111,15 +111,51 @@ public class MemberController {
     return "/LoginandSignup/mypage_form";
   }
   @PreAuthorize("isAuthenticated()")
-  @PostMapping("mypage")
-  public String mypage(Model model, Principal principal, @RequestParam("loginId") String loginId, @RequestParam("nickName") String nickName, @RequestParam("phone") String phone, @RequestParam("email") String email
+  @PostMapping("/mypage")
+  public String mypage(Model model, Principal principal, @RequestParam("loginId")String loginId, @RequestParam("nickName") String nickName, @RequestParam("phone") String phone, @RequestParam("email") String email
                       ,@RequestParam("createDate")LocalDateTime createDate){
-//model.addAttribute("member",)
+
+
 //    // 위에서 받아온 데이터를 이용하여 DB 업데이트 로직 수행
     Member member = memberService.updateMember(principal.getName(), nickName, phone, email,createDate);
     model.addAttribute("member", member);
 
+
     return "/LoginandSignup/mypage_form";
   }
 
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypage/phone")
+  public String updatePhone(@RequestParam("phone") String phone) {
+    // 전화번호 업데이트 로직 수행
+    // ...
+
+    return "redirect:/member/mypage"; // 적절한 리다이렉트 경로로 변경
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypage/email")
+  public String updateEmail(@RequestParam("email") String email) {
+    // 이메일 업데이트 로직 수행
+    // ...
+
+    return "redirect:/member/mypage"; // 적절한 리다이렉트 경로로 변경
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypage/nickName")
+  public String updatenickName(@RequestParam("nickName") String nickName,Model model,Principal principal) {
+
+    Member member1 = memberService.getMember(principal.getName());
+    // 서비스에서 중복 여부 확인
+    if(member1.getNickName() == ){
+
+    }
+
+    member1.setNickName(nickName);
+
+
+    // ...
+    return "/LoginandSignup/nickNameMypage"; // 적절한 리다이렉트 경로로 변경
+  }
 }

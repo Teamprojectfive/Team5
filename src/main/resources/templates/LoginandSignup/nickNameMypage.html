@@ -1,0 +1,21 @@
+<html layout:decorate="~{layout}">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>닉네임 수정</h2>
+<div>
+    <form th:action="@{/member/mypage/nickName}" method="post">
+        <!-- 에러 메세지 표시 -->
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}" class="error-text"></p>
+        </div>
+        <label for="nickName">닉네임</label>
+        <input type="text" name="nickName" th:value="${nickName}"  class="form-control" >
+        <input type="submit" value="수정하기">
+    </form>
+</div>
+</body>
+</html>
