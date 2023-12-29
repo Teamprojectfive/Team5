@@ -2,15 +2,18 @@ package com.korea.Team5.USER;
 
 import com.korea.Team5.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class MemberService {
-
+  @Autowired
   private final MemberRepository memberRepository;
 
 
@@ -23,6 +26,7 @@ public class MemberService {
     member.setPassword(passwordEncoder.encode(password));
     member.setEmail(email);
     member.setPhone(phone);
+    member.setCreateDate(LocalDateTime.now());
 
     this.memberRepository.save(member);
 
@@ -74,7 +78,7 @@ public class MemberService {
   }
 
   // 닉네임 업데이트 메서드 추가
-  public void updateNickname(String loginId, String newNickname,String socialProvider) {
+  public void updateNickname(String loginId, String newNickname, String socialProvider) {
 
     if (loginId == null) {
       throw new DataNotFoundException("socialLoginId not found in session");
@@ -85,5 +89,24 @@ public class MemberService {
     member.setNickName(newNickname);
     member.setSocialProvider(socialProvider);
     memberRepository.save(member);
+  }
+
+
+  @Transactional
+  public Member updateMember(String loginId, String nickName, String phone, String email,LocalDateTime createDate) {
+    // 트랜잭션 내에서 일어나는 작업
+    Optional<Member> existingMember = memberRepository.findByloginId(loginId);
+
+    Member member = null;
+    if (existingMember.isPresent()) {
+      member = existingMember.get();
+      member.setNickName(nickName);
+      member.setPhone(phone);
+      member.setEmail(email);
+      member.setCreateDate(createDate);
+      memberRepository.save(member);
+    }
+    return member;
+    // 다른 작업들...
   }
 }

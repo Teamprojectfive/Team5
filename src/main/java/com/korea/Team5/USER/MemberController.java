@@ -5,6 +5,7 @@ import com.korea.Team5.DataNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,11 +36,6 @@ public class MemberController {
 
   }
 
-  @GetMapping("/mypage")
-  public String mypage() {
-
-    return "/LoginandSignup/mypage_form";
-  }
 
   @PostMapping("/signup")
   public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
@@ -65,7 +64,7 @@ public class MemberController {
   }
 
   @GetMapping("/duplicate")
-  public String checkNickname(HttpSession session, Model model) {
+  public String checkNickname(HttpSession session) {
 
     // 세션에서 중복된 닉네임 가져오기
     String duplicatedNickName = (String) session.getAttribute("duplicatedNickName");
@@ -93,7 +92,7 @@ public class MemberController {
     if (isDuplicated) {
       model.addAttribute("error", "닉네임이 중복되었습니다. 다른 닉네임을 입력해주세요.");
       // 에러 메세지를 모델에 추가하고, 이후 필요한 처리를 수행할 수 있습니다.
-      return "socialIndex_form"; // 에러 메세지를 표시하는 뷰로 리턴하거나 다른 리다이렉트 또는 처리를 수행할 수 있습니다.
+      return "/LoginandSignup/socialIndex_form"; // 에러 메세지를 표시하는 뷰로 리턴하거나 다른 리다이렉트 또는 처리를 수행할 수 있습니다.
     }
 
     // 서비스에서 닉네임 업데이트 확인
@@ -102,4 +101,25 @@ public class MemberController {
     // 이후 리다이렉트 또는 다른 처리를 추가할 수 있습니다.
     return "redirect:/main";
   }
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypage")
+  public String mypage(Model model, Principal principal) {
+
+    Member member = this.memberService.getMember(principal.getName());
+    // 모델에 Member 객체 추가
+    model.addAttribute("member", member);
+    return "/LoginandSignup/mypage_form";
+  }
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("mypage")
+  public String mypage(Model model, Principal principal, @RequestParam("loginId") String loginId, @RequestParam("nickName") String nickName, @RequestParam("phone") String phone, @RequestParam("email") String email
+                      ,@RequestParam("createDate")LocalDateTime createDate){
+//model.addAttribute("member",)
+//    // 위에서 받아온 데이터를 이용하여 DB 업데이트 로직 수행
+    Member member = memberService.updateMember(principal.getName(), nickName, phone, email,createDate);
+    model.addAttribute("member", member);
+
+    return "/LoginandSignup/mypage_form";
+  }
+
 }

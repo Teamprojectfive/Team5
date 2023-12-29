@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -30,6 +31,7 @@ public class Member {
 
   private String name;
 
+  private LocalDateTime createDate;
   // 소셜 로그인 정보
   private String socialProvider;  // Google, Kakao, Naver 등
 

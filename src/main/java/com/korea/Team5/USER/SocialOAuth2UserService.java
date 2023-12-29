@@ -64,14 +64,31 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
       loginId = oAuth2User.getAttribute("sub");
       String socialProvider = userRequest.getClientRegistration().getClientName();
-      String nickName = oAuth2User.getAttribute("nickname");
-      String name = oAuth2User.getAttribute("name1");
-
-      // 닉네임 중복 체크로직
-
-
-      // Save or update Google information in the database
-      memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName, name);
+      String nickName = oAuth2User.getAttribute("given_name");
+      String name = oAuth2User.getAttribute("name");
+      if (memberService.isSocialMemberExists(loginId)) {
+        // 이미 등록된 소셜 사용자인 경우에 대한 처리를 여기에 추가
+        // 예시로 로그에 출력하는 코드를 추가했습니다.
+        System.out.println("Social User Already Exists: " + loginId);
+        // 중복 처리 로직을 추가하거나 세션에 정보를 추가
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        session.setAttribute("existingSocialUser", loginId);
+      }
+      if (!memberService.isSocialMemberExists(loginId) && !memberService.isNickNameDuplicated(nickName)) {
+        // Save or update Naver information in the database
+        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName, name);
+        System.out.println("Naver User Saved: " + loginId + ", " + ", " + socialProvider + "," + nickName);
+      } else if (!memberService.isSocialMemberExists(loginId) && memberService.isNickNameDuplicated(nickName)) {
+        // 중복된 경우에 대한 처리를 여기에 추가
+        // 예시로 로그에 출력하는 코드를 추가했습니다.
+        System.out.println("NickName is duplicated: " + nickName);
+        // 중복 처리 로직을 추가하거나 세션에 정보를 추가
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        session.setAttribute("duplicatedNickName", nickName);
+        session.setAttribute("socialLoginId",loginId);
+        session.setAttribute("Provider",socialProvider);
+        throw new OAuth2AuthenticationException("Social login is blocked.");
+      }
       System.out.println("Google User Saved: " + loginId + ", " + socialProvider + ", " + nickName);
 
     } else if (clientName.equals("kakao")) {

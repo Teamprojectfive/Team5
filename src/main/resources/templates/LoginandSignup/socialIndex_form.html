@@ -18,6 +18,10 @@
 <p>Social login successful for member with ID: <span th:text="${id}"></span></p>
 <!-- Add other content as needed -->
     <button type="submit">확인</button>
+    <!-- 에러 메세지 표시 -->
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}" class="error-text"></p>
+    </div>
 </form>
 </body>
 </html>
