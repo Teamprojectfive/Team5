@@ -1,16 +1,13 @@
 <html layout:decorate="~{layout}">
 <head>
     <style>
-                .star-rating .star {
-            font-size: 20px; /* 별의 크기 조절 */
-            color: #ccc; /* 기본 별 색상 */
+        .star-rating {
+            font-size: 24px;
             cursor: pointer;
-            transition: color 0.3s ease-in-out;
         }
 
-        .star-rating .star.checked,
-        .star-rating .star:hover {
-            color: #FFD700; /* 클릭되거나 호버되었을 때의 별 색상 */
+        .star:hover, .star.active {
+            color: gold;
         }
     </style>
 </head>
@@ -38,15 +35,35 @@
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
     <script>
-        function updateRating(rating) {
-            document.getElementById('starRating').value = rating;
-            updateStars(rating);
-        }
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('starRating');
 
-        function updateStars(rating) {
-            const stars = document.querySelectorAll('.star');
-            stars.forEach((star, index) => {
-                star.classList.toggle('checked', index < rating);
+        stars.forEach(star => {
+            star.addEventListener('mouseover', () => {
+                const rating = star.getAttribute('data-rating');
+                highlightStars(rating);
+            });
+
+            star.addEventListener('mouseout', () => {
+                const currentRating = ratingInput.value || 0;
+                highlightStars(currentRating);
+            });
+
+            star.addEventListener('click', () => {
+                const rating = star.getAttribute('data-rating');
+                ratingInput.value = rating;
+                highlightStars(rating);
+            });
+        });
+
+        function highlightStars(rating) {
+            stars.forEach(star => {
+                const starRating = star.getAttribute('data-rating');
+                if (starRating <= rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
             });
         }
     </script>

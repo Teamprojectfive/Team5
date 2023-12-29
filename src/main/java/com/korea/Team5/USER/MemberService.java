@@ -72,4 +72,18 @@ public class MemberService {
     Optional<Member> existingMember = memberRepository.findByloginId(loginId);
     return existingMember.isPresent();
   }
+
+  // 닉네임 업데이트 메서드 추가
+  public void updateNickname(String loginId, String newNickname,String socialProvider) {
+
+    if (loginId == null) {
+      throw new DataNotFoundException("socialLoginId not found in session");
+    }
+    // 세션에서 가져온 아이디로 데이터 조회
+    Member member = new Member();
+    member.setLoginId(loginId);
+    member.setNickName(newNickname);
+    member.setSocialProvider(socialProvider);
+    memberRepository.save(member);
+  }
 }

@@ -1,6 +1,7 @@
 package com.korea.Team5.USER;
 
 
+import com.korea.Team5.DataNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -78,6 +80,26 @@ public class MemberController {
       return "redirect:/main";
     }
   }
+  @PostMapping("/duplicate")
+  public String checkNickname(@RequestParam("nickname") String newNickname, HttpSession session, Model model) {
+    String loginId = (String) session.getAttribute("socialLoginId");
+    String socialProvider = (String) session.getAttribute("Provider");
+    if (loginId == null) {
+      throw new DataNotFoundException("socialLoginId not found in session");
+    }
+    // 서비스에서 중복 여부 확인
+    boolean isDuplicated = memberService.isNickNameDuplicated(newNickname);
+    // 중복이면 다시 입력하라는 에러 메세지 처리 또는 다른 작업을 수행
+    if (isDuplicated) {
+      model.addAttribute("error", "닉네임이 중복되었습니다. 다른 닉네임을 입력해주세요.");
+      // 에러 메세지를 모델에 추가하고, 이후 필요한 처리를 수행할 수 있습니다.
+      return "socialIndex_form"; // 에러 메세지를 표시하는 뷰로 리턴하거나 다른 리다이렉트 또는 처리를 수행할 수 있습니다.
+    }
 
+    // 서비스에서 닉네임 업데이트 확인
+    memberService.updateNickname(loginId, newNickname,socialProvider);
 
+    // 이후 리다이렉트 또는 다른 처리를 추가할 수 있습니다.
+    return "redirect:/main";
+  }
 }

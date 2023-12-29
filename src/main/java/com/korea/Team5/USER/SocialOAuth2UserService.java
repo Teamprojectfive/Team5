@@ -104,14 +104,15 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 중복 처리 로직을 추가하거나 세션에 정보를 추가
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         session.setAttribute("duplicatedNickName", nickName);
-
+        session.setAttribute("socialLoginId",loginId);
+        session.setAttribute("Provider",socialProvider);
         throw new OAuth2AuthenticationException("Social login is blocked.");
       }
     } else if (clientName.equals("Naver")) {
       // 네이버 로그인 사용자 정보 추출
       // 네이버 로그인 사용자 정보 추출
       Map<String, Object> response = (Map<String, Object>) oAuth2User.getAttribute("response");
-      loginId = response.get("id").toString();
+      loginId = response.get("email").toString();
       String socialProvider = userRequest.getClientRegistration().getClientName();
       String nickname = response.get("nickname").toString();
       String name = response.get("name").toString();
@@ -125,8 +126,6 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         session.setAttribute("existingSocialUser", loginId);
       }
 
-
-
       if (!memberService.isSocialMemberExists(loginId) && !memberService.isNickNameDuplicated(nickname)) {
         // Save or update Naver information in the database, 사용자 아이디가 등록되어있지않거나,닉네임이 중복되어있지않을떄
         memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickname, name);
@@ -138,7 +137,8 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 중복 처리 로직을 추가하거나 세션에 정보를 추가
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         session.setAttribute("duplicatedNickName", nickname);
-
+        session.setAttribute("socialLoginId",loginId);
+        session.setAttribute("Provider",socialProvider);
         throw new OAuth2AuthenticationException("Social login is blocked.");
       }
     }
