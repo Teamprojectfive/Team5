@@ -224,3 +224,13 @@
 
     margin-left: 50px;
 }
+
+.registration_cont{
+    position: relative;
+    left: 90%;
+    text-align: center;
+    width: 10%;
+    border: solid 1px black;
+    border-radius: 10px;
+    font-weight: bold;
+}
