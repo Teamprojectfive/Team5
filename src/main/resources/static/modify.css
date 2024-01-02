@@ -1,0 +1,25 @@
+    .star-rating {
+        font-size: 32px; /* Adjust the font size as needed */
+    }
+
+    .star {
+        cursor: pointer;
+        position: relative;
+    }
+
+    .star::before {
+        content: '\2605'; /* Unicode character for a filled star */
+        position: absolute;
+        color: gold; /* Color for filled star */
+        top: -0.7;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .star:hover::before,
+    .star.filled::before {
+        opacity: 1;
+    }
