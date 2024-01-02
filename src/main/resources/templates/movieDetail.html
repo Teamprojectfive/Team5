@@ -417,40 +417,52 @@
         <!--        전체 출연진 end-->
 
         <!--        리뷰 start-->
-            <div id="ratings_container" class="explanation_container" style="display: none;">
-                <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>
-                <div class="container my-3">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div th:each="review : ${paging}" class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title" th:text="${review.subject}"></h5>
-                                    <p class="card-text" th:text="${review.content}"></p>
+        <div id="ratings_container" class="explanation_container" style="display: none;">
+            <div class="registration_cont">
+                <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
+                   th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
+            </div>
+            <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>
+            <div class="container my-3">
+                <div class="row">
+                    <div class="col-md-8" style="width: 100%;">
+                        <div th:each="review : ${paging}" class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${review.subject}"></h5>
+                                <p class="card-text" th:text="${review.content}"></p>
 
-                                    <!-- 별점 -->
-                                    <div class="star-rating" th:if="${review.starRating != null}" th:attr="data-rating=${review.starRating}">
-                                        <svg height="25" width="23" class="star" th:each="star : ${#numbers.sequence(1, 5)}">
-                                            <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
-                                            <polygon th:if="${star} &lt;= ${review.starRating}" points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2" />
-                                        </svg>
-                                    </div>
-
+                                <!-- 별점 -->
+                                <div class="star-rating" th:if="${review.starRating != null}"
+                                     th:attr="data-rating=${review.starRating}">
+                                    <svg height="25" width="23" class="star" style="color:gold;"
+                                         th:each="star : ${#numbers.sequence(1, 5)}">
+                                        <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
+                                        <polygon  th:if="${star} &lt;= ${review.starRating}"
+                                                 points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2" fill="gold"/>
+                                    </svg>
+                                </div>
+                                <div class="correction_cont">
                                     <!-- 추천 버튼 -->
                                     <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-                                       th:data-uri="@{|/review/vote/${review.id}|}" th:data-recommended="${doNotVote}" style="text-decoration: none; color: #007bff;">
+                                       th:data-uri="@{|/review/vote/${review.id}|}" th:data-recommended="${doNotVote}"
+                                       style="text-decoration: none; color: #007bff;">
                                         추천
-                                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}"
+                                        <span class="badge rounded-pill bg-success"
+                                              th:text="${#lists.size(review.voter)}"
                                               style="margin-left: 5px;"></span>
                                     </a>
-
-                                    <!-- 수정 및 삭제 링크 -->
-                                    <div th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
-                                        <a class="Sing_up btn btn-sm btn-info" role="button"
-                                           th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
-                                           th:href="@{|/review/modify/${review.id}|}">리뷰 수정</a>
-                                        <a class="Sing_up btn btn-sm btn-danger" role="button"
-                                           th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
-                                           th:href="@{|/review/delete/${review.id}|}" onclick="return confirmDelete();">리뷰 삭제</a>
+                                    <div class="correction">
+                                        <!-- 수정 및 삭제 링크 -->
+                                        <div th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
+                                            <a class="Sing_up btn btn-sm btn-info" role="button"
+                                               th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
+                                               th:href="@{|/review/modify/${review.id}|}">리뷰 수정</a>
+                                            <a class="Sing_up btn btn-sm btn-danger" role="button"
+                                               th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
+                                               th:href="@{|/review/delete/${review.id}|}"
+                                               onclick="return confirmDelete();">리뷰
+                                                삭제</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -478,6 +490,8 @@
                     </li>
                 </ul>
             </div>
+        </div>
+
         <!--        리뷰 end-->
     </section>
     <script>

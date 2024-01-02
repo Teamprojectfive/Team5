@@ -234,3 +234,16 @@
     border-radius: 10px;
     font-weight: bold;
 }
+
+.row{
+    margin-left: -26px;
+}
+
+.correction_cont{
+    display:flex;
+    justify-content: space-between;
+}
+
+.star-rating{
+    display: flex;
+}
