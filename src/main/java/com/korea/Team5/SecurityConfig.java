@@ -1,6 +1,12 @@
 
 package com.korea.Team5;
+
+
+import com.korea.Team5.weeklyMovie.WeeklyMovieService;
+
+
 import com.korea.Team5.USER.SocialOAuth2UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +27,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
   @Autowired
   private SocialOAuth2UserService socialOAuth2UserService;
+
+  @Autowired
+
+  private WeeklyMovieService weeklyMovieService;
+
 
 
   @Bean
