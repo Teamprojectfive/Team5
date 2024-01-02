@@ -107,4 +107,18 @@ public class MemberService {
     return member;
     // 다른 작업들...
   }
+  //마이페이지 휴대전화 수정로직
+  public Member updateMemberPhone(String loginId, String phone) {
+    // 트랜잭션 내에서 일어나는 작업
+    Optional<Member> existingMember = memberRepository.findByloginId(loginId);
+
+    Member member = null;
+    if (existingMember.isPresent()) {
+      member = existingMember.get();
+      member.setPhone(phone);
+      memberRepository.save(member);
+    }
+    return member;
+    // 다른 작업들...
+  }
 }

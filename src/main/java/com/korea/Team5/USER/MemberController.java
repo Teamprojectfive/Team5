@@ -127,54 +127,68 @@ public class MemberController {
   }
 
   @PreAuthorize("isAuthenticated()")
-  @GetMapping("/phoneIndex")
-  public String phoneIndex() {
+  @GetMapping("/updatePhone")
+  public String updatePhone() {
 
-    return "/Certification/PhoneCertification"; // 적절한 리다이렉트 경로로 변경
+    return "/LoginandSignup/phoneMypage"; // 적절한 리다이렉트 경로로 변경
   }
   @PreAuthorize("isAuthenticated()")
-  @PostMapping("/phoneIndex")
-  public String phoneIndex(@RequestParam String phone, Model model, HttpSession session, Principal principal) {
+  @PostMapping("/updatePhone")
+  public String updatePhone(@RequestParam String phone, Model model, HttpSession session) {
     String verificationCode = emailService.sendVerificationCodeSMS(phone);
     // 생성된 인증 코드를 세션에 저장
     session.setAttribute("verificationCode", verificationCode);
     // 모델에 전화번호를 추가하여 폼에 전달
     model.addAttribute("phone", phone);
-    return "/Certification/PhoneCertification";
+    return "/LoginandSignup/phoneMypage";
   }
   @PreAuthorize("isAuthenticated()")
-  @PostMapping("/phoneVerification")
-  public String verifyPhoneCode(@RequestParam String phone, @RequestParam String verificationCode, Model model, HttpSession session) {
+  @PostMapping("/updatePhoneverification")
+  public String updatePhoneverifi(@RequestParam String phone, @RequestParam String verificationCode, Model model, HttpSession session,Principal principal) {
     // 세션에서 저장된 전송된 인증 코드 가져오기
     String storedVerificationCode = (String) session.getAttribute("verificationCode");
     // 입력한 인증 코드와 전송된 인증 코드 비교
     if (storedVerificationCode != null && storedVerificationCode.equals(verificationCode)) {
+      model.addAttribute("phone", phone);
+      // 인증 성공 시 처리 (예: DB에 전화번호 업데이트)
+      memberService.updateMemberPhone(principal.getName(),phone);
       // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)
-      return "redirect:/mypage/phone";
+      return "redirect:/member/mypage";
     } else {
       // 인증 실패 시 에러 메시지 설정
       model.addAttribute("errorMessage", "인증번호가 일치하지 않습니다.");
       // 모델에 전화번호를 추가하여 폼에 전달
       model.addAttribute("phone", phone);
       // 이전 페이지로 이동
-      return "/Certification/PhoneCertification";
+      return "/LoginandSignup/phoneMypage";
     }
-  }
-  @PreAuthorize("isAuthenticated()")
-  @GetMapping("/mypage/phone")
-  public String updatePhone(){
-
-    return "LoginandSignup/phoneMypage";
   }
 
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/email")
-  public String updateEmail(@RequestParam("email") String email) {
+  public String updateEmail() {
     // 이메일 업데이트 로직 수행
-    // ...
 
-    return "redirect:/member/mypage"; // 적절한 리다이렉트 경로로 변경
+
+    return "LoginandSignup/emailMypage"; // 적절한 리다이렉트 경로로 변경
   }
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypage/email")
+  public String updateEmail(Model model,@RequestParam String email,String verificationCode ,HttpSession session){
+
+// 이메일 전송 로직
+    String emailverificationCode = emailService.sendVerificationCode(email,verificationCode);
+
+    // 생성된 인증 코드를 세션에 저장
+    session.setAttribute("verificationCode", emailverificationCode);
+
+    // 모델에 이메일을 추가하여 폼에 전달
+    model.addAttribute("email", email);
+
+    return "/LoginandSignup/emailMypage";
+  }
+
+
 
 //마이페이지 닉네임 수정 부분//
   @PreAuthorize("isAuthenticated()")
