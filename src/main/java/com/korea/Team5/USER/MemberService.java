@@ -34,8 +34,8 @@ public class MemberService {
 
   }
 
-  public boolean isDuplicated(String loginId, String email, String nickName, String phone) {
-    return memberRepository.existsByLoginIdOrEmailOrNickNameOrPhone(loginId, email, nickName, phone);
+  public boolean isDuplicated(String loginId,String nickName) {
+    return memberRepository.existsByLoginIdOrNickName(loginId, nickName);
   }
 
 
@@ -94,7 +94,6 @@ public class MemberService {
   public Member updateMember(String loginId, String nickName, String phone, String email,LocalDateTime createDate) {
     // 트랜잭션 내에서 일어나는 작업
     Optional<Member> existingMember = memberRepository.findByloginId(loginId);
-    Optional<Member> existingnickName = memberRepository.findByNickName(nickName);
 
     Member member = null;
     if (existingMember.isPresent()) {

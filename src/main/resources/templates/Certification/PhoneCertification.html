@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>휴대전화 인증</h2>
+<div>
+    <form th:action="@{/member/phoneIndex}" method="post">
+        <!-- 에러 메세지 표시 -->
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}" class="error-text"></p>
+        </div>
+        <div>
+            <label for="phone">휴대전화번호</label>
+            <input type="text" name="phone" th:value="${phone}" class="form-control">
+            <input type="submit" value="인증하기">
+        </div>
+    </form>
+    <form th:action="@{/member/phoneVerification}" method="post">
+    <div>
+        <label for="verificationCode">인증번호</label>
+        <input type="hidden" name="phone" id="phone">
+        <input type="text" name="verificationCode" class="form-control" th:value="${verificationCode}">
+        <input type="submit" value="확인">
+    </div>
+    </form>
+</div>
+</body>
+</html>

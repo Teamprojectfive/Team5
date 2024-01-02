@@ -2,6 +2,8 @@ package com.korea.Team5.USER;
 
 
 import com.korea.Team5.DataNotFoundException;
+import com.korea.Team5.Email.EmailService;
+import com.korea.Team5.SMS.SMSService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ import java.time.LocalDateTime;
 public class MemberController {
 
   private final MemberService memberService;
+  private final SMSService smsService;
+  private final EmailService emailService;
 
   @GetMapping("/login")
   public String login() {
@@ -47,12 +51,10 @@ public class MemberController {
               "2개의 패스워드가 일치하지 않습니다.");
       return "/LoginandSignup/signup_form";
     }
-    if (memberService.isDuplicated(memberCreateForm.getLoginId(), memberCreateForm.getEmail(), memberCreateForm.getNickName(), memberCreateForm.getPhone())) {
+    if (memberService.isDuplicated(memberCreateForm.getLoginId(),memberCreateForm.getNickName())) {
       // 중복된 값이 있을 경우 에러 처리
       bindingResult.rejectValue("loginId", "duplicateValue", "이미 사용 중인 아이디입니다.");
-      bindingResult.rejectValue("email", "duplicateValue", "이미 사용 중인 이메일입니다.");
       bindingResult.rejectValue("nickName", "duplicateValue", "이미 사용 중인 닉네임입니다.");
-      bindingResult.rejectValue("phone", "duplicateValue", "이미 사용 중인 휴대전화번호입니다.");
       return "/LoginandSignup/signup_form";
     }
 
@@ -125,12 +127,44 @@ public class MemberController {
   }
 
   @PreAuthorize("isAuthenticated()")
-  @GetMapping("/mypage/phone")
-  public String updatePhone(@RequestParam("phone") String phone) {
-    // 전화번호 업데이트 로직 수행
-    // ...
+  @GetMapping("/phoneIndex")
+  public String phoneIndex() {
 
-    return "redirect:/member/mypage"; // 적절한 리다이렉트 경로로 변경
+    return "/Certification/PhoneCertification"; // 적절한 리다이렉트 경로로 변경
+  }
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/phoneIndex")
+  public String phoneIndex(@RequestParam String phone, Model model, HttpSession session, Principal principal) {
+    String verificationCode = emailService.sendVerificationCodeSMS(phone);
+    // 생성된 인증 코드를 세션에 저장
+    session.setAttribute("verificationCode", verificationCode);
+    // 모델에 전화번호를 추가하여 폼에 전달
+    model.addAttribute("phone", phone);
+    return "/Certification/PhoneCertification";
+  }
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/phoneVerification")
+  public String verifyPhoneCode(@RequestParam String phone, @RequestParam String verificationCode, Model model, HttpSession session) {
+    // 세션에서 저장된 전송된 인증 코드 가져오기
+    String storedVerificationCode = (String) session.getAttribute("verificationCode");
+    // 입력한 인증 코드와 전송된 인증 코드 비교
+    if (storedVerificationCode != null && storedVerificationCode.equals(verificationCode)) {
+      // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)
+      return "redirect:/mypage/phone";
+    } else {
+      // 인증 실패 시 에러 메시지 설정
+      model.addAttribute("errorMessage", "인증번호가 일치하지 않습니다.");
+      // 모델에 전화번호를 추가하여 폼에 전달
+      model.addAttribute("phone", phone);
+      // 이전 페이지로 이동
+      return "/Certification/PhoneCertification";
+    }
+  }
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypage/phone")
+  public String updatePhone(){
+
+    return "LoginandSignup/phoneMypage";
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -142,20 +176,40 @@ public class MemberController {
     return "redirect:/member/mypage"; // 적절한 리다이렉트 경로로 변경
   }
 
+//마이페이지 닉네임 수정 부분//
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypage/nickName")
+  public String updatenickName(){
+
+
+    return "LoginandSignup/nickNameMypage";
+  }
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/nickName")
   public String updatenickName(@RequestParam("nickName") String nickName,Model model,Principal principal) {
 
     Member member1 = memberService.getMember(principal.getName());
-    // 서비스에서 중복 여부 확인
-    if(member1.getNickName() == ){
 
+    // 새로운 닉네임이 현재의 닉네임과 같은지 확인
+    if (nickName.equals(member1.getNickName())) {
+      // 닉네임이 같으면 에러 메시지를 사용자에게 보여줌
+      model.addAttribute("errorMessage", "현재 사용 중인 닉네임과 동일합니다.");
+      return "LoginandSignup/nickNameMypage";
     }
-
-    member1.setNickName(nickName);
-
-
-    // ...
-    return "/LoginandSignup/nickNameMypage"; // 적절한 리다이렉트 경로로 변경
+    // 새로운 닉네임이 이미 다른 사용자에 의해 사용 중인지 확인
+    if (memberService.isNickNameDuplicated(nickName)) {
+      // 닉네임이 이미 사용 중이면 에러 메시지를 사용자에게 보여줌
+      model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
+      return "LoginandSignup/nickNameMypage";
+    }
+    // 새로운 닉네임이 입력되지 않았을 경우, 현재의 닉네임을 그대로 사용
+    String newNickName = (nickName == null || nickName.trim().isEmpty()) ? member1.getNickName() : nickName;
+    // 닉네임이 변경되었는지 확인
+    if (!newNickName.equals(member1.getNickName())) {
+      // 닉네임이 변경되었을 때만 업데이트 진행
+      member1.setNickName(newNickName);
+      memberService.updateMember(member1.getLoginId(), newNickName, member1.getPhone(), member1.getEmail(), member1.getCreateDate());
+    }
+    return "redirect:/member/mypage"; // 적절한 페이지로 리다이렉트
   }
 }

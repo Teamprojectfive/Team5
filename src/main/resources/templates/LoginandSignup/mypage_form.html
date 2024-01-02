@@ -9,7 +9,7 @@
         <a th:href="@{/main}">Logo</a>
     </div>
 <body>
-<form th:action="@{/member/mypage}" method="post" id="myPageForm">
+<form th:action="@{/member/mypage}" method="get" id="myPageForm">
     <h2>마이페이지</h2>
     <div>내프로필</div>
     <div>
@@ -24,7 +24,7 @@
     <div>
         <label for="phone" class="form-label">전화번호</label>
         <input type="text" name="phone" th:value="${member.phone}"  class="form-control" readonly>
-        <input type="submit" value="수정하기" class="btn btn-primary my-2" onclick="submitForm('myPageForm', '/member/mypage/phone')">
+        <input type="submit" value="수정하기" class="btn btn-primary my-2" onclick="submitForm('myPageForm', '/member/phoneIndex')">
     </div>
     <div>
         <label for="email" class="form-label">이메일</label>
