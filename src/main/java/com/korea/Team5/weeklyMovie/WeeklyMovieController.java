@@ -23,9 +23,10 @@ public class WeeklyMovieController {
 
     @GetMapping("/weeklyMovie")
     public String getMovies(@RequestParam String targetDt, Model model) {
+
         List<WeeklyMovie> movies = this.weeklyMovieService.fetchDataAndSaveToDatabase(targetDt);
         model.addAttribute("movies", movies);
-        return "apiMovie";
+        return "movieList";
     }
 
 

@@ -42,10 +42,11 @@ public class TestMovieList {
 
     private String repGenreNm;  // 대표 장르명
 
-    private String peopleNm;  // 영화 감독명
+//    private String peopleNm;  // 영화 감독명
 
-    @OneToMany(mappedBy = "testMovieList")
-    private List<Director> directors;
+//    @OneToMany(mappedBy = "testMovieList")
+//    private List<Director> directors;
+
 
 //    private List<String> companys;  // 제작사
 

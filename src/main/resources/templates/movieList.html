@@ -13,11 +13,11 @@
 </div>
 <section class="list_box_wrap" id="listContainer">
     <section class="list_box" >
-        <div th:each="movie : ${movies2}" class="list">
+        <div th:each="movie : ${movies}" class="list">
             <h1 th:text="${movie.id}"></h1>
             <div class="list_item">
                 <div style="font-weight: bold;" th:text="${movie.movieNm}"></div>
-                <p style="margin: 5px 0 0 0;">설명 : <span th:text="${movie.prdtStatNm}"></span></p>
+
                 <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
 <!--                <p style="margin: 5px 0 0 0;">출연진 : <span th:text="${movie.directors.peopleNm}"></span></p>-->
 <!--                <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.movieRelease}"></span></p>-->
