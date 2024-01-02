@@ -1,14 +1,21 @@
+html{
+    background-color: white;
+}
+
 body{
     margin: 0;
     background-color: white;
+    height: 100%;
+
 }
-div{
-    width: 200vh;
-    height: 20vh;
+nav{
+    width:100%;
+    height:20%;
 }
+
 .login_container{
-    display: felx;
-    justify-content: flex-start;
+    display: flex;
+    justify-content: space-between;
     width: 70%;
     margin-left: auto;
     margin-right: auto;
@@ -16,20 +23,52 @@ div{
     color: black;
 }
 
+.login> a {
+    background-color: black;
+    margin-right: 20px;
+    padding: 10px;
+    color: white;
+    transition: inherit;
+    border: solid 2px red;
+    border-radius: 10px;
+    text-decoration-line: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.Sign_in:active{
+    box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+    position: relative;
+    top:2px;
+}
+
+.Sing_up:active{
+    box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+    position: relative;
+    top:2px;
+}
+
 .sub_nav{
-    width: 30%;
+    width: 50%;
     display: flex;
     justify-content: space-between;
     margin-top: 40px;;
     margin-left: auto;
     margin-right: auto;
+
 }
 
-.btn {
+
+.btn{
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
     background: white;
     border: 0px;
     font-size: 27px;
     color: black;
+    text-align:center;
+
 }
 .btn:hover{
     background: rgb(204, 204, 204);

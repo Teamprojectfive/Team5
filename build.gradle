@@ -48,6 +48,7 @@ dependencies {
 
 
 	implementation files('libs/kobis-opcl-rest-v1.0.jar')
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
 }
