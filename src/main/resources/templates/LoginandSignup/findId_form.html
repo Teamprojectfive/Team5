@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>아이디찾기</h2>
+<form th:action="@{/member/findId}" method="post">
+<div>
+    <label for="email" class="form-label">본인확인 이메일 인증</label>
+    <input type="hidden" name="verificationCode" th:value="${verificationCode}">
+    <input type="text" name="email" th:value="${email}" class="form-control">
+    <input type="submit" value="인증하기">
+</div>
+</form>
+</body>
+</html>

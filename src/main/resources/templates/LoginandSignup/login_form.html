@@ -35,12 +35,17 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" style="background:lightskyblue; border: 0px; font-weight: bold;">로그인</button>
+            <div>
+                <a th:href="@{/member/findId}"><button type="button">아이디찾기</button></a>
+            </div>
+            <div>
+                <a th:href="@{/reset-password}"><button type="button">비밀번호찾기</button></a>
+            </div>
             <div style="display: flex; justify-content:center; align-items: center; margin-top: 50px;   margin-right: 15px;">
                 <a href="/oauth2/authorization/google">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/160px-Google_%22G%22_logo.svg.png"
                          alt="Google Login" style="width: 50px; height: 50px; margin-right: 100px;">
                 </a>
-
                 <a href="/oauth2/authorization/naver">
                     <img src="http://wiki.hash.kr/images/thumb/c/cf/%EB%84%A4%EC%9D%B4%EB%B2%84%E3%88%9C_%EB%A1%9C%EA%B3%A0.png/200px-%EB%84%A4%EC%9D%B4%EB%B2%84%E3%88%9C_%EB%A1%9C%EA%B3%A0.png"
                          alt="Naver Login"

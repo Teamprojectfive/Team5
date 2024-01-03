@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -66,6 +67,8 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       String socialProvider = userRequest.getClientRegistration().getClientName();
       String nickName = oAuth2User.getAttribute("given_name");
       String name = oAuth2User.getAttribute("name");
+      // 데이터베이스에 로그인 시간 추가
+      LocalDateTime loginTime = LocalDateTime.now(); // 현재 날짜와 시간 가져오기
       if (memberService.isSocialMemberExists(loginId)) {
         // 이미 등록된 소셜 사용자인 경우에 대한 처리를 여기에 추가
         // 예시로 로그에 출력하는 코드를 추가했습니다.
@@ -76,7 +79,7 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       }
       if (!memberService.isSocialMemberExists(loginId) && !memberService.isNickNameDuplicated(nickName)) {
         // Save or update Naver information in the database
-        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName, name);
+        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName, name,loginTime);
         System.out.println("Naver User Saved: " + loginId + ", " + ", " + socialProvider + "," + nickName);
       } else if (!memberService.isSocialMemberExists(loginId) && memberService.isNickNameDuplicated(nickName)) {
         // 중복된 경우에 대한 처리를 여기에 추가
@@ -87,6 +90,7 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         session.setAttribute("duplicatedNickName", nickName);
         session.setAttribute("socialLoginId",loginId);
         session.setAttribute("Provider",socialProvider);
+        session.setAttribute("createdate",loginTime);
         throw new OAuth2AuthenticationException("Social login is blocked.");
       }
       System.out.println("Google User Saved: " + loginId + ", " + socialProvider + ", " + nickName);
@@ -102,6 +106,8 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       String nickName = (String) properties.get("nickname");
       String socialProvider = userRequest.getClientRegistration().getClientName();
       String name = (String) properties.get("name");
+      // 데이터베이스에 로그인 시간 추가
+      LocalDateTime loginTime = LocalDateTime.now(); // 현재 날짜와 시간 가져오기
       if (memberService.isSocialMemberExists(loginId)) {
         // 이미 등록된 소셜 사용자인 경우에 대한 처리를 여기에 추가
         // 예시로 로그에 출력하는 코드를 추가했습니다.
@@ -112,7 +118,7 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       }
       if (!memberService.isSocialMemberExists(loginId) && !memberService.isNickNameDuplicated(nickName)) {
         // Save or update Naver information in the database
-        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName, name);
+        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickName, name,loginTime);
         System.out.println("Naver User Saved: " + loginId + ", " + ", " + socialProvider + "," + nickName);
       } else if (!memberService.isSocialMemberExists(loginId) && memberService.isNickNameDuplicated(nickName)) {
         // 중복된 경우에 대한 처리를 여기에 추가
@@ -123,6 +129,7 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         session.setAttribute("duplicatedNickName", nickName);
         session.setAttribute("socialLoginId",loginId);
         session.setAttribute("Provider",socialProvider);
+        session.setAttribute("createdate",loginTime);
         throw new OAuth2AuthenticationException("Social login is blocked.");
       }
     } else if (clientName.equals("Naver")) {
@@ -133,6 +140,8 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
       String socialProvider = userRequest.getClientRegistration().getClientName();
       String nickname = response.get("nickname").toString();
       String name = response.get("name").toString();
+      // 데이터베이스에 로그인 시간 추가
+      LocalDateTime loginTime = LocalDateTime.now(); // 현재 날짜와 시간 가져오기
 
       if (memberService.isSocialMemberExists(loginId)) {
         // 이미 등록된 소셜 사용자인 경우에 대한 처리를 여기에 추가
@@ -145,7 +154,7 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
       if (!memberService.isSocialMemberExists(loginId) && !memberService.isNickNameDuplicated(nickname)) {
         // Save or update Naver information in the database, 사용자 아이디가 등록되어있지않거나,닉네임이 중복되어있지않을떄
-        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickname, name);
+        memberService.saveOrUpdateSocialMember(loginId, socialProvider, nickname, name,loginTime);
         System.out.println("Naver User Saved: " + loginId + ", " + ", " + socialProvider + "," + nickname);
       } else if (!memberService.isSocialMemberExists(loginId) && memberService.isNickNameDuplicated(nickname)) {
         // 중복된 경우에 대한 처리를 여기에 추가
@@ -156,6 +165,7 @@ public class SocialOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         session.setAttribute("duplicatedNickName", nickname);
         session.setAttribute("socialLoginId",loginId);
         session.setAttribute("Provider",socialProvider);
+        session.setAttribute("createdate",loginTime);
         throw new OAuth2AuthenticationException("Social login is blocked.");
       }
     }

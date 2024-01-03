@@ -50,7 +50,7 @@ public class MemberService {
 
   // 통합 메서드로 소셜 로그인 정보 저장 또는 업데이트
   // 소셜 로그인 정보 저장 또는 업데이트
-  public Member saveOrUpdateSocialMember(String loginId, String socialProvider, String nickName, String name) {
+  public Member saveOrUpdateSocialMember(String loginId, String socialProvider, String nickName, String name,LocalDateTime localDateTime) {
     // 소셜 로그인 사용자 정보를 가져오거나 생성합니다.
     Member member = memberRepository.findByloginId(loginId)
             .orElse(new Member());
@@ -60,6 +60,7 @@ public class MemberService {
     member.setNickName(nickName);
     member.setSocialProvider(socialProvider);
     member.setName(name);
+    member.setCreateDate(LocalDateTime.now());
     // 소셜 로그인 사용자 정보를 저장 또는 업데이트합니다.
     return memberRepository.save(member);
 
@@ -76,7 +77,7 @@ public class MemberService {
   }
 
   // 소셜로그인 닉네임 업데이트 메서드 추가
-  public void updateNickname(String loginId, String newNickname, String socialProvider) {
+  public void updateNickname(String loginId, String newNickname, String socialProvider,LocalDateTime localDateTime) {
 
     if (loginId == null) {
       throw new DataNotFoundException("socialLoginId not found in session");
@@ -86,6 +87,7 @@ public class MemberService {
     member.setLoginId(loginId);
     member.setNickName(newNickname);
     member.setSocialProvider(socialProvider);
+    member.setCreateDate(LocalDateTime.now());
     memberRepository.save(member);
   }
 
@@ -120,5 +122,17 @@ public class MemberService {
     }
     return member;
     // 다른 작업들...
+  }
+  public Member updateMemberemail(String loginId, String email) {
+    // 트랜잭션 내에서 일어나는 작업
+    Optional<Member> existingMember = memberRepository.findByloginId(loginId);
+
+    Member member = null;
+    if (existingMember.isPresent()) {
+      member = existingMember.get();
+      member.setEmail(email);
+      memberRepository.save(member);
+    }
+    return member;
   }
 }
