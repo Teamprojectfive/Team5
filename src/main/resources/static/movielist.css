@@ -12,7 +12,6 @@ body{
 }
 
 
-
 .list_title{
     text-align: center;
     color: red;
@@ -68,8 +67,6 @@ body{
     margin-top: 130px;
     clear: both;
 }
-
-
 
 .left{
     position:absolute;

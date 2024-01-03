@@ -140,7 +140,7 @@ ul{
     background-color: #313137;
     position: relative;
     overflow: hidden;
-    height: 85vh;
+    height: 116vh;
     margin-top: 100px;
 }
 
@@ -278,7 +278,6 @@ ul{
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    top: -240px;
     overflow: hidden;
     z-index:99;
 }
