@@ -1,5 +1,7 @@
-package com.korea.Team5;
 
+package com.korea.Team5;
+import com.korea.Team5.USER.SocialOAuth2UserService;
+import com.korea.Team5.weeklyMovie.WeeklyMovieService;
 import com.korea.Team5.USER.SocialOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,11 +17,15 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
   @Autowired
   private SocialOAuth2UserService socialOAuth2UserService;
+  @Autowired
+  private WeeklyMovieService weeklyMovieService;
+
 
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -66,6 +72,11 @@ public class SecurityConfig {
 
 
   }
+
+
+
+
+
 
 
 

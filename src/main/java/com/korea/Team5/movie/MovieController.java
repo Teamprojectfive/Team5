@@ -34,8 +34,6 @@ public class MovieController {
 
         List<Movie> movieList = this.movieService.list();
 
-
-
         int gap = 20;
         int start = 0;
         int end = start + gap;
@@ -51,8 +49,6 @@ public class MovieController {
 
         model.addAttribute("movieList", movieList);
         model.addAttribute("movieSubList", movieSubListList);
-
-
         model.addAttribute("movieList", movieList);
 
 
@@ -85,4 +81,3 @@ public class MovieController {
 
 
 }
-

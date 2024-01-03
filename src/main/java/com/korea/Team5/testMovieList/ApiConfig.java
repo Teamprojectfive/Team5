@@ -1,4 +1,4 @@
-package com.korea.Team5.Api;
+package com.korea.Team5.testMovieList;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

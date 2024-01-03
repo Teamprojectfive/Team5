@@ -24,7 +24,6 @@ public class Member {
   @Column(unique = true)
   private String nickName;
 
-
   private String phone;
 
   private String email;
@@ -32,6 +31,8 @@ public class Member {
   private String name;
 
   private LocalDateTime createDate;
+
+
   // 소셜 로그인 정보
   private String socialProvider;  // Google, Kakao, Naver 등
 

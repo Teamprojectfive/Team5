@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,10 +9,18 @@
 <form th:action="@{/member/findId}" method="post">
 <div>
     <label for="email" class="form-label">본인확인 이메일 인증</label>
-    <input type="hidden" name="verificationCode" th:value="${verificationCode}">
+    <input type="hidden" name="verificationCode" th:value="${verificationCode}" >
     <input type="text" name="email" th:value="${email}" class="form-control">
     <input type="submit" value="인증하기">
 </div>
+    <!-- 인증번호 입력 폼 (처음에는 숨김) -->
+    <div id="verificationCodeForm" th:if="${session.verificationCode != null and session.verificationCode != ''}">
+        <label for="verificationCodeInput" class="form-label">인증번호 입력</label>
+        <input type="hidden" name="verificationCode" th:value="${verificationCode}">
+        <input type="text" name="VerificationCode" class="form-control">
+        <input type="submit" value="확인">
+    </div>
 </form>
+
 </body>
 </html>

@@ -1,6 +1,4 @@
 package com.korea.Team5.USER;
-
-
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.Email.EmailService;
 import com.korea.Team5.SMS.SMSService;
@@ -65,6 +63,8 @@ public class MemberController {
     return "redirect:/main";
   }
 
+
+
   @GetMapping("/duplicate")
   public String checkNickname(HttpSession session) {
 
@@ -81,6 +81,20 @@ public class MemberController {
       return "redirect:/main";
     }
   }
+
+
+  // 세션에서 중복된 닉네임 가져오기
+//  String duplicatedNickName = (String) session.getAttribute("duplicatedNickName");
+//
+//    if (duplicatedNickName != null) {
+//    // 중복이면 재설정 폼으로 이동
+//    session.removeAttribute("duplicatedNickName");
+//
+//    return "/LoginandSignup/socialIndex_form";
+//  } else {
+//    // 중복이 아니면 메인으로 리다이렉트
+//    return "redirect:/main";
+//  }
   @PostMapping("/duplicate")
   public String checkNickname(@RequestParam("nickname") String newNickname, HttpSession session, Model model) {
     String loginId = (String) session.getAttribute("socialLoginId");
@@ -116,7 +130,7 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage")
   public String mypage(Model model, Principal principal, @RequestParam("loginId")String loginId, @RequestParam("nickName") String nickName, @RequestParam("phone") String phone, @RequestParam("email") String email
-                      ,@RequestParam("createDate")LocalDateTime createDate){
+          ,@RequestParam("createDate")LocalDateTime createDate){
 
 
 //    // 위에서 받아온 데이터를 이용하여 DB 업데이트 로직 수행
@@ -178,7 +192,7 @@ public class MemberController {
   public String updateEmail(Model model,@RequestParam String email,@RequestParam String verificationCode ,HttpSession session){
     String storedVerificationCode = String.valueOf((int) (Math.random() * 9000) + 1000);
 // 이메일 전송 로직
-     emailService.sendVerificationCode(email,storedVerificationCode);
+    emailService.sendVerificationCode(email,storedVerificationCode);
 
     // 생성된 인증 코드를 세션에 저장
     session.setAttribute("verificationCode", storedVerificationCode);
@@ -213,7 +227,7 @@ public class MemberController {
   }
 
 
-//마이페이지 닉네임 수정 부분//
+  //마이페이지 닉네임 수정 부분//
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/nickName")
   public String updatenickName(){
@@ -257,7 +271,7 @@ public class MemberController {
     return "/LoginandSignup/findId_form";
   }
   @PostMapping("/findId")
-  public String findId(Model model,@RequestParam String verificationcode,HttpSession session,@RequestParam String email){
+  public String findId(Model model,@RequestParam String verificationCode,HttpSession session,@RequestParam String email){
 
     String storedVerificationCode = String.valueOf((int) (Math.random() * 9000) + 1000);
 // 이메일 전송 로직
@@ -271,6 +285,14 @@ public class MemberController {
 
     return "/LoginandSignup/findId_form";
 
+  }
+  @PostMapping("/emailsendVerificationCode")
+  public String emailsendVerificationCode(Model model,@RequestParam String verificationCode,HttpSession session,@RequestParam
+                                          String email){
+
+
+
+    return "/LoginandSignup/findId_form";
   }
 
 }

@@ -4,24 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        .star-rating {
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .star:hover, .star.active {
-            color: gold;
-        }
-    </style>
+    <link rel="stylesheet" href="/review.css">
 </head>
 <body>
-<div>
-    <a th:href="@{/main}">Logo</a>
+<div class="title">
+    <a th:href="@{/main}"><strong>Logo</strong></a>
 </div>
 <h2>리뷰등록하기</h2>
 <!-- 리뷰 폼 -->
-<form th:action="@{|/review/create/${id}|}" th:object="${reviewForm}" method="post" class="my-3">
+<form class="input_cont" th:action="@{|/review/create/${id}|}" th:object="${reviewForm}" method="post">
     <div th:replace="~{form_errors :: formErrorsFragment}"></div>
     <input type="text" name="subject" id="subject" placeholder="Subject">
     <textarea name="content" id="content" placeholder="Content"></textarea>
@@ -66,12 +57,13 @@
         stars.forEach(star => {
             const starRating = star.getAttribute('data-rating');
             if (starRating <= rating) {
-                star.classList.add('active');
+                star.classList.add('filled');
             } else {
-                star.classList.remove('active');
+                star.classList.remove('filled');
             }
         });
     }
 </script>
+
 </body>
 </html>
