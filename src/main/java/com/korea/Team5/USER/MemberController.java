@@ -287,12 +287,24 @@ public class MemberController {
 
   }
   @PostMapping("/emailsendVerificationCode")
-  public String emailsendVerificationCode(Model model,@RequestParam String verificationCode,HttpSession session,@RequestParam
+  public String emailsendVerificationCode(Model model,@RequestParam String enteredVerificationCode,HttpSession session,@RequestParam
                                           String email){
+// Get the stored verification code from the session
+    String storedVerificationCode = (String) session.getAttribute("verificationCode");
 
+    // Check if the entered verification code matches the stored one
+    if (storedVerificationCode != null && storedVerificationCode.equals(enteredVerificationCode)) {
+      // Verification successful, redirect to another form or perform further actions
+      session.removeAttribute("verificationCode");
+      // Add verificationCode to the model for use in the template
+      model.addAttribute("enteredVerificationCode", enteredVerificationCode);
+      return  "/LoginandSignup/findId_form"; // Replace with the desired redirect URL
+    } else {
+      // Verification failed, display an error message
+      model.addAttribute("error", "인증 코드가 올바르지 않습니다."); // 에러 메시지를 한글로 변경
+      return "/LoginandSignup/findId_form";
+    }
 
-
-    return "/LoginandSignup/findId_form";
   }
 
 }
