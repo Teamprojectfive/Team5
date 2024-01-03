@@ -7,7 +7,6 @@ import com.korea.Team5.USER.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +26,7 @@ public class MovieController {
     private final MemberService memberService;
 
     private final ReviewService reviewService;
+
 
 
     @GetMapping("/list")
@@ -49,7 +49,6 @@ public class MovieController {
 
         model.addAttribute("movieList", movieList);
         model.addAttribute("movieSubList", movieSubListList);
-        model.addAttribute("movieList", movieList);
 
 
         return "movieList";
@@ -78,6 +77,22 @@ public class MovieController {
 
         return "redirect:/movie/list";
     }
+
+    // api 데이터 넣는 메서드
+    @GetMapping("/weeklyMovie")
+    public String getMovies(@RequestParam String targetDt, Model model) {
+        List<Movie> movies = this.movieService.fetchDataAndSaveToDatabase(targetDt);
+        model.addAttribute("movies", movies);
+        return "apiMovie";
+    }
+    @GetMapping("/addDetail")
+    public String addDetail(@RequestParam String movieCd, Model model){
+        MovieInfo movieInfo = this.movieService.getMovieDetail(movieCd);
+        model.addAttribute("movieInfo", movieInfo);
+        return "addDetail";
+    }
+
+
 
 
 }

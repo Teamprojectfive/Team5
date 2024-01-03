@@ -1,4 +1,4 @@
-package com.korea.Team5.weeklyMovie;
+package com.korea.Team5.movie;
 
 import lombok.Getter;
 import lombok.Setter;

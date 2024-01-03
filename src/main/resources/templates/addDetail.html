@@ -5,10 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<div th:each="movie : ${movies2}">
-    <h1 th:text="${movie.movieNm}"></h1>
-    <div th:text="${movie.genreAlt}"></div>
+<div>안녕</div>
+<div th:each="movie : ${movieInfo}">
+    <div th:text="${movie.movieCd}"></div>
 </div>
+
 
 </body>
 </html>

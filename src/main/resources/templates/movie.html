@@ -5,7 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-<div>ㅎㅇ</div>
-
+<h1>안녕하세요</h1>
+<span th:each="movie : ${movieInfoList}">
+    <span th:text="${movie.title}"></span>
+</span>
 </body>
 </html>

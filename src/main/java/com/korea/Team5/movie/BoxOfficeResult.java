@@ -1,4 +1,4 @@
-package com.korea.Team5.weeklyMovie;
+package com.korea.Team5.movie;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,5 +11,5 @@ public class BoxOfficeResult {
     private String boxofficeType;
     private String showRange;
     private String yearWeekTime;
-    private List<WeeklyMovie> weeklyBoxOfficeList;
+    private List<Movie> weeklyBoxOfficeList;
 }
