@@ -333,7 +333,6 @@ public class MemberController {
     }
 
   }
-
   @PostMapping("/findIdPhone")
   public String findIdPhone(@RequestParam String phone, Model model, HttpSession session) {
     String storedVerificationCode = emailService.sendVerificationCodeSMS(phone);
@@ -379,5 +378,29 @@ public class MemberController {
     }
 
   }
+  @GetMapping("/findpassword")
+  public String findpassword(){
 
+
+    return "/LoginandSignup/findpassword_form";
+  }
+
+
+  @PostMapping("/findpassword")
+  public String findpassword(Model model,@RequestParam String loginId,HttpSession session){
+
+   Member member = memberService.getMember(loginId);
+
+    if (member != null) {
+      // 멤버 데이터가 조회된 경우
+      session.setAttribute("member", member);
+      model.addAttribute("member", member);
+      model.addAttribute("verificationform", true); // 폼을 보여주는 플래그
+    } else {
+      // 멤버 데이터가 조회되지 않은 경우
+      model.addAttribute("error", "조회된 아이디가 없습니다.");
+    }
+    return "/LoginandSignup/findpassword_form";
+
+  }
 }
