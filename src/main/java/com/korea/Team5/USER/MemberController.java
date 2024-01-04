@@ -1,4 +1,5 @@
 package com.korea.Team5.USER;
+
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.Email.EmailService;
 import com.korea.Team5.SMS.SMSService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,7 +52,7 @@ public class MemberController {
               "2개의 패스워드가 일치하지 않습니다.");
       return "/LoginandSignup/signup_form";
     }
-    if (memberService.isDuplicated(memberCreateForm.getLoginId(),memberCreateForm.getNickName())) {
+    if (memberService.isDuplicated(memberCreateForm.getLoginId(), memberCreateForm.getNickName())) {
       // 중복된 값이 있을 경우 에러 처리
       bindingResult.rejectValue("loginId", "duplicateValue", "이미 사용 중인 아이디입니다.");
       bindingResult.rejectValue("nickName", "duplicateValue", "이미 사용 중인 닉네임입니다.");
@@ -62,7 +65,6 @@ public class MemberController {
 
     return "redirect:/main";
   }
-
 
 
   @GetMapping("/duplicate")
@@ -113,11 +115,12 @@ public class MemberController {
     }
 
     // 서비스에서 닉네임 업데이트 확인
-    memberService.updateNickname(loginId, newNickname,socialProvider,createDate);
+    memberService.updateNickname(loginId, newNickname, socialProvider, createDate);
 
     // 이후 리다이렉트 또는 다른 처리를 추가할 수 있습니다.
     return "redirect:/main";
   }
+
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage")
   public String mypage(Model model, Principal principal) {
@@ -127,14 +130,15 @@ public class MemberController {
     model.addAttribute("member", member);
     return "/LoginandSignup/mypage_form";
   }
+
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage")
-  public String mypage(Model model, Principal principal, @RequestParam("loginId")String loginId, @RequestParam("nickName") String nickName, @RequestParam("phone") String phone, @RequestParam("email") String email
-          ,@RequestParam("createDate")LocalDateTime createDate){
+  public String mypage(Model model, Principal principal, @RequestParam("loginId") String loginId, @RequestParam("nickName") String nickName, @RequestParam("phone") String phone, @RequestParam("email") String email
+          , @RequestParam("createDate") LocalDateTime createDate) {
 
 
 //    // 위에서 받아온 데이터를 이용하여 DB 업데이트 로직 수행
-    Member member = memberService.updateMember(principal.getName(), nickName, phone, email,createDate);
+    Member member = memberService.updateMember(principal.getName(), nickName, phone, email, createDate);
     model.addAttribute("member", member);
 
 
@@ -147,6 +151,7 @@ public class MemberController {
 
     return "/LoginandSignup/phoneMypage"; // 적절한 리다이렉트 경로로 변경
   }
+
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/updatePhone")
   public String updatePhone(@RequestParam String phone, Model model, HttpSession session) {
@@ -157,16 +162,17 @@ public class MemberController {
     model.addAttribute("phone", phone);
     return "/LoginandSignup/phoneMypage";
   }
+
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/updatePhoneverification")
-  public String updatePhoneverifi(@RequestParam String phone, @RequestParam String verificationCode, Model model, HttpSession session,Principal principal) {
+  public String updatePhoneverifi(@RequestParam String phone, @RequestParam String verificationCode, Model model, HttpSession session, Principal principal) {
     // 세션에서 저장된 전송된 인증 코드 가져오기
     String storedVerificationCode = (String) session.getAttribute("verificationCode");
     // 입력한 인증 코드와 전송된 인증 코드 비교
     if (storedVerificationCode != null && storedVerificationCode.equals(verificationCode)) {
       model.addAttribute("phone", phone);
       // 인증 성공 시 처리 (예: DB에 전화번호 업데이트)
-      memberService.updateMemberPhone(principal.getName(),phone);
+      memberService.updateMemberPhone(principal.getName(), phone);
       // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)
       return "redirect:/member/mypage";
     } else {
@@ -187,12 +193,13 @@ public class MemberController {
 
     return "LoginandSignup/emailMypage"; // 적절한 리다이렉트 경로로 변경
   }
+
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/email")
-  public String updateEmail(Model model,@RequestParam String email,@RequestParam String verificationCode ,HttpSession session){
+  public String updateEmail(Model model, @RequestParam String email, @RequestParam String verificationCode, HttpSession session) {
     String storedVerificationCode = String.valueOf((int) (Math.random() * 9000) + 1000);
 // 이메일 전송 로직
-    emailService.sendVerificationCode(email,storedVerificationCode);
+    emailService.sendVerificationCode(email, storedVerificationCode);
 
     // 생성된 인증 코드를 세션에 저장
     session.setAttribute("verificationCode", storedVerificationCode);
@@ -202,9 +209,10 @@ public class MemberController {
 
     return "/LoginandSignup/emailMypage";
   }
+
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/emailverification")
-  public String emailverification(Model model,@RequestParam String email,HttpSession session,@RequestParam String verificationCode,Principal principal){
+  public String emailverification(Model model, @RequestParam String email, HttpSession session, @RequestParam String verificationCode, Principal principal) {
 
     // 세션에서 저장된 전송된 인증 코드 가져오기
     String storedVerificationCode = (String) session.getAttribute("verificationCode");
@@ -213,7 +221,7 @@ public class MemberController {
     if (storedVerificationCode != null && storedVerificationCode.equals(verificationCode)) {
       model.addAttribute("email", email);
       // 인증 성공 시 처리 (예: DB에 이메일 업데이트)
-      memberService.updateMemberemail(principal.getName(),email);
+      memberService.updateMemberemail(principal.getName(), email);
       // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)
       return "redirect:/member/mypage";
     } else {
@@ -230,14 +238,15 @@ public class MemberController {
   //마이페이지 닉네임 수정 부분//
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/nickName")
-  public String updatenickName(){
+  public String updatenickName() {
 
 
     return "LoginandSignup/nickNameMypage";
   }
+
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/nickName")
-  public String updatenickName(@RequestParam("nickName") String nickName,Model model,Principal principal) {
+  public String updatenickName(@RequestParam("nickName") String nickName, Model model, Principal principal) {
 
     Member member1 = memberService.getMember(principal.getName());
 
@@ -265,43 +274,107 @@ public class MemberController {
   }
 
   @GetMapping("/findId")
-  public String findId(){
+  public String findId() {
 
 
     return "/LoginandSignup/findId_form";
   }
+
   @PostMapping("/findId")
-  public String findId(Model model,@RequestParam String verificationCode,HttpSession session,@RequestParam String email){
+  public String findId(Model model, @RequestParam String verificationCode, HttpSession session, @RequestParam String email) {
 
     String storedVerificationCode = String.valueOf((int) (Math.random() * 9000) + 1000);
-// 이메일 전송 로직
-    emailService.sendVerificationCode(email,storedVerificationCode);
-
+    // 이메일 전송 로직
+    emailService.sendVerificationCode(email, storedVerificationCode);
     // 생성된 인증 코드를 세션에 저장
     session.setAttribute("verificationCode", storedVerificationCode);
+    // 이메일을 통해 loginId를 가져오기
 
     // 모델에 이메일을 추가하여 폼에 전달
     model.addAttribute("email", email);
-
     return "/LoginandSignup/findId_form";
 
   }
+
   @PostMapping("/emailsendVerificationCode")
-  public String emailsendVerificationCode(Model model,@RequestParam String enteredVerificationCode,HttpSession session,@RequestParam
-                                          String email){
+  public String emailsendVerificationCode(Model model, @RequestParam String enteredVerificationCode, HttpSession session, @RequestParam
+  String email) {
 // Get the stored verification code from the session
     String storedVerificationCode = (String) session.getAttribute("verificationCode");
 
     // Check if the entered verification code matches the stored one
     if (storedVerificationCode != null && storedVerificationCode.equals(enteredVerificationCode)) {
       // Verification successful, redirect to another form or perform further actions
-      session.removeAttribute("verificationCode");
+      // Retrieve Member entity based on the provided email
+      List<Member> members = memberService.getMembersByEmail(email);
+      if (!members.isEmpty()) {
+        // If members are found, add loginIds to the model for use in the template
+        List<String> loginIds = members.stream()
+                .map(Member::getLoginId)
+                .collect(Collectors.toList());
+        List<LocalDateTime> createDates = members.stream()
+                .map(Member::getCreateDate)
+                .collect(Collectors.toList());
+        model.addAttribute("enteredVerificationCode", enteredVerificationCode);
+        model.addAttribute("loginIds", loginIds);
+        model.addAttribute("createDates", createDates);
+      } else {
+        // Handle the case where the member is not found based on the provided email
+        model.addAttribute("error", "조회되는 아이디가 없습니다.");
+        return "/LoginandSignup/findId_form"; // Replace with the desired error handling
+      }
       // Add verificationCode to the model for use in the template
-      model.addAttribute("enteredVerificationCode", enteredVerificationCode);
-      return  "/LoginandSignup/findId_form"; // Replace with the desired redirect URL
+      return "/LoginandSignup/findIdclear_form";// Replace with the desired redirect URL
     } else {
       // Verification failed, display an error message
-      model.addAttribute("error", "인증 코드가 올바르지 않습니다."); // 에러 메시지를 한글로 변경
+      model.addAttribute("error", "인증 코드가 올바르지 않습니다.");// 에러 메시지를 한글로 변경
+      model.addAttribute("email",email);
+      return "/LoginandSignup/findId_form";
+    }
+
+  }
+
+  @PostMapping("/findIdPhone")
+  public String findIdPhone(@RequestParam String phone, Model model, HttpSession session) {
+    String storedVerificationCode = emailService.sendVerificationCodeSMS(phone);
+    // 생성된 인증 코드를 세션에 저장
+    session.setAttribute("phoneverificationCode", storedVerificationCode);
+    // 모델에 전화번호를 추가하여 폼에 전달
+    model.addAttribute("phone", phone);
+
+    return "/LoginandSignup/findId_form";
+  }
+
+  @PostMapping("/phonesendVerificationCode")
+  public String phonesendVerificationCode(Model model, @RequestParam String enteredphoneVerificationCode, HttpSession session, @RequestParam String phone) {
+
+    String storedVerificationCode = (String) session.getAttribute("phoneverificationCode");
+
+    if (storedVerificationCode != null && storedVerificationCode.equals(enteredphoneVerificationCode)) {
+      List<Member> members = memberService.getMembersByPhone(phone);
+      //if문안에 조건하나더있음. 헷갈릴수있으니 주의바람 주석으로 구분해놓음.
+      if (!members.isEmpty()) {
+        // If members are found, add loginIds to the model for use in the template
+        List<String> loginIds = members.stream()
+                .map(Member::getLoginId)
+                .collect(Collectors.toList());
+        List<LocalDateTime> createDates = members.stream()
+                .map(Member::getCreateDate)
+                .collect(Collectors.toList());
+        model.addAttribute("enteredphoneVerificationCode", enteredphoneVerificationCode);
+        model.addAttribute("loginIds", loginIds);
+        model.addAttribute("createDates", createDates);
+      } else {
+        // Handle the case where the member is not found based on the provided email
+        model.addAttribute("error", "조회되는 아이디가 없습니다.");
+        return "/LoginandSignup/findId_form"; // Replace with the desired error handling
+      }
+      return "/LoginandSignup/findIdclear_form";// Replace with the desired redirect URL
+    }  //if안에 if문 총두개 조건 끝
+    else {
+      // Verification failed, display an error message
+      model.addAttribute("error", "인증 코드가 올바르지 않습니다.");
+      model.addAttribute("phone",phone);// 에러 메시지를 한글로 변경
       return "/LoginandSignup/findId_form";
     }
 

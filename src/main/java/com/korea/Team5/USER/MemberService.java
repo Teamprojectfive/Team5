@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -144,6 +145,23 @@ public class MemberService {
       memberRepository.save(member);
     }
     return member;
+  }
+  public List<Member> getMembersByEmail(String email) {
+    List<Member> members = this.memberRepository.findByEmail(email);
+    if (!members.isEmpty()) {
+      return members;
+    } else {
+      throw new DataNotFoundException("members not found for email: " + email);
+    }
+  }
+  public List<Member> getMembersByPhone(String phone){
+    List<Member> members = this.memberRepository.findByPhone(phone);
+
+    if (!members.isEmpty()){
+      return members;
+    }else {
+      throw new DataNotFoundException("members not found for phone: " + phone);
+    }
   }
 }
 
