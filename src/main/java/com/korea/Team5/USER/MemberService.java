@@ -146,6 +146,22 @@ public class MemberService {
     }
     return member;
   }
+
+  // 비밀번호 업데이트 메서드
+  public void updateMemberPassword(Member member) {
+    // 여기에서는 간단하게 JPA를 사용하여 업데이트하도록 예시를 작성했습니다.
+    // 데이터베이스에서 해당 멤버를 조회
+    Member existingMember = memberRepository.findById(member.getId()).orElse(null);
+    if (existingMember != null) {
+      // 새로운 비밀번호로 업데이트
+      existingMember.setPassword(member.getPassword());
+      // 실제 데이터베이스에 업데이트
+      memberRepository.save(existingMember);
+    } else {
+      // 해당 ID의 멤버가 존재하지 않는 경우 예외 처리 또는 로깅 등을 수행
+      throw new DataNotFoundException("Member not found");
+    }
+  }
   public List<Member> getMembersByEmail(String email) {
     List<Member> members = this.memberRepository.findByEmail(email);
     if (!members.isEmpty()) {

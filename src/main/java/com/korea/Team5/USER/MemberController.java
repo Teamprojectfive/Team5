@@ -6,7 +6,9 @@ import com.korea.Team5.SMS.SMSService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +30,8 @@ public class MemberController {
   private final MemberService memberService;
   private final SMSService smsService;
   private final EmailService emailService;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @GetMapping("/login")
   public String login() {
@@ -328,11 +332,12 @@ public class MemberController {
     } else {
       // Verification failed, display an error message
       model.addAttribute("error", "인증 코드가 올바르지 않습니다.");// 에러 메시지를 한글로 변경
-      model.addAttribute("email",email);
+      model.addAttribute("email", email);
       return "/LoginandSignup/findId_form";
     }
 
   }
+
   @PostMapping("/findIdPhone")
   public String findIdPhone(@RequestParam String phone, Model model, HttpSession session) {
     String storedVerificationCode = emailService.sendVerificationCodeSMS(phone);
@@ -373,13 +378,14 @@ public class MemberController {
     else {
       // Verification failed, display an error message
       model.addAttribute("error", "인증 코드가 올바르지 않습니다.");
-      model.addAttribute("phone",phone);// 에러 메시지를 한글로 변경
+      model.addAttribute("phone", phone);// 에러 메시지를 한글로 변경
       return "/LoginandSignup/findId_form";
     }
 
   }
+
   @GetMapping("/findpassword")
-  public String findpassword(){
+  public String findpassword() {
 
 
     return "/LoginandSignup/findpassword_form";
@@ -387,20 +393,108 @@ public class MemberController {
 
 
   @PostMapping("/findpassword")
-  public String findpassword(Model model,@RequestParam String loginId,HttpSession session){
-
-   Member member = memberService.getMember(loginId);
-
-    if (member != null) {
+  public String findpassword(Model model, @RequestParam String loginId, HttpSession session) {
+    try {
+      Member member = memberService.getMember(loginId);
       // 멤버 데이터가 조회된 경우
       session.setAttribute("member", member);
       model.addAttribute("member", member);
       model.addAttribute("verificationform", true); // 폼을 보여주는 플래그
-    } else {
+
+      return "/LoginandSignup/findpassword_form";
+    } catch (DataNotFoundException e) {
       // 멤버 데이터가 조회되지 않은 경우
       model.addAttribute("error", "조회된 아이디가 없습니다.");
+      model.addAttribute("loginId", loginId);
+      return "/LoginandSignup/findpassword_form";
     }
-    return "/LoginandSignup/findpassword_form";
-
   }
+
+  @PostMapping("/findpasswordemail")
+  public String findpasswordemail(Model model, HttpSession session, @RequestParam String email) {
+
+    String storedVerificationCode = String.valueOf((int) (Math.random() * 9000) + 1000);
+    // 이메일 전송 로직
+    emailService.sendVerificationCode(email, storedVerificationCode);
+    session.setAttribute("emailverificationCode", storedVerificationCode);
+    session.getAttribute("member");
+    // 모델에 이메일을 추가하여 폼에 전달
+    model.addAttribute("email", email);
+    model.addAttribute("member");
+    model.addAttribute("verificationform", true);
+    model.addAttribute("emailverificationCodeform", true);
+
+    return "/LoginandSignup/findpassword_form";
+  }
+
+  @PostMapping("/passwordemailverification")
+  public String passwordemailverification(Model model, @RequestParam String enterverificationCode, HttpSession session) {
+
+    String storedVerificationCode = (String) session.getAttribute("emailverificationCode");
+    Member member = (Member) session.getAttribute("member");
+    if (storedVerificationCode != null && storedVerificationCode.equals(enterverificationCode)) {
+
+      model.addAttribute("member", member);
+    } else {
+      model.addAttribute("error", "인증번호가 일치하지 않습니다.");
+      session.removeAttribute("emailverificationCode");
+      return "/LoginandSignup/findpassword_form";
+    }
+    return "/LoginandSignup/passwordreset";
+  }
+
+  //비밀번호 수정 메서드.
+  @PostMapping("/passwordupdate")
+  public String passwordupdate(Model model, @RequestParam String password, @RequestParam String password1, HttpSession session) {
+    // 사용자가 입력한 비밀번호를 세션에 저장
+    session.setAttribute("password", password);
+    session.setAttribute("password1", password1);
+    Member member = (Member) session.getAttribute("member");
+    String storedPassword = (String) session.getAttribute("password");
+    String storedPassword1 = (String) session.getAttribute("password1");
+    if (storedPassword != null && storedPassword.equals(storedPassword1)) {
+      // 비밀번호를 암호화하여 저장
+      String encryptedPassword = passwordEncoder.encode(storedPassword);
+      member.setPassword(encryptedPassword);
+      memberService.updateMemberPassword(member);
+      // 비밀번호 업데이트 후 세션에서 사용한 데이터를 삭제
+      session.removeAttribute("password");
+      session.removeAttribute("password1");
+    } else {
+      // 세션에 저장된 password와 password1이 일치하지 않는 경우
+      model.addAttribute("error", "입력한 비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+      return "/LoginandSignup/passwordreset";
+    }
+    return "/LoginandSignup/login_form";
+  }
+  // 패스워드찾기 휴대폰으로 인증 메서드 시작
+  @PostMapping("/findpasswordPhone")
+  public String findpasswordPhone(@RequestParam String phone,Model model ,HttpSession session){
+
+    String storedVerificationCode = emailService.sendVerificationCodeSMS(phone);
+    // 생성된 인증 코드를 세션에 저장
+    session.setAttribute("phoneverificationCode", storedVerificationCode);
+    session.getAttribute("member");
+    // 모델에 이메일을 추가하여 폼에 전달
+    model.addAttribute("phone", phone);
+    model.addAttribute("member");
+    model.addAttribute("verificationform", true);
+    model.addAttribute("phoneverificationCodeform", true);
+
+    return "/LoginandSignup/findpassword_form";
+  }
+  @PostMapping("/passwordephoneverification")
+  public String passwordephoneverification(Model model,@RequestParam String enterphoneverificationCode,HttpSession session){
+    String storedVerificationCode = (String) session.getAttribute("phoneverificationCode");
+    Member member = (Member) session.getAttribute("member");
+    if (storedVerificationCode != null && storedVerificationCode.equals(enterphoneverificationCode)) {
+      model.addAttribute("member", member);
+    } else {
+      model.addAttribute("error", "인증번호가 일치하지 않습니다.");
+      session.removeAttribute("phoneverificationCode");
+      return "/LoginandSignup/findpassword_form";
+    }
+    return "/LoginandSignup/passwordreset";
+  }
+  // 패스워드찾기 휴대폰으로 인증 메서드 끝
 }
