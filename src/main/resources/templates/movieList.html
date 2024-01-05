@@ -5,22 +5,25 @@
     <title>Title</title>
     <link rel="stylesheet" href="/movielist.css">
     <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="list_title">
-        <h1><strong>Top100</strong></h1>
-    </div>
+        <h1><strong>박스오피스</strong></h1>
     <section class="list_box_wrap" id="listContainer">
         <section class="list_box" th:each="movieList, iterStat : ${movieSubList}">
             <div th:each="movie : ${movieList}" class="list">
                 <h1 th:text="${movie.id}"></h1>
 
+
                 <div class="list_item">
                     <div style="font-weight: bold;" th:text="${movie.movieNm}"></div>
-
-
                     <p style="margin: 5px 0 0 0;">설명 : <span th:text="${movie.content}"></span></p>
                     <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
                     <div style="margin-top: 10px;">
@@ -34,7 +37,6 @@
                     </div>
 
                 </div>
-
 
             </div>
         </section>
@@ -60,6 +62,8 @@
 
             const translateValue = currentSlide * moveDistance;
             listContainer.style.transform = `translateX(${translateValue}px)`;
+
+
         }
     </script>
     <script>
@@ -80,6 +84,55 @@
             });
         });
     </script>
+
+<!--    개발중임-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the month link and table elements
+            var monthLink = document.querySelector(".link_date");
+            var calendarTable = document.querySelector(".tbl_calendar");
+
+            // Function to update calendar based on selected month
+            function updateCalendar(selectedDate) {
+                // You can add logic to update the calendar for the selected month
+                console.log("Selected month:", selectedDate);
+            }
+
+            // Previous month button click event
+            document.querySelector(".btn_prev").addEventListener("click", function () {
+                // You can add logic to calculate the previous month
+                var selectedMonth = monthLink.textContent;
+                // Example: Convert the month to a JavaScript Date object and subtract a month
+                var prevMonth = new Date(selectedMonth);
+                prevMonth.setMonth(prevMonth.getMonth() - 1);
+                updateCalendar(prevMonth.toLocaleDateString('en-US', { year: 'numeric', month: 'long' }));
+            });
+
+            // Next month button click event
+            document.querySelector(".btn_next").addEventListener("click", function () {
+                // You can add logic to calculate the next month
+                var selectedMonth = monthLink.textContent;
+                // Example: Convert the month to a JavaScript Date object and add a month
+                var nextMonth = new Date(selectedMonth);
+                nextMonth.setMonth(nextMonth.getMonth() + 1);
+                updateCalendar(nextMonth.toLocaleDateString('en-US', { year: 'numeric', month: 'long' }));
+            });
+
+            // Example: Handle date click event
+            calendarTable.addEventListener("click", function (event) {
+                if (event.target.classList.contains("link_day")) {
+                    // You can add logic to handle the date click event
+                    var selectedDate = event.target.textContent;
+                    console.log("Date clicked:", selectedDate);
+                }
+            });
+
+            // Initial calendar update (you can set it to the current date or any other initial date)
+            updateCalendar(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }));
+        });
+    </script>
+
+
 </div>
 </body>
 </html>

@@ -23,6 +23,14 @@ nav{
     color: black;
 }
 
+.movie_name{
+    color:white;
+}
+
+.movie_name a{
+    color: white;
+}
+
 .login> a {
     background-color: black;
     margin-right: 20px;
