@@ -129,7 +129,12 @@ public class MemberController {
 
     return "/LoginandSignup/mypage_form";
   }
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypagedelete")
+  public String mypagedelete(){
 
+    return "/LoginandSignup/mypagedelete";
+  }
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/updatePhone")
   public String updatePhone() {
