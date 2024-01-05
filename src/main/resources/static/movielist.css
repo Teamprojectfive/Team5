@@ -75,7 +75,7 @@ body{
     background: none;
     border: 0px;
     left:50px;
-    top:103%;
+    top:64%;
     z-index:99;
     cursor: pointer;
 }
@@ -87,7 +87,7 @@ body{
     background: none;
     border: 0px;
     right:50px;
-    top:103%;
+    top:64%;
     z-index:99;
     cursor: pointer;
 }

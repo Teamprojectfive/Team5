@@ -3,38 +3,35 @@
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
     <div class="detail_container">
-        <img class="detail_img" th:src="${movie.image}" alt="">
-        <div class="movie_content">
-            <h1 th:text="${movie.name}"></h1>
+<!--        <img class="detail_img" th:src="${movie.image}" alt="">-->
+        <div th:each="movie : ${movieInfo}" class="movie_content">
+            <h1 th:text="${movie.movieNm}"></h1>
             <div class="detail_content">
                 <div class="detail_cont">
                     <p class="detail_cont_sub">개봉일</p>
-                    <p th:text="${movie.movieRelease}"></p>
+                    <p th:text="${movie.openDt}"></p>
                 </div>
-                <div class="detail_cont">
+                <div th:each="genre : ${movie.genres}" class="detail_cont">
                     <p class="detail_cont_sub">장르</p>
-                    <p>액션/스릴러</p>
+                    <p th:text="${genre.genreNm}" ></p>
                 </div>
-                <div class="detail_cont">
+                <div th:each="nation : ${movie.nations}" class="detail_cont">
                     <p class="detail_cont_sub">국가</p>
-                    <p>한국</p>
+                    <p th:text="${nation.nationNm}"></p>
                 </div>
-                <div class="detail_cont">
+                <div th:each="audit : ${movie.audits}" class="detail_cont">
                     <p class="detail_cont_sub">등급</p>
-                    <p>12세이상관람가</p>
-                </div>
-                <div class="detail_cont">
-                    <p class="detail_cont_sub">러닝타임</p>
-                    <p>142분</p>
+                    <p th:text="${audit.watchGradeNm}"></p>
                 </div>
 
-                <div class="detail_cont">
-                    <p class="detail_cont_sub">영화 설명</p>
-                    <p th:text="${movie.content}"></p>
-                </div>
-                <div class="detail_cont">
-                    <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>
-                </div>
+
+<!--                <div class="detail_cont">-->
+<!--                    <p class="detail_cont_sub">영화 설명</p>-->
+<!--                    <p th:text="${movie.content}"></p>-->
+<!--                </div>-->
+<!--                <div class="detail_cont">-->
+<!--                    <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
+<!--                </div>-->
             </div>
 
         </div>
@@ -417,12 +414,12 @@
         <!--        전체 출연진 end-->
 
         <!--        리뷰 start-->
-        <div id="ratings_container" class="explanation_container" style="display: none;">
-            <div class="registration_cont">
-                <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
-                   th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
-            </div>
-            <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>
+<!--        <div id="ratings_container" class="explanation_container" style="display: none;">-->
+<!--            <div class="registration_cont">-->
+<!--                <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"-->
+<!--                   th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>-->
+<!--            </div>-->
+<!--            <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
             <div class="container my-3">
                 <div class="row">
                     <div class="col-md-8" style="width: 100%;">
