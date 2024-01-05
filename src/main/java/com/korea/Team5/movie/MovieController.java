@@ -136,7 +136,7 @@ public class MovieController {
 
         List<Movie> movieList = this.movieService.list();
 
-        int gap = 10;
+        int gap = 25;
         int start = 0;
         int end = start + gap;
         int displayCount = 120;
