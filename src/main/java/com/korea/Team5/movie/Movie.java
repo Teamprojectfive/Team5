@@ -15,6 +15,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Data
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,6 +65,7 @@ public class Movie {
     @ManyToMany
     private Set<Member> voter;
 
+
     /*DB 저장 일자*/
     private String targetDt;
 
@@ -71,8 +73,10 @@ public class Movie {
     @CreationTimestamp
     private LocalDateTime modificationDateTime;
 
+
     @OneToOne(mappedBy = "movie")
     private MovieInfo movieInfo;
+
 
 
 

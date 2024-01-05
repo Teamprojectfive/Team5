@@ -13,9 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +30,6 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final MovieInfoRepository movieInfoRepository;
 
-
     private final String apiUrl;
     private final String apiKey;
     private final String apiUrl2;
@@ -34,6 +37,7 @@ public class MovieService {
 
 
     @Autowired
+
     public MovieService(RestTemplate restTemplate, MovieRepository movieRepository, MovieInfoRepository movieInfoRepository, @Value("${movie.api.url2}") String apiUrl, @Value("${movie.api.key}") String apiKey, @Value("${movie.api.detail.url}") String apiUrl2) {
         this.restTemplate = restTemplate;
         this.movieRepository = movieRepository;
@@ -81,6 +85,7 @@ public class MovieService {
 
 
 
+
     @Transactional
     public List<Movie> fetchDataAndSaveToDatabase(String targetDt) {
         String url = apiUrl + "?key=" + apiKey + "&targetDt=" + targetDt;
@@ -88,6 +93,9 @@ public class MovieService {
         List<Movie> movies = responseEntity.getBody().getBoxOfficeResult().getWeeklyBoxOfficeList();
 
         for (Movie movie : movies) {
+
+
+
             this.movieRepository.save(movie);
         }
         return movies;
@@ -106,7 +114,11 @@ public class MovieService {
 
                 if (movieInfoWrap != null) {
                     MovieInfo movieInfo = movieInfoWrap.getMovieInfo();
+
                     this.movieInfoRepository.save(movieInfo);
+
+                    System.out.println(movieInfo);
+
                     return movieInfo;
                 } else {
                     throw new RuntimeException("API 응답 중 MovieInfoWrap이 null입니다.");
