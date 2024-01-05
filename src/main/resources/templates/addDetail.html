@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>안녕</div>
+<div th:each="movie : ${movieInfo}">
+    <div th:text="${movie.movieCd}"></div>
+</div>
+
+
+</body>
+</html>
