@@ -198,7 +198,6 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/emailverification")
   public String emailverification(Model model, @RequestParam String email, HttpSession session, @RequestParam String verificationCode, Principal principal) {
-
     // 세션에서 저장된 전송된 인증 코드 가져오기
     String storedVerificationCode = (String) session.getAttribute("verificationCode");
 
@@ -218,9 +217,53 @@ public class MemberController {
       return "/LoginandSignup/emailMypage";
     }
   }
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypage/password")
+  public String mypagepassword(Model model,Principal principal,HttpSession session){
+    Member member = memberService.getMember(principal.getName());
+    session.setAttribute("member",member);
+
+    model.addAttribute("member",member);
 
 
-  //마이페이지 닉네임 수정 부분//
+    return "/LoginandSignup/mypagepassword";
+  }
+  //마이페이지 비밀번호 수정메서드.
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypagepasswordupdate")
+  public String mypagepasswordupdate(Model model, @RequestParam String mypagepassword, @RequestParam String mypagepassword1, HttpSession session,@RequestParam String currentpassword) {
+    // 사용자가 입력한 비밀번호를 세션에 저장
+    session.setAttribute("password", mypagepassword);
+    session.setAttribute("password1", mypagepassword1);
+    Member member = (Member) session.getAttribute("member");
+    // DB에서 현재 사용자의 정보를 가져옴
+    Member dbMember = memberService.getMember(member.getLoginId());
+    String storedPassword = (String) session.getAttribute("password");
+    String storedPassword1 = (String) session.getAttribute("password1");
+    // Check if the current password is correct
+    if (!passwordEncoder.matches(currentpassword, dbMember.getPassword())) {
+      model.addAttribute("error", "현재 비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+      return "/LoginandSignup/mypagepassword";
+    }
+    if (storedPassword != null && storedPassword.equals(storedPassword1)) {
+      // 비밀번호를 암호화하여 저장
+      String encryptedPassword = passwordEncoder.encode(storedPassword);
+      member.setPassword(encryptedPassword);
+      memberService.updateMemberPassword(member);
+      model.addAttribute("member",member);
+      // 비밀번호 업데이트 후 세션에서 사용한 데이터를 삭제
+      session.removeAttribute("password");
+      session.removeAttribute("password1");
+    } else {
+      // 세션에 저장된 password와 password1이 일치하지 않는 경우
+      model.addAttribute("error", "입력한 비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+      return "/LoginandSignup/mypagepassword";
+    }
+    return "/LoginandSignup/mypage_form";
+  }
+
+
+  //마이페이지 닉네임 수정 부분 시작//
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/nickName")
   public String updatenickName() {
@@ -238,7 +281,7 @@ public class MemberController {
     // 새로운 닉네임이 현재의 닉네임과 같은지 확인
     if (nickName.equals(member1.getNickName())) {
       // 닉네임이 같으면 에러 메시지를 사용자에게 보여줌
-      model.addAttribute("errorMessage", "현재 사용 중인 닉네임과 동일합니다.");
+      model.addAttribute("error", "현재 사용 중인 닉네임과 동일합니다.");
       return "LoginandSignup/nickNameMypage";
     }
     // 새로운 닉네임이 이미 다른 사용자에 의해 사용 중인지 확인
@@ -257,7 +300,9 @@ public class MemberController {
     }
     return "redirect:/member/mypage"; // 적절한 페이지로 리다이렉트
   }
+  //마이페이지 닉네임 수정 부분 끝//
 
+//아이디 찾기 메서드시작//
   @GetMapping("/findId")
   public String findId() {
 
@@ -364,7 +409,7 @@ public class MemberController {
     }
 
   }
-
+  //아이디 찾기 메서드 끝//
   @GetMapping("/findpassword")
   public String findpassword() {
 
