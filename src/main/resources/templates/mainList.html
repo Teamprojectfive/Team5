@@ -88,31 +88,48 @@
             </div>
         </section>
     </section>
+    <button class="left" onclick="movePage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="right" onclick="movePage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    <script>
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.list_box').length;
+        const listContainer = document.getElementById('listContainer');
+        const moveDistance = -1925; // 이동 거리
+
+        function movePage(direction) {
+            currentSlide += direction;
+
+            // 처음 또는 마지막 슬라이드에 도달하면 반대편으로 이동
+            if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            } else if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            }
+
+            const translateValue = currentSlide * moveDistance;
+            listContainer.style.transform = `translateX(${translateValue}px)`;
 
 
-
-<!--    <section class="main_list_cont">-->
-<!--        <div class="all_cont">-->
-<!--            <div class="list">-->
-<!--                <h1 class="movie_id"></h1>-->
-<!--                <div class="list_item">-->
-<!--                    <div class="additional-info">-->
-<!--                        <div class="movie_name"></div>-->
-<!--                        <div class="sub_info">-->
-<!--                            <p><span></span></p>-->
-<!--                            <p><span ></span></p>-->
-<!--                            <p><span ></span></p>-->
-<!--                            <p><span ></span></p>-->
-<!--                            <div>-->
-<!--                                <a>상세보기</a>-->
-<!--                                <a>추천<span ></span></a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </section>-->
+        }
+    </script>
+    <script>
+        window.addEventListener("keydown", function(e) {
+        // space and arrow keys
+        if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
+        }
+    }, false);
+    </script>
+    <script>
+        const recommendElements = document.getElementsByClassName('recommend');
+        Array.from(recommendElements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if (confirm('정말로 추천하시겠습니까?')) {
+                    location.href = this.dataset.uri;
+                }
+            });
+        });
+    </script>
     <script>
         let imgContainer = document.querySelector(".img-container");
 
