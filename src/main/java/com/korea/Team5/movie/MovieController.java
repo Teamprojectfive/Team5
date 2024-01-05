@@ -34,10 +34,10 @@ public class MovieController {
 
         List<Movie> movieList = this.movieService.list();
 
-        int gap = 20;
+        int gap = 10;
         int start = 0;
         int end = start + gap;
-        int displayCount = 100;
+        int displayCount = 120;
         int subListCount = displayCount / gap;
 
         List<List<Movie>> movieSubListList = new ArrayList<List<Movie>>();
@@ -77,6 +77,36 @@ public class MovieController {
         this.movieService.vote(movie, member);
 
         return "redirect:/movie/list";
+    }
+
+    @GetMapping("/intro")
+    public String movieintro() {
+        return "movie_intro";
+    }
+    @GetMapping("/mainlist")
+    public String mainList(Model model) {
+
+        List<Movie> movieList = this.movieService.list();
+
+        int gap = 10;
+        int start = 0;
+        int end = start + gap;
+        int displayCount = 120;
+        int subListCount = displayCount / gap;
+
+        List<List<Movie>> movieSubListList = new ArrayList<List<Movie>>();
+        for (int i = 0; i < subListCount; i++) {
+            movieSubListList.add(movieList.subList(start, end));
+            start = end;
+            end = end + gap;
+        }
+
+        model.addAttribute("movieList", movieList);
+        model.addAttribute("movieSubList", movieSubListList);
+        model.addAttribute("movieList", movieList);
+
+
+        return "mainList";
     }
 
 
