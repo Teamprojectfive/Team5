@@ -30,10 +30,29 @@ public class MovieInfo {
 
 
 
+    @OneToMany(mappedBy = "movieInfo", cascade = CascadeType.ALL)
+    private List<Nation> nations;  // 국가 정보 (리스트)
+
+    @OneToMany(mappedBy = "movieInfo", cascade = CascadeType.ALL)
+    private List<Genre> genres;  // 장르 정보 (리스트)
+
+    @OneToMany(mappedBy = "movieInfo", cascade = CascadeType.ALL)
+    private List<Director> directors;  // 감독 정보 (리스트)
+
+    @OneToMany(mappedBy = "movieInfo", cascade = CascadeType.ALL)
+    private List<Actor1> actors;  // 배우 정보 (리스트)
 
 
+    @OneToMany(mappedBy = "movieInfo", cascade = CascadeType.ALL)
+    private List<Company> companys;  // 제작 및 배급 회사 정보 (리스트)
 
 
+    @OneToMany(mappedBy = "movieInfo", cascade = CascadeType.ALL)
+    private List<Audit> audits;  // 심의 정보 (리스트)
+
+
+    @OneToOne
+    private Movie movie;
 
 
 }

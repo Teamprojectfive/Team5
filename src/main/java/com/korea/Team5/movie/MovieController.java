@@ -4,6 +4,8 @@ import com.korea.Team5.Review.Review;
 import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +37,7 @@ public class MovieController {
     public String list(Model model) {
 
         List<Movie> movieList = this.movieService.list();
+
 
         int gap = 10;
         int start = 0;
@@ -57,15 +62,18 @@ public class MovieController {
 
 
 
-    @GetMapping("/detail/{id}")
-    public String detail(Model model,  @RequestParam(value="page", defaultValue="0") int page ,@PathVariable("id") Integer id) {
-        Movie movie = this.movieService.getMovie(id);
+    @GetMapping("/detail")
+    public String detail(Model model, @RequestParam(value="page", defaultValue="0") int page , @RequestParam String movieCd) {
+
         Page<Review> paging = this.reviewService.getList(page);
-        model.addAttribute("movie", movie);
+        MovieInfo movieInfo = this.movieService.getMovieDetail(movieCd);
+
+        model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("paging",paging);
 
         return "movieDetail";
     }
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
@@ -77,6 +85,46 @@ public class MovieController {
 
         return "redirect:/movie/list";
     }
+
+    public String getDefaultDate() {
+        // 예시로 현재 날짜를 기본값으로 설정하고자 할 때
+        return LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+    }
+
+
+
+    // api 데이터 넣는 메서드
+    @GetMapping("/weeklyMovie")
+    public String getMovies(@RequestParam(name = "key") String apiKey,
+                            @RequestParam(name = "targetDt") String targetDt,
+                            Model model) {
+        // weeklyMovie인 경우 기본값 설정
+        if (apiKey == null) {
+            apiKey = "ed496e700881942361ed983f38957c9a";
+        }
+        if (targetDt == null) {
+            targetDt = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        }
+
+        List<Movie> movies = this.movieService.fetchDataAndSaveToDatabase(targetDt);
+        model.addAttribute("movies", movies);
+
+        return "apiMovie";
+    }
+
+    @GetMapping("/addDetail")
+    public String addDetail(@RequestParam String movieCd, Model model){
+        MovieInfo movieInfo = this.movieService.getMovieDetail(movieCd);
+        model.addAttribute("movieInfo", movieInfo);
+        return "addDetail";
+    }
+
+    @GetMapping("/testDetail")
+    public String testDetail(){
+        return "testDetail";
+    }
+
+
 
 
     @GetMapping("/intro")
@@ -107,23 +155,12 @@ public class MovieController {
 
 
         return "mainList";
-
+    }
     // api 데이터 넣는 메서드
-    @GetMapping("/weeklyMovie")
-    public String getMovies(@RequestParam String targetDt, Model model) {
-        List<Movie> movies = this.movieService.fetchDataAndSaveToDatabase(targetDt);
-        model.addAttribute("movies", movies);
-        return "apiMovie";
-    }
-    @GetMapping("/addDetail")
-    public String addDetail(@RequestParam String movieCd, Model model){
-        MovieInfo movieInfo = this.movieService.getMovieDetail(movieCd);
-        model.addAttribute("movieInfo", movieInfo);
-        return "addDetail";
 
     }
 
 
 
 
-}
+
