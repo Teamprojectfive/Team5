@@ -1,12 +1,48 @@
 <html layout:decorate="~{layout}">
 <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-
-    <head>
-        <title>Title</title>
-    </head>
-<body>
 <div layout:fragment="content" class="container my-3">
-    <div>마이페이지</div>
-</div>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+    <div>
+        <a th:href="@{/main}">Logo</a>
+    </div>
+<body>
+<form th:action="@{/member/mypage}" method="get" id="myPageForm">
+    <h2>마이페이지</h2>
+    <div>내프로필</div>
+    <div>
+        <label for="loginId" class="form-label">아이디</label>
+        <input type="text" name="loginId" th:value="${member.loginId}"  class="form-control" readonly>
+    </div>
+    <div>
+        <label for="nickName" class="form-label">닉네임</label>
+        <input type="text" name="nickName" th:value="${member.nickName}"  class="form-control" readonly>
+        <input type="submit" value="수정하기" class="btn btn-primary my-2" onclick="submitForm('myPageForm', '/member/mypage/nickName')">
+    </div>
+    <div>
+        <label for="phone" class="form-label">전화번호</label>
+        <input type="text" name="phone" th:value="${member.phone}"  class="form-control" readonly>
+        <input type="submit" value="수정하기" class="btn btn-primary my-2" onclick="submitForm('myPageForm', '/member/updatePhone')">
+    </div>
+    <div>
+        <label for="email" class="form-label">이메일</label>
+        <input type="text" name="email" th:value="${member.email}"  class="form-control" readonly>
+        <input type="submit" value="수정하기" class="btn btn-primary my-2" onclick="submitForm('myPageForm', '/member/mypage/email')">
+    </div>
+    <div>
+        <label for="createDate" class="form-label">가입일시</label>
+        <input type="text" name="createDate" th:value="${member.createDate}"  class="form-control" readonly>
+    </div>
+</form>
+<button>회원탈퇴</button>
+<script>
+    function submitForm(formId, action) {
+        var form = document.getElementById(formId);
+        form.action = action; // 액션을 동적으로 설정
+        form.submit(); // 폼 제출
+    }
+</script>
 </body>
 </html>
