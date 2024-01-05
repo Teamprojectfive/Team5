@@ -1,4 +1,4 @@
-package com.korea.Team5.testMovieList;
+package com.korea.Team5.movie;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,13 +7,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Director {
+public class Nation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String peopleNm;
+
+    private String nationNm;
 
     @ManyToOne
-    private TestMovieList testMovieList;
-
+    private MovieInfo movieInfo;
 }

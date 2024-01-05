@@ -38,14 +38,11 @@ public class MemberController {
     return "/LoginandSignup/login_form";
   }
 
-
   @GetMapping("/signup")
   public String signup(MemberCreateForm memberCreateForm) {
     return "/LoginandSignup/signup_form";
 
   }
-
-
   @PostMapping("/signup")
   public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
@@ -62,14 +59,10 @@ public class MemberController {
       bindingResult.rejectValue("nickName", "duplicateValue", "이미 사용 중인 닉네임입니다.");
       return "/LoginandSignup/signup_form";
     }
-
-
     memberService.create(memberCreateForm.getLoginId(), memberCreateForm.getNickName(), memberCreateForm.getPassword1(), memberCreateForm.getEmail()
             , memberCreateForm.getPhone());
-
     return "redirect:/main";
   }
-
 
   @GetMapping("/duplicate")
   public String checkNickname(HttpSession session) {
@@ -89,18 +82,6 @@ public class MemberController {
   }
 
 
-  // 세션에서 중복된 닉네임 가져오기
-//  String duplicatedNickName = (String) session.getAttribute("duplicatedNickName");
-//
-//    if (duplicatedNickName != null) {
-//    // 중복이면 재설정 폼으로 이동
-//    session.removeAttribute("duplicatedNickName");
-//
-//    return "/LoginandSignup/socialIndex_form";
-//  } else {
-//    // 중복이 아니면 메인으로 리다이렉트
-//    return "redirect:/main";
-//  }
   @PostMapping("/duplicate")
   public String checkNickname(@RequestParam("nickname") String newNickname, HttpSession session, Model model) {
     String loginId = (String) session.getAttribute("socialLoginId");

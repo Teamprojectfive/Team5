@@ -1,12 +1,14 @@
 <!DOCTYPE html >
 <html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="">
-<body>
+<body >
 <nav th:fragment="navbarFragment">
     <div class="login_container">
         <div class="movie_name">
+            <a href="/main">
             <i class="fa-solid fa-video"></i>
             <span class="m_p">M</span><span class="m_o">o</span><span class="m_v">v</span><span
                 class="m_i">i</span><span class="m_e">e</span>
+            </a>
         </div>
         <div class="login">
             <a class="Sign_in" role="button" sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
@@ -18,12 +20,12 @@
         <div class="dropdown dropdown-hover">
             <div tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px;">영화</div>
             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
-                <li><a href="#">Top100</a></li>
-                <li><a href="#">장르</a></li>
+                <li><a href="/movie/list">Top100</a></li>
+                <li><a href="/movie/mainlist">장르</a></li>
             </ul>
         </div>
         <div class="dropdown dropdown-hover">
-            <div tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px;">소개</div>
+            <a href="/movie/intro" tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px;">소개</a>
         </div>
         <div class="dropdown dropdown-hover">
             <div tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px;">극장</div>
