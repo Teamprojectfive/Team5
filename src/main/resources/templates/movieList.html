@@ -1,15 +1,10 @@
-<html layout:decorate="~{layout}" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/movielist.css">
-    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="/mainlist.css">
 
-    <!-- jQuery UI -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -19,18 +14,16 @@
     <section class="list_box_wrap" id="listContainer">
         <section class="list_box" th:each="movieList, iterStat : ${movieSubList}">
             <div th:each="movie : ${movieList}" class="list">
-                <h1 th:text="${movie.id}"></h1>
+
                 <div class="list_item">
                     <div class="additional-info">
                         <div style="padding-top: 10px;text-align: center;font-weight: bold;font-size: 25px;"
-                             th:text="${movie.name}"></div>
+                             th:text="${movie.movieNm}"></div>
                         <div class="sub_info">
                             <p style="margin: 5px 0 0 0;">설명 : <span th:text="${movie.content}"></span></p>
-                            <p style="margin: 5px 0 0 0;">장르 : <span th:text="${movie.genre}"></span></p>
-                            <p style="margin: 5px 0 0 0;">출연진 : <span th:text="${movie.cast}"></span></p>
-                            <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.movieRelease}"></span></p>
+                            <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
                             <div style="margin-top: 10px;">
-                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                                <a th:href="@{/movie/detail(key=${apiKey},movieCd=${movie.movieCd})}" >상세보기</a></div>
                                 <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
                                    th:data-uri="@{|/movie/vote/${movie.id}|}"
                                    style="text-decoration: none; color: #007bff;">
@@ -45,9 +38,6 @@
             </div>
         </section>
     </section>
-    <button class="left" onclick="movePage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-    <button class="right" onclick="movePage(1)"><i class="fa-solid fa-chevron-right"></i></button>
-
     <script>
         let currentSlide = 0;
         const totalSlides = document.querySelectorAll('.list_box').length;
@@ -89,5 +79,6 @@
         });
     </script>
 </div>
+
 </body>
 </html>

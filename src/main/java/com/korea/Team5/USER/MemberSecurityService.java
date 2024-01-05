@@ -36,4 +36,5 @@ public class MemberSecurityService implements UserDetailsService {
     return new User(member.getLoginId(), member.getPassword(),authorities);
   }
 
+
 }
