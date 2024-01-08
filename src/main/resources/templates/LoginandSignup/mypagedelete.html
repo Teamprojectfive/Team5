@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,7 +8,35 @@
 <body>
 <h2>탈퇴안내</h2>
         <div>
-            <label for="delete">사용하고 계신 아이디(dlscjs5517)는 탈퇴할 경우 재사용 및 복구가 불가능합니다.</label>
+            <label for="delete">사용하고 계신 아이디는 탈퇴할 경우 재사용 및 복구가 불가능합니다.</label>
+            <label for="text" style="color: red;">탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가하오니 신중하게 선택하시기 바랍니다.</label>
         </div>
+<div>
+    <h1 style="font-size:15px;">탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</h1>
+    <label for="text">회원정보,작성한 리뷰, 영화 추천등 개인형 서비스 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.
+        삭제되는 내용을 확인하시고 필요한 데이터는 미리 백업을 해주세요.</label>
+</div>
+<input type="hidden" id="error-msg" th:value="${error}">
+<form th:action="@{/member/mypagedelete}" method="post">
+<div class="form-check">
+    <input type="hidden" name="loginId" th:value="${member != null ? member.loginId : ''}">
+    <input class="form-check-input" type="checkbox" name="confirm" id="flexCheckDefault">
+    <label class="form-check-label" for="flexCheckDefault">
+        안내 사항을 모두 확인하였으며, 이에 동의합니다.
+    </label>
+    <input type="submit" value="회원탈퇴">
+</div>
+</form>
+<script>
+    test();
+
+    function test() {
+        var errorMessage = document.getElementById('error-msg').value;
+        if (errorMessage.trim() !== "") {
+            // 여기에 스크립트 로직 추가
+            alert(errorMessage);
+        }
+    }
+</script>
 </body>
 </html>

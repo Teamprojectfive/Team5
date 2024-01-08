@@ -54,6 +54,7 @@
         </div>
 
         <div class="login_container">
+            <a class="admin" role="button" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}" th:href="@{/admin/adminpage}">관리자</a>
             <a class="mypage" role="button" th:if="${#authorization.expression('isAuthenticated()')}"  th:href="@{/member/mypage}">mypage</a>
             <a class="Sign_in" role="button" sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
             <a class="Sign_in" role="button" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Sign_out</a>

@@ -4,8 +4,6 @@ import com.korea.Team5.Review.Review;
 import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,13 +60,14 @@ public class MovieController {
 
 
 
-    @GetMapping("/detail")
-    public String detail(Model model, @RequestParam(value="page", defaultValue="0") int page , @RequestParam String movieCd) {
-
+    @GetMapping("/detail/{id}")
+    public String detail(Model model, @RequestParam(value="page", defaultValue="0") int page , @PathVariable("id") Integer id) {
+        Movie movie = this.movieService.getMovie(id);
         Page<Review> paging = this.reviewService.getList(page);
-        MovieInfo movieInfo = this.movieService.getMovieDetail(movieCd);
 
-        model.addAttribute("movieInfo", movieInfo);
+
+        model.addAttribute("movie", movie);
+
         model.addAttribute("paging",paging);
 
         return "movieDetail";

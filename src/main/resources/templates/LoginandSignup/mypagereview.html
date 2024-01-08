@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>내가 작성한 리뷰 </h2>
+    <!-- 작성한 리뷰 목록 출력 -->
+    <label for="text">작성한 리뷰</label>
+<ul th:each="review, status : ${reviewList}">
+    <li>
+        <!-- 정보 표시 -->
+        <div id="readView-${status.index}" th:style="${'display:block;'}">
+            <!-- 리뷰 정보 표시 -->
+            <strong>영화 제목:</strong> <span th:text="${review.movie.name}"></span><br>
+            <strong>리뷰 제목:</strong> <span th:text="${review.subject}"></span><br>
+            <strong>리뷰 내용:</strong> <span th:text="${review.content}"></span><br>
+            <!-- 별점 -->
+            <div class="star-rating" th:if="${review.starRating != null}"
+                 th:attr="data-rating=${review.starRating}">
+                <svg height="25" width="23" class="star" style="color:gold;"
+                     th:each="star : ${#numbers.sequence(1, 5)}">
+                    <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
+                    <polygon  th:if="${star} &lt;= ${review.starRating}"
+                              points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2" fill="gold"/>
+                </svg>
+            </div>
+            <!-- 수정 버튼 클릭 시, 입력 폼으로 전환 -->
+            <button onclick="switchView('editView', ${status.index})">수정</button>
+        </div>
+        <!-- 입력 폼 -->
+        <div id="editView-${status.index}" th:style="${'display:none;'}">
+            <form th:action="@{/member/mypagereviewmodify}" method="post">
+                <input type="hidden" name="reviewId" th:value="${review.id}">
+                <div>
+                    <label for="newSubject">리뷰제목</label>
+                    <input type="text" id="newSubject" name="newSubject" th:value="${review.subject}" required />
+                </div>
+                <div>
+                    <label for="newContent">리뷰내용</label>
+                    <textarea id="newContent" name="newContent" required th:text="${review.content}"></textarea>
+                </div>
+                <!-- 별점 선택 -->
+                <label class="form-label" style="margin-top:20px;">별점</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="star-rating">
+                        <span class="star" data-rating="1" onmouseover="fillStars(1)" onclick="updateRating(1)">&#9734;</span>
+                        <span class="star" data-rating="2" onmouseover="fillStars(2)" onclick="updateRating(2)">&#9734;</span>
+                        <span class="star" data-rating="3" onmouseover="fillStars(3)" onclick="updateRating(3)">&#9734;</span>
+                        <span class="star" data-rating="4" onmouseover="fillStars(4)" onclick="updateRating(4)">&#9734;</span>
+                        <span class="star" data-rating="5" onmouseover="fillStars(5)" onclick="updateRating(5)">&#9734;</span>
+                        <input type="hidden" name="newStarRating" id="newStarRating" th:value="${review.starRating}" />
+                    </div>
+                </div>
+                <div>
+                    <button type="button" onclick="switchView('readView', ${status.index})">취소</button>
+                    <input type="submit" value="수정">
+                </div>
+            </form>
+        </div>
+    </li>
+</ul>
+<script>
+    function switchView(viewId, index) {
+        var readView = document.getElementById('readView-' + index);
+        var editView = document.getElementById('editView-' + index);
+                console.log("readView: ", readView);
+               console.log("editView: ", editView);
+        if (viewId === 'readView') {
+            readView.style.display = 'block';
+            editView.style.display = 'none';
+
+        } else if (viewId === 'editView') {
+            readView.style.display = 'none';
+            editView.style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>

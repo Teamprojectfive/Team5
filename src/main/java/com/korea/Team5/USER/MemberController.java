@@ -2,6 +2,8 @@ package com.korea.Team5.USER;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.Email.EmailService;
+import com.korea.Team5.Review.Review;
+import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.SMS.SMSService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -30,6 +32,7 @@ public class MemberController {
   private final MemberService memberService;
   private final SMSService smsService;
   private final EmailService emailService;
+  private final ReviewService reviewService;
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -131,9 +134,65 @@ public class MemberController {
   }
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypagedelete")
-  public String mypagedelete(){
+  public String mypagedelete(Model model, Principal principal){
+
+    Member member = this.memberService.getMember(principal.getName());
+    model.addAttribute("member",member);
 
     return "/LoginandSignup/mypagedelete";
+  }
+  //회원탈퇴기능
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypagedelete")
+  public String mypagedelete(@RequestParam("loginId") String loginId,
+                             @RequestParam(name = "confirm", required = false) Boolean confirm,Model model,Principal principal){
+    if (Boolean.TRUE.equals(confirm)) {
+      // 체크박스가 확인된 경우, 서비스를 호출하여 사용자 데이터 삭제
+      memberService.deleteMember(loginId);
+      // 삭제 후 로그인 페이지로 리다이렉션
+      return "redirect:/member/logout";
+    } else {
+      model.addAttribute("confirm", false);
+      model.addAttribute("error", "체크박스가 체크되지 않았습니다.");
+      Member member = this.memberService.getMember(principal.getName());
+      model.addAttribute("member",member);
+      // 체크박스가 확인되지 않은 경우, 에러 메시지와 함께 폼 페이지로 리다이렉션
+      return "/LoginandSignup/mypagedelete"; // 폼 페이지의 이름이 myPage.html인 것으로 가정합니다.
+    }
+  }
+
+  //마이페이지 내가 작성한리뷰목록 확인하기
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypagereview")
+  public String mypagereview(Model model,Principal principal){
+
+    Member member = this.memberService.getMember(principal.getName());
+    List<Review> reviewList = member.getReviewList(); // 사용자가 작성한 리뷰 목록 가져오기
+// 각 리뷰에 대한 영화 정보를 가져와서 모델에 추가
+    model.addAttribute("reviewList", reviewList);
+
+
+    return "/LoginandSignup/mypagereview";
+
+  }
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypagereviewmodify")
+  public String mypagereviewmodify(Model model, @RequestParam Integer reviewId,@RequestParam String newSubject,@RequestParam String newContent,@RequestParam int newStarRating){
+
+    Review review = reviewService.getReview(reviewId);
+
+    if (review != null) {
+      // 리뷰를 수정합니다.
+      reviewService.modify(review, newSubject, newContent,newStarRating);
+      // 수정이 완료되면 마이페이지 리뷰로 리다이렉트합니다.
+      return "redirect:/member/mypage";
+    } else {
+      // 리뷰가 존재하지 않는 경우에 대한 예외 처리 로직을 추가할 수 있습니다.
+      model.addAttribute("error","존재하지 않는 리뷰입니다.");
+      // 예를 들어, 오류 페이지로 리다이렉트하거나 메시지를 보여줄 수 있습니다.
+      return "redirect:/member/mypagereview"; // 혹은 다른 처리를 수행할 수 있습니다.
+    }
+
   }
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/updatePhone")
