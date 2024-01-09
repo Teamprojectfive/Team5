@@ -9,30 +9,30 @@
 <h2>내가 작성한 리뷰 </h2>
     <!-- 작성한 리뷰 목록 출력 -->
     <label for="text">작성한 리뷰</label>
-<ul th:each="review, status : ${reviewList}">
+<ul th:each="review : ${reviewList}">
     <li>
         <!-- 정보 표시 -->
-        <div id="readView-${status.index}" th:style="${'display:block;'}">
-            <!-- 리뷰 정보 표시 -->
+        <div th:id="${'readView_' + review.id}" th:style="${'display:block;'} ">
             <strong>영화 제목:</strong> <span th:text="${review.movie.name}"></span><br>
             <strong>리뷰 제목:</strong> <span th:text="${review.subject}"></span><br>
             <strong>리뷰 내용:</strong> <span th:text="${review.content}"></span><br>
             <!-- 별점 -->
             <div class="star-rating" th:if="${review.starRating != null}"
                  th:attr="data-rating=${review.starRating}">
-                <svg height="25" width="23" class="star" style="color:gold;"
+                <svg height="25" width="23" class="star1" style="color:gold;"
                      th:each="star : ${#numbers.sequence(1, 5)}">
                     <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
                     <polygon  th:if="${star} &lt;= ${review.starRating}"
                               points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2" fill="gold"/>
                 </svg>
             </div>
+            <strong></strong>평점:<span th:text="${review.starRating}"></span><br>
             <!-- 수정 버튼 클릭 시, 입력 폼으로 전환 -->
-            <button onclick="switchView('editView', ${status.index})">수정</button>
+            <button th:onclick="switchView('editView', [[${review.id}]])">수정</button>
         </div>
         <!-- 입력 폼 -->
-        <div id="editView-${status.index}" th:style="${'display:none;'}">
-            <form th:action="@{/member/mypagereviewmodify}" method="post">
+        <div th:id="${'editView_' + review.id}" th:style="${'display:none;'}">
+            <form th:action="@{ /member/mypagereviewmodify}" method="post">
                 <input type="hidden" name="reviewId" th:value="${review.id}">
                 <div>
                     <label for="newSubject">리뷰제목</label>
@@ -55,28 +55,96 @@
                     </div>
                 </div>
                 <div>
-                    <button type="button" onclick="switchView('readView', ${status.index})">취소</button>
+                    <button type="button" th:onclick="|cancelEdit(${review.id})|">취소</button>
                     <input type="submit" value="수정">
                 </div>
             </form>
         </div>
     </li>
 </ul>
-<script>
-    function switchView(viewId, index) {
-        var readView = document.getElementById('readView-' + index);
-        var editView = document.getElementById('editView-' + index);
-                console.log("readView: ", readView);
-               console.log("editView: ", editView);
-        if (viewId === 'readView') {
-            readView.style.display = 'block';
-            editView.style.display = 'none';
 
+<script th:inline="javascript">
+    // 리뷰 상태를 관리할 객체
+    var reviewStates = {};
+
+    function switchView(viewId, reviewId) {
+        var readView = document.getElementById('readView_' + reviewId);
+        var editView = document.getElementById('editView_' + reviewId);
+
+        if (!reviewStates[reviewId]) {
+            reviewStates[reviewId] = {
+                readView: readView,
+                editView: editView
+            };
+        }
+
+        // 기존 열려있는 폼 닫기
+        Object.keys(reviewStates).forEach(function (id) {
+            reviewStates[id].readView.style.display = 'block';
+            reviewStates[id].editView.style.display = 'none';
+        });
+
+        // 선택된 폼 열기
+        if (viewId === 'readView') {
+            reviewStates[reviewId].readView.style.display = 'block';
+            reviewStates[reviewId].editView.style.display = 'none';
         } else if (viewId === 'editView') {
-            readView.style.display = 'none';
-            editView.style.display = 'block';
+            reviewStates[reviewId].readView.style.display = 'none';
+            reviewStates[reviewId].editView.style.display = 'block';
         }
     }
+
+    function cancelEdit(reviewId) {
+        var readView = document.getElementById('readView_' + reviewId);
+        var editView = document.getElementById('editView_' + reviewId);
+
+        if (!readView || !editView) {
+            console.error('Error: readView or editView is null.');
+            return;
+        }
+
+        readView.style.display = 'block';
+        editView.style.display = 'none';
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+     const stars = document.querySelectorAll('.star');
+     const ratingInput = document.getElementById('newStarRating');
+
+     stars.forEach(star => {
+         star.addEventListener('mouseover', () => {
+             const rating = star.getAttribute('data-rating');
+             fillStars(rating);
+         });
+
+         star.addEventListener('mouseout', () => {
+             const currentRating = ratingInput.value || 0;
+             fillStars(currentRating);
+         });
+
+         star.addEventListener('click', () => {
+             const rating = star.getAttribute('data-rating');
+             updateRating(rating);
+         });
+     });
+
+     function fillStars(rating) {
+         stars.forEach(star => {
+             const starRating = star.getAttribute('data-rating');
+             if (starRating <= rating) {
+                 star.innerHTML = '&#9733;';  // filled star
+             } else {
+                 star.innerHTML = '&#9734;';  // empty star
+             }
+         });
+     }
+
+     function updateRating(rating) {
+         ratingInput.value = rating;
+         fillStars(rating);
+     }
+ });
 </script>
 </body>
 </html>

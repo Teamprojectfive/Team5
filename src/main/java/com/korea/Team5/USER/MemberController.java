@@ -175,6 +175,7 @@ public class MemberController {
     return "/LoginandSignup/mypagereview";
 
   }
+  //마이페이지 리뷰수정.
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypagereviewmodify")
   public String mypagereviewmodify(Model model, @RequestParam Integer reviewId,@RequestParam String newSubject,@RequestParam String newContent,@RequestParam int newStarRating){
