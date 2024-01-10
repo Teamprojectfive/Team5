@@ -1,0 +1,96 @@
+body {
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.sub_nav{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-bottom: 90px;
+}
+
+.mypage_title{
+    font-weight: bold;
+    color: black;
+    font-size: 30px;
+    margin-left: 16%;
+}
+
+.profile_title{
+    text-align: center;
+    font-size: 23px;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+.logo_cont a{
+    font-size: 55px;
+}
+
+h2 {
+    color: #007bff;
+}
+
+label {
+    font-weight: bold;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+button {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.nick_title{
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.nickname_sbm{
+    position: relative;
+    left: 75%;
+    border: solid 1px cornflowerblue;
+    border-radius: 10px;
+    padding: 5px;
+    width: 25%;
+    background: white;!important
+}
+.nickname_sbm:hover{
+    background-color: cornflowerblue;
+}
+
+.btn{
+  background: white;
+}
