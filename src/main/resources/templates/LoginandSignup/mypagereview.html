@@ -9,10 +9,10 @@
 <h2>내가 작성한 리뷰 </h2>
     <!-- 작성한 리뷰 목록 출력 -->
     <label for="text">작성한 리뷰</label>
-<div th:if="${reviewList.isEmpty()}">
+<div th:if="${paging.isEmpty()}">
     <label for="text">작성한 리뷰가 없습니다.</label>
 </div>
-<ul th:each="review : ${reviewList}">
+<ul th:each="review : ${paging}">
     <li>
         <!-- 정보 표시 -->
         <div th:id="${'readView_' + review.id}" th:style="${'display:block;'} ">
@@ -72,7 +72,28 @@
         </div>
     </li>
 </ul>
-
+<!-- 페이징처리 시작 -->
+<div th:if="${!paging.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{|?page=${paging.number-1}|}">
+                <span>이전</span>
+            </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+            th:classappend="${page == paging.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                <span>다음</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- 페이징처리 끝 -->
 <script th:inline="javascript">
     // 리뷰 상태를 관리할 객체
     var reviewStates = {};

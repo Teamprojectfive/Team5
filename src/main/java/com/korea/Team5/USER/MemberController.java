@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -164,12 +165,12 @@ public class MemberController {
   //마이페이지 내가 작성한리뷰목록 확인하기
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypagereview")
-  public String mypagereview(Model model,Principal principal){
+  public String mypagereview(Model model,Principal principal,@RequestParam(value="page", defaultValue="0") int page){
 
     Member member = this.memberService.getMember(principal.getName());
-    List<Review> reviewList = member.getReviewList(); // 사용자가 작성한 리뷰 목록 가져오기
+    Page<Review> paging = this.reviewService.getListReveiwMember(page, member);
 // 각 리뷰에 대한 영화 정보를 가져와서 모델에 추가
-    model.addAttribute("reviewList", reviewList);
+    model.addAttribute("paging", paging);
 
 
     return "/LoginandSignup/mypagereview";
@@ -197,14 +198,13 @@ public class MemberController {
   }
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypagereviewdelete")
-  public String mypagereviewdelete(@RequestParam Integer reviewId){
+  public String mypagereviewdelete(@RequestParam Integer reviewId,Principal principal){
 
     // reviewId를 기반으로 Review를 검색합니다.
     Review review = reviewService.findReviewById(reviewId);
     reviewService.delete(review);
-//    Member member = this.memberService.getMember(principal.getName());
-//    List<Review> reviewList = member.getReviewList();
-    return "redirect:/member/mypagereview";
+
+    return  "redirect:/member/mypagereview";
   }
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/updatePhone")

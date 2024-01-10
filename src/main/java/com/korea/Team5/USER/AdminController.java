@@ -70,7 +70,6 @@ public class AdminController {
     model.addAttribute("loginId", loginId);
     try {
       Member member = memberService.getMember(loginId);
-
       // 로그인한 멤버가 작성한 리뷰 목록을 가져옴
       Page<Review> paging = this.reviewService.getListReveiwMember(page, member);
       // 가져온 리뷰 목록이 비어 있는지 확인
@@ -83,7 +82,7 @@ public class AdminController {
       return "admin_form";
     } catch (DataNotFoundException e) {
       // 데이터를 찾을 수 없는 경우의 예외 처리
-      model.addAttribute("error", "작성한 리뷰가 존재하지 않습니다.");
+      model.addAttribute("error", "아이디가 존재하지 않습니다.");
       return "admin_form";
     }
 
