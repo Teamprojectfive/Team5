@@ -29,7 +29,7 @@
 <div>
     <!--   회원 검색  -->
     <div id="memberForm">
-        <form th:action="@{/admin/adminsignup}" method="post">
+        <form th:action="@{/admin/adminsignup}" method="get">
             <h2>회원검색</h2>
             <label for="search">회원 아이디 검색:</label>
             <input type="text" id="loginId" name="loginId" placeholder="아이디를 입력하세요" th:value="${loginId}" required>
@@ -40,7 +40,7 @@
                 <label for="text">검색된 회원</label>
                 <input type="text" name="loginId" th:value="${memberFromDB.loginId}" class="form-control" readonly>
                 <!-- 여기서 검색된 회원 정보를 표시할 수 있습니다. -->
-                <input type="submit" value="회원탈퇴시키기">
+                <input type="submit" value="회원탈퇴시키기" onclick="return confirmWithdraw();">
                 <input type="submit" value="작성한 리뷰보기" onclick="submitForm('myPageForm', '/admin/adminreview')">
             </div>
             <input type="hidden" id="error-msg" th:value="${error}">
@@ -71,12 +71,19 @@
                                 </div>
                                 <div>
                                     <label for="loginId" class="form-label">평점</label>
-                                    <input type="text" th:value="${review.starRating}" class="form-control" readonly>
+                                    <input type="text" th:value="${review.starRating * 2}" class="form-control" readonly>
                                 </div>
                                 <div>
                                     <label for="loginId" class="form-label">가입일시</label>
                                     <input type="text" th:value="${review.createDate}" class="form-control" readonly>
                                 </div>
+                                <form th:action="@{/admin/adminreivewdelete}" method="post">
+                                <div>
+                                    <input type="hidden" name="reviewId" th:value="${review.Id}">
+                                    <input type="hidden" name="loginId" th:value="${loginId}" class="form-control">
+                                    <input type="submit" value="삭제하기">
+                                </div>
+                                </form>
                             </div>
                         </ul>
                     </div>
@@ -106,6 +113,10 @@
         </div>
     </div>
 </div>
+<div>
+    <label for="text">회원 목록</label>
+    <input type="text" name="signloginId" th:value="${signloginId}">
+</div>
 <script>
     function toggleForm() {
         var form = document.getElementById('memberForm');
@@ -133,6 +144,15 @@
             // 여기에 스크립트 로직 추가
             alert(errorMessage);
         }
+    }
+</script>
+<script>
+    function confirmWithdraw() {
+        // 확인창을 띄웁니다.
+        var confirmWithdraw = confirm("정말로 회원을 탈퇴시키시겠습니까?");
+
+        // 확인을 눌렀을 경우에만 폼을 제출합니다.
+        return confirmWithdraw;
     }
 </script>
 </body>

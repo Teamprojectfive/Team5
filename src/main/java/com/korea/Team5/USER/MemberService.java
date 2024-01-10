@@ -38,12 +38,9 @@ public class MemberService {
     } else {
       member.setRole("USER"); // 기본적으로 USER 역할 부여
     }
-
     this.memberRepository.save(member);
-
     return member;
   }
-
 
   public boolean isDuplicated(String loginId, String nickName) {
     return memberRepository.existsByLoginIdOrNickName(loginId, nickName);
@@ -182,6 +179,7 @@ public class MemberService {
     }
   }
 
+
   public List<Member> getMembersByEmail(String email) {
     List<Member> members = this.memberRepository.findByEmail(email);
     if (!members.isEmpty()) {
@@ -191,12 +189,12 @@ public class MemberService {
     }
   }
 
-  public List<Member> getMembersByPhone(String phone) {
+  public List<Member> getMembersByPhone(String phone){
     List<Member> members = this.memberRepository.findByPhone(phone);
 
-    if (!members.isEmpty()) {
+    if (!members.isEmpty()){
       return members;
-    } else {
+    }else {
       throw new DataNotFoundException("members not found for phone: " + phone);
     }
   }

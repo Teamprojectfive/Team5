@@ -1,5 +1,4 @@
 package com.korea.Team5.USER;
-
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.Email.EmailService;
 import com.korea.Team5.Review.Review;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +31,9 @@ public class MemberController {
   private final MemberService memberService;
   private final SMSService smsService;
   private final EmailService emailService;
+
   private final ReviewService reviewService;
+
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -198,7 +198,7 @@ public class MemberController {
   }
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypagereviewdelete")
-  public String mypagereviewdelete(@RequestParam Integer reviewId,Principal principal){
+  public String mypagereviewdelete(@RequestParam Integer reviewId){
 
     // reviewId를 기반으로 Review를 검색합니다.
     Review review = reviewService.findReviewById(reviewId);
@@ -206,6 +206,7 @@ public class MemberController {
 
     return  "redirect:/member/mypagereview";
   }
+
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/updatePhone")
   public String updatePhone() {
@@ -274,6 +275,10 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/emailverification")
   public String emailverification(Model model, @RequestParam String email, HttpSession session, @RequestParam String verificationCode, Principal principal) {
+
+
+
+
     // 세션에서 저장된 전송된 인증 코드 가져오기
     String storedVerificationCode = (String) session.getAttribute("verificationCode");
 
@@ -293,6 +298,7 @@ public class MemberController {
       return "/LoginandSignup/emailMypage";
     }
   }
+
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/password")
   public String mypagepassword(Model model,Principal principal,HttpSession session){
@@ -340,6 +346,10 @@ public class MemberController {
 
 
   //마이페이지 닉네임 수정 부분 시작//
+
+
+
+  //마이페이지 닉네임 수정 부분//
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/nickName")
   public String updatenickName() {
@@ -358,6 +368,7 @@ public class MemberController {
     if (nickName.equals(member1.getNickName())) {
       // 닉네임이 같으면 에러 메시지를 사용자에게 보여줌
       model.addAttribute("error", "현재 사용 중인 닉네임과 동일합니다.");
+      model.addAttribute("errorMessage", "현재 사용 중인 닉네임과 동일합니다.");
       return "LoginandSignup/nickNameMypage";
     }
     // 새로운 닉네임이 이미 다른 사용자에 의해 사용 중인지 확인

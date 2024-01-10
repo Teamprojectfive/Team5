@@ -29,7 +29,7 @@ public class AdminController {
   }
 
   @PreAuthorize("hasRole('ADMIN')")
-  @PostMapping("/adminsignup")
+  @GetMapping("/adminsignup")
   public String adminsignup(Model model, @RequestParam String loginId) {
     try {
       // DB에서 해당 loginId에 대한 Member를 찾아옵니다.
@@ -86,5 +86,16 @@ public class AdminController {
       return "admin_form";
     }
 
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/adminreivewdelete")
+  public String adminreivewdelete(@RequestParam Integer reviewId,@RequestParam String loginId,Model model){
+
+    // reviewId를 기반으로 Review를 검색합니다.
+    Review review = reviewService.findReviewById(reviewId);
+    reviewService.delete(review);
+    model.addAttribute("loginId",loginId);
+    return  "redirect:/admin/adminreview";
   }
 }
