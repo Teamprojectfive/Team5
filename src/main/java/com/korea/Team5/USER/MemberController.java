@@ -134,7 +134,7 @@ public class MemberController {
   @GetMapping("/updatePhone")
   public String updatePhone() {
 
-    return "/LoginandSignup/phoneMypage"; // 적절한 리다이렉트 경로로 변경
+    return "/LoginandSignup/mypage_form"; // 적절한 리다이렉트 경로로 변경
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -145,7 +145,7 @@ public class MemberController {
     session.setAttribute("verificationCode", verificationCode);
     // 모델에 전화번호를 추가하여 폼에 전달
     model.addAttribute("phone", phone);
-    return "/LoginandSignup/phoneMypage";
+    return "/LoginandSignup/mypage_form";
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -159,14 +159,14 @@ public class MemberController {
       // 인증 성공 시 처리 (예: DB에 전화번호 업데이트)
       memberService.updateMemberPhone(principal.getName(), phone);
       // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)
-      return "redirect:/member/mypage";
+      return "redirect:/member/mypage_form";
     } else {
       // 인증 실패 시 에러 메시지 설정
       model.addAttribute("errorMessage", "인증번호가 일치하지 않습니다.");
       // 모델에 전화번호를 추가하여 폼에 전달
       model.addAttribute("phone", phone);
       // 이전 페이지로 이동
-      return "/LoginandSignup/phoneMypage";
+      return "/LoginandSignup/mypage_form";
     }
   }
 
@@ -215,19 +215,12 @@ public class MemberController {
       // 모델에 이메일를 추가하여 폼에 전달
       model.addAttribute("email", email);
       // 이전 페이지로 이동
-      return "/LoginandSignup/emailMypage";
+      return "/LoginandSignup/ema";
+
     }
   }
 
 
-  //마이페이지 닉네임 수정 부분//
-  @PreAuthorize("isAuthenticated()")
-  @GetMapping("/mypage/nickName")
-  public String updatenickName() {
-
-
-    return "LoginandSignup/nickNameMypage";
-  }
 
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/nickName")
@@ -237,15 +230,17 @@ public class MemberController {
 
     // 새로운 닉네임이 현재의 닉네임과 같은지 확인
     if (nickName.equals(member1.getNickName())) {
+      model.addAttribute("member",member1);
       // 닉네임이 같으면 에러 메시지를 사용자에게 보여줌
       model.addAttribute("errorMessage", "현재 사용 중인 닉네임과 동일합니다.");
-      return "LoginandSignup/nickNameMypage";
+      return "LoginandSignup/mypage_form";
     }
     // 새로운 닉네임이 이미 다른 사용자에 의해 사용 중인지 확인
     if (memberService.isNickNameDuplicated(nickName)) {
+      model.addAttribute("member",member1);
       // 닉네임이 이미 사용 중이면 에러 메시지를 사용자에게 보여줌
       model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
-      return "LoginandSignup/nickNameMypage";
+      return "LoginandSignup/mypage_form";
     }
     // 새로운 닉네임이 입력되지 않았을 경우, 현재의 닉네임을 그대로 사용
     String newNickName = (nickName == null || nickName.trim().isEmpty()) ? member1.getNickName() : nickName;
@@ -254,6 +249,7 @@ public class MemberController {
       // 닉네임이 변경되었을 때만 업데이트 진행
       member1.setNickName(newNickName);
       memberService.updateMember(member1.getLoginId(), newNickName, member1.getPhone(), member1.getEmail(), member1.getCreateDate());
+      model.addAttribute("member",member1);
     }
     return "redirect:/member/mypage"; // 적절한 페이지로 리다이렉트
   }

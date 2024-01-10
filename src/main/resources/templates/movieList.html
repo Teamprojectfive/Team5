@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/mainlist.css">
-
+    <link rel="stylesheet" href="/movielist.css">
 </head>
 <body>
 <div layout:fragment="content">
@@ -14,7 +13,6 @@
     <section class="list_box_wrap" id="listContainer">
         <section class="list_box" th:each="movieList, iterStat : ${movieSubList}">
             <div th:each="movie : ${movieList}" class="list">
-
                 <div class="list_item">
                     <div class="additional-info">
                         <div style="padding-top: 10px;text-align: center;font-weight: bold;font-size: 25px;"
@@ -23,21 +21,22 @@
                             <p style="margin: 5px 0 0 0;">설명 : <span th:text="${movie.content}"></span></p>
                             <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
                             <div style="margin-top: 10px;">
-                                <a th:href="@{/movie/detail(key=${apiKey},movieCd=${movie.movieCd})}" >상세보기</a></div>
-                                <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-                                   th:data-uri="@{|/movie/vote/${movie.id}|}"
-                                   style="text-decoration: none; color: #007bff;">
-                                    추천
-                                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(movie.voter)}"
-                                          style="margin-left: 5px;"></span>
-                                </a>
-                            </div>
+                                <a th:href="@{/movie/detail(key=${apiKey},movieCd=${movie.movieCd})}">상세보기</a></div>
+                            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                               th:data-uri="@{|/movie/vote/${movie.id}|}"
+                               style="text-decoration: none; color: #007bff;">
+                                추천
+                                <span class="badge rounded-pill bg-success" th:text="${#lists.size(movie.voter)}"
+                                      style="margin-left: 5px;"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </section>
+    <button class="left" onclick="movePage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="right" onclick="movePage(1)"><i class="fa-solid fa-chevron-right"></i></button>
     <script>
         let currentSlide = 0;
         const totalSlides = document.querySelectorAll('.list_box').length;
