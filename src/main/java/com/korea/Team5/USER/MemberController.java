@@ -2,13 +2,16 @@ package com.korea.Team5.USER;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.Email.EmailService;
+
 import com.korea.Team5.Review.Review;
 import com.korea.Team5.Review.ReviewService;
+
 import com.korea.Team5.SMS.SMSService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +36,10 @@ public class MemberController {
   private final MemberService memberService;
   private final SMSService smsService;
   private final EmailService emailService;
+
   private final ReviewService reviewService;
+
+
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -133,6 +139,7 @@ public class MemberController {
 
     return "/LoginandSignup/mypage_form";
   }
+
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypagedelete")
   public String mypagedelete(Model model, Principal principal){
@@ -206,6 +213,7 @@ public class MemberController {
 
     return  "redirect:/member/mypagereview";
   }
+
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/updatePhone")
   public String updatePhone() {
@@ -274,6 +282,7 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/emailverification")
   public String emailverification(Model model, @RequestParam String email, HttpSession session, @RequestParam String verificationCode, Principal principal) {
+
     // 세션에서 저장된 전송된 인증 코드 가져오기
     String storedVerificationCode = (String) session.getAttribute("verificationCode");
 
@@ -340,6 +349,11 @@ public class MemberController {
 
 
   //마이페이지 닉네임 수정 부분 시작//
+
+
+
+  //마이페이지 닉네임 수정 부분//
+
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/nickName")
   public String updatenickName() {
@@ -357,7 +371,10 @@ public class MemberController {
     // 새로운 닉네임이 현재의 닉네임과 같은지 확인
     if (nickName.equals(member1.getNickName())) {
       // 닉네임이 같으면 에러 메시지를 사용자에게 보여줌
+
       model.addAttribute("error", "현재 사용 중인 닉네임과 동일합니다.");
+
+      model.addAttribute("errorMessage", "현재 사용 중인 닉네임과 동일합니다.");
       return "LoginandSignup/nickNameMypage";
     }
     // 새로운 닉네임이 이미 다른 사용자에 의해 사용 중인지 확인
@@ -376,9 +393,13 @@ public class MemberController {
     }
     return "redirect:/member/mypage"; // 적절한 페이지로 리다이렉트
   }
+
   //마이페이지 닉네임 수정 부분 끝//
 
 //아이디 찾기 메서드시작//
+
+
+
   @GetMapping("/findId")
   public String findId() {
 

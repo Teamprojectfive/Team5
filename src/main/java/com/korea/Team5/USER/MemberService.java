@@ -31,6 +31,7 @@ public class MemberService {
     member.setCreateDate(LocalDateTime.now());
 
 
+
     // "admin"으로 등록되는 경우에는 ADMIN 역할 부여
     if ("admin".equals(loginId)) {
       member.setRole("ADMIN");
@@ -39,11 +40,12 @@ public class MemberService {
       member.setRole("USER"); // 기본적으로 USER 역할 부여
     }
 
+
+
     this.memberRepository.save(member);
 
     return member;
   }
-
 
   public boolean isDuplicated(String loginId, String nickName) {
     return memberRepository.existsByLoginIdOrNickName(loginId, nickName);
@@ -197,6 +199,12 @@ public class MemberService {
     if (!members.isEmpty()) {
       return members;
     } else {
+  public List<Member> getMembersByPhone(String phone){
+    List<Member> members = this.memberRepository.findByPhone(phone);
+
+    if (!members.isEmpty()){
+      return members;
+    }else {
       throw new DataNotFoundException("members not found for phone: " + phone);
     }
   }
