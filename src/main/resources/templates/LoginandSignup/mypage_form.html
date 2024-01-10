@@ -1,113 +1,33 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/mypage.css">
-    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
-    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
-</head>
-<body>
-<div class="sub_nav">
-    <div class="logo_cont">
-        <a th:href="@{/main}"><i class="fa-solid fa-video"></i></a>
-    </div>
-    <div class="dropdown dropdown-hover">
-        <div tabindex="0" role="button" class="btn m-1"
-             style="background: white; font-size:20px; font-weight:bold; width:145px;">영화
-        </div>
-        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52"
-            style="background: aliceblue; width: 155px;">
-            <li><a href="/movie/list">Top100</a></li>
-            <li><a href="/movie/mainlist">장르</a></li>
-        </ul>
-    </div>
-    <div class="dropdown dropdown-hover">
-        <a href="/movie/intro" tabindex="0" role="button" class="btn m-1"
-           style="background: white; font-size:20px; font-weight:bold; width:145px;">소개</a>
-    </div>
-    <div class="dropdown dropdown-hover">
-        <div tabindex="0" role="button" class="btn m-1"
-             style="background: white; font-size:20px;font-weight:bold; width:145px;">극장
-        </div>
-        <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52"
-            style="background: aliceblue; width: 155px;">
-            <li><a href="#">지역</a></li>
-            <li><a href="#">위치</a></li>
-        </ul>
-    </div>
-</div>
-<h2 class="mypage_title">마이페이지</h2>
+<html layout:decorate="~{layout}">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 <div layout:fragment="content" class="container my-3">
-
-    <!--    닉네임수정 모달-->
-    <dialog id="my_modal_3" class="modal" style="z-index:99;">
-        <div class="modal-box" style="color:white;">
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-            </form>
-            <h2 class="nick_title">닉네임 수정</h2>
-            <div>
-                <!-- 에러 메세지 표시 -->
-                <div th:if="${errorMessage}" class="error-message">
-                    <p th:text="${errorMessage}" class="error-text"></p>
-                </div>
-                <label for="nickName">닉네임</label>
-                <input type="text" id="enterNickName" name="enterNickName" th:value="${enterNickName}"
-                       class="form-control">
-                <input class="nickname_sbm" type="submit" value="수정하기"
-                       onclick="submitForm('myPageForm', '/member/mypage/nickName')">
-            </div>
-        </div>
-    </dialog>
-    <!--    닉네임수정 모달-->
-    <dialog id="my_modal_2" class="modal" style="z-index:99;">
-        <div class="modal-box" style="color:white;">
-            <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-            </form>
-            <h2 class="nick_title">휴대전화번호 수정하기</h2>
-            <div>
-                <!-- 에러 메세지 표시 -->
-                <div th:if="${errorMessage}" class="error-message">
-                    <p th:text="${errorMessage}" class="error-text"></p>
-                </div>
-                <div>
-                    <label for="phone">변경할 휴대전화번호</label>
-                    <input type="text" name="phone" th:value="${phone}" class="form-control">
-                    <input class="nickname_sbm" type="submit" value="인증하기" onclick="">
-                </div>
-                <div>
-                    <label for="verificationCode">인증번호</label>
-                    <input type="hidden" name="phone" id="phone" th:value="${phone}">
-                    <input type="text" name="verificationCode" class="form-control" th:value="${verificationCode}">
-                    <input class="nickname_sbm" type="submit" value="확인">
-                </div>
-            </div>
-        </div>
-    </dialog>
-    <form th:action="@{/member/mypage}" method="post" id="myPageForm" onsubmit="return false">
-        <div class="profile_title">내프로필</div>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <div>
+        <a th:href="@{/main}">Logo</a>
+    </div>
+    <body>
+    <form th:action="@{/member/mypage}" method="get" id="myPageForm">
+        <h2>마이페이지</h2>
+        <div>내프로필</div>
         <div>
             <label for="loginId" class="form-label">아이디</label>
+            <input type="hidden" name="loginId" th:value="${member}">
             <input type="text" name="loginId" th:value="${member.loginId}" class="form-control" readonly>
         </div>
         <div>
             <label for="nickName" class="form-label">닉네임</label>
-            <input type="text" id="nickname" name="nickName" th:value="${member.nickName}" class="form-control"
-                   readonly>
-            <button class="btn" onclick="my_modal_3.showModal(); return false;" name="nickName"
-                    style="background-color: oklch(0.6569 0.196 275.75); border: solid 1px oklch(0.6569 0.196 275.75); color:black; ">
-                수정하기
-            </button>
+            <input type="text" name="nickName" th:value="${member.nickName}" class="form-control" readonly>
+            <input type="submit" value="수정하기" class="btn btn-primary my-2"
+                   onclick="submitForm('myPageForm', '/member/mypage/nickName')">
         </div>
         <div>
             <label for="phone" class="form-label">전화번호</label>
             <input type="text" name="phone" th:value="${member.phone}" class="form-control" readonly>
-            <button class="btn" onclick="my_modal_2.showModal(); return false;" name="phone"
-                    style="background-color: oklch(0.6569 0.196 275.75); border: solid 1px oklch(0.6569 0.196 275.75); color:black; ">
-                수정하기
-            </button>
+            <input type="submit" value="수정하기" class="btn btn-primary my-2"
+                   onclick="submitForm('myPageForm', '/member/updatePhone')">
         </div>
         <div>
             <label for="email" class="form-label">이메일</label>
@@ -119,26 +39,27 @@
             <label for="createDate" class="form-label">가입일시</label>
             <input type="text" name="createDate" th:value="${member.createDate}" class="form-control" readonly>
         </div>
+        <div>
+            <label for="password">비밀번호 수정</label>
+            <input type="submit" value="수정하기" class="btn btn-primary my-2"
+                   onclick="submitForm('myPageForm', '/member/mypage/password')">
+        </div>
     </form>
-    <button>회원탈퇴</button>
+    <div>
+        <a th:href="@{/member/mypagereview}">
+            <input type="submit" value="내가 작성한 리뷰" class="btn btn-primary my-2">
+    </div>
+    <div>
+        <a th:href="@{/member/mypagedelete}">
+            <input type="submit" value="회원탈퇴">
+        </a>
+    </div>
     <script>
         function submitForm(formId, action) {
-          var form = document.getElementById(formId);
-          var nicknameInput = document.getElementById('nickname');
-          var enterNicknameInput = document.getElementById('enterNickName');
-          nicknameInput.value = enterNicknameInput.value;
-
-          if (nicknameInput.value === enterNicknameInput.value) {
-              var errorMessage = '현재 사용 중인 닉네임과 동일합니다.';
-              document.querySelector('.error-message .error-text').innerText = errorMessage;
-
-          } else {
-              form.action = action;
-              form.submit();
-              my_modal_3.close();
-          }
-      }
+            var form = document.getElementById(formId);
+            form.action = action; // 액션을 동적으로 설정
+            form.submit(); // 폼 제출
+        }
     </script>
-</div>
-</body>
+    </body>
 </html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>내가 작성한 리뷰 </h2>
+    <!-- 작성한 리뷰 목록 출력 -->
+    <label for="text">작성한 리뷰</label>
+<div th:if="${paging.isEmpty()}">
+    <label for="text">작성한 리뷰가 없습니다.</label>
+</div>
+<ul th:each="review : ${paging}">
+    <li>
+        <!-- 정보 표시 -->
+        <div th:id="${'readView_' + review.id}" th:style="${'display:block;'} ">
+            <input type="hidden" name="reviews" th:value="${reviews}">
+            <strong>영화 제목:</strong> <span th:text="${review.movie.name}"></span><br>
+            <strong>리뷰 제목:</strong> <span th:text="${review.subject}"></span><br>
+            <strong>리뷰 내용:</strong> <span th:text="${review.content}"></span><br>
+            <!-- 별점 -->
+            <div class="star-rating" th:if="${review.starRating != null}"
+                 th:attr="data-rating=${review.starRating}">
+                <svg height="25" width="23" class="star1" style="color:gold;"
+                     th:each="star : ${#numbers.sequence(1, 5)}">
+                    <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
+                    <polygon  th:if="${star} &lt;= ${review.starRating}"
+                              points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2" fill="gold"/>
+                </svg>
+            </div>
+            <strong></strong>평점:<span th:text="${review.starRating * 2}"></span><br>
+            <!-- 수정 버튼 클릭 시, 입력 폼으로 전환 -->
+            <button th:onclick="switchView('editView', [[${review.id}]])">수정</button>
+            <form th:action="@{/member/mypagereviewdelete}" method="post" onsubmit="return confirmDelete();">
+                <div>
+                    <input type="hidden" name="reviewId" th:value="${review.id}">
+                    <input type="submit" value="삭제">
+                </div>
+            </form>
+        </div>
+        <!-- 입력 폼 -->
+        <div th:id="${'editView_' + review.id}" th:style="${'display:none;'}">
+            <form th:action="@{ /member/mypagereviewmodify}" method="post">
+                <input type="hidden" name="reviewId" th:value="${review.id}">
+                <div>
+                    <label for="newSubject">리뷰제목</label>
+                    <input type="text" id="newSubject" name="newSubject" th:value="${review.subject}" required />
+                </div>
+                <div>
+                    <label for="newContent">리뷰내용</label>
+                    <textarea id="newContent" name="newContent" required th:text="${review.content}"></textarea>
+                </div>
+                <!-- 별점 선택 -->
+                <label class="form-label" style="margin-top:20px;">별점</label>
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="star-rating">
+                        <span class="star" data-rating="1" onmouseover="fillStars(1)" onclick="updateRating(1)">&#9734;</span>
+                        <span class="star" data-rating="2" onmouseover="fillStars(2)" onclick="updateRating(2)">&#9734;</span>
+                        <span class="star" data-rating="3" onmouseover="fillStars(3)" onclick="updateRating(3)">&#9734;</span>
+                        <span class="star" data-rating="4" onmouseover="fillStars(4)" onclick="updateRating(4)">&#9734;</span>
+                        <span class="star" data-rating="5" onmouseover="fillStars(5)" onclick="updateRating(5)">&#9734;</span>
+                        <input type="hidden" name="newStarRating" id="newStarRating" th:value="${review.starRating}" />
+                    </div>
+                </div>
+                <div>
+                    <button type="button" th:onclick="|cancelEdit(${review.id})|">취소</button>
+                    <input type="submit" value="수정">
+                </div>
+            </form>
+        </div>
+    </li>
+</ul>
+<!-- 페이징처리 시작 -->
+<div th:if="${!paging.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{|?page=${paging.number-1}|}">
+                <span>이전</span>
+            </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+            th:classappend="${page == paging.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+            <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                <span>다음</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- 페이징처리 끝 -->
+<script th:inline="javascript">
+    // 리뷰 상태를 관리할 객체
+    var reviewStates = {};
+
+    function switchView(viewId, reviewId) {
+        var readView = document.getElementById('readView_' + reviewId);
+        var editView = document.getElementById('editView_' + reviewId);
+
+        if (!reviewStates[reviewId]) {
+            reviewStates[reviewId] = {
+                readView: readView,
+                editView: editView
+            };
+        }
+
+        // 기존 열려있는 폼 닫기
+        Object.keys(reviewStates).forEach(function (id) {
+            reviewStates[id].readView.style.display = 'block';
+            reviewStates[id].editView.style.display = 'none';
+        });
+
+        // 선택된 폼 열기
+        if (viewId === 'readView') {
+            reviewStates[reviewId].readView.style.display = 'block';
+            reviewStates[reviewId].editView.style.display = 'none';
+        } else if (viewId === 'editView') {
+            reviewStates[reviewId].readView.style.display = 'none';
+            reviewStates[reviewId].editView.style.display = 'block';
+        }
+    }
+
+    function cancelEdit(reviewId) {
+        var readView = document.getElementById('readView_' + reviewId);
+        var editView = document.getElementById('editView_' + reviewId);
+
+        if (!readView || !editView) {
+            console.error('Error: readView or editView is null.');
+            return;
+        }
+
+        readView.style.display = 'block';
+        editView.style.display = 'none';
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+     const stars = document.querySelectorAll('.star');
+     const ratingInput = document.getElementById('newStarRating');
+
+     stars.forEach(star => {
+         star.addEventListener('mouseover', () => {
+             const rating = star.getAttribute('data-rating');
+             fillStars(rating);
+         });
+
+         star.addEventListener('mouseout', () => {
+             const currentRating = ratingInput.value || 0;
+             fillStars(currentRating);
+         });
+
+         star.addEventListener('click', () => {
+             const rating = star.getAttribute('data-rating');
+             updateRating(rating);
+         });
+     });
+
+     function fillStars(rating) {
+         stars.forEach(star => {
+             const starRating = star.getAttribute('data-rating');
+             if (starRating <= rating) {
+                 star.innerHTML = '&#9733;';  // filled star
+             } else {
+                 star.innerHTML = '&#9734;';  // empty star
+             }
+         });
+     }
+
+     function updateRating(rating) {
+         ratingInput.value = rating;
+         fillStars(rating);
+     }
+ });
+</script>
+<script>
+    function confirmDelete() {
+        // 확인창을 띄웁니다.
+        var confirmDelete = confirm("정말로 삭제하시겠습니까?");
+
+        // 확인을 눌렀을 경우에만 삭제 동작을 실행합니다.
+        return confirmDelete;
+    }
+</script>
+</body>
+</html>

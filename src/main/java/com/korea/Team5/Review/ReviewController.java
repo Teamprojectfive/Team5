@@ -54,11 +54,12 @@ public class ReviewController {
     Member member = this.memberService.getMember(principal.getName());
     if (bindingResult.hasErrors()) {
       model.addAttribute("movie", movie);
-      model.addAttribute("member", member);
+//      model.addAttribute("member", member);
       return "/Review/review_form";
     }
     this.reviewService.create(movie, reviewForm.getSubject(), reviewForm.getContent(), reviewForm.getStarRating(),
             member);
+    model.addAttribute("member",member);
 
     return String.format("redirect:/movie/detail/%s", movieId);
 

@@ -2,11 +2,17 @@ package com.korea.Team5.USER;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.Email.EmailService;
+
+import com.korea.Team5.Review.Review;
+import com.korea.Team5.Review.ReviewService;
+
 import com.korea.Team5.SMS.SMSService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +36,10 @@ public class MemberController {
   private final MemberService memberService;
   private final SMSService smsService;
   private final EmailService emailService;
+
+  private final ReviewService reviewService;
+
+
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -131,6 +141,80 @@ public class MemberController {
   }
 
   @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypagedelete")
+  public String mypagedelete(Model model, Principal principal){
+
+    Member member = this.memberService.getMember(principal.getName());
+    model.addAttribute("member",member);
+
+    return "/LoginandSignup/mypagedelete";
+  }
+  //회원탈퇴기능
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypagedelete")
+  public String mypagedelete(@RequestParam("loginId") String loginId,
+                             @RequestParam(name = "confirm", required = false) Boolean confirm,Model model,Principal principal){
+    if (Boolean.TRUE.equals(confirm)) {
+      // 체크박스가 확인된 경우, 서비스를 호출하여 사용자 데이터 삭제
+      memberService.deleteMember(loginId);
+      // 삭제 후 로그인 페이지로 리다이렉션
+      return "redirect:/member/logout";
+    } else {
+      model.addAttribute("confirm", false);
+      model.addAttribute("error", "체크박스가 체크되지 않았습니다.");
+      Member member = this.memberService.getMember(principal.getName());
+      model.addAttribute("member",member);
+      // 체크박스가 확인되지 않은 경우, 에러 메시지와 함께 폼 페이지로 리다이렉션
+      return "/LoginandSignup/mypagedelete"; // 폼 페이지의 이름이 myPage.html인 것으로 가정합니다.
+    }
+  }
+
+  //마이페이지 내가 작성한리뷰목록 확인하기
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypagereview")
+  public String mypagereview(Model model,Principal principal,@RequestParam(value="page", defaultValue="0") int page){
+
+    Member member = this.memberService.getMember(principal.getName());
+    Page<Review> paging = this.reviewService.getListReveiwMember(page, member);
+// 각 리뷰에 대한 영화 정보를 가져와서 모델에 추가
+    model.addAttribute("paging", paging);
+
+
+    return "/LoginandSignup/mypagereview";
+
+  }
+  //마이페이지 리뷰수정.
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypagereviewmodify")
+  public String mypagereviewmodify(Model model, @RequestParam Integer reviewId,@RequestParam String newSubject,@RequestParam String newContent,@RequestParam int newStarRating){
+
+    Review review = reviewService.getReview(reviewId);
+
+    if (review != null) {
+      // 리뷰를 수정합니다.
+      reviewService.modify(review, newSubject, newContent,newStarRating);
+      // 수정이 완료되면 마이페이지 리뷰로 리다이렉트합니다.
+      return "redirect:/member/mypage";
+    } else {
+      // 리뷰가 존재하지 않는 경우에 대한 예외 처리 로직을 추가할 수 있습니다.
+      model.addAttribute("error","존재하지 않는 리뷰입니다.");
+      // 예를 들어, 오류 페이지로 리다이렉트하거나 메시지를 보여줄 수 있습니다.
+      return "redirect:/member/mypagereview"; // 혹은 다른 처리를 수행할 수 있습니다.
+    }
+
+  }
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypagereviewdelete")
+  public String mypagereviewdelete(@RequestParam Integer reviewId,Principal principal){
+
+    // reviewId를 기반으로 Review를 검색합니다.
+    Review review = reviewService.findReviewById(reviewId);
+    reviewService.delete(review);
+
+    return  "redirect:/member/mypagereview";
+  }
+
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/updatePhone")
   public String updatePhone() {
 
@@ -219,9 +303,53 @@ public class MemberController {
 
     }
   }
+  @PreAuthorize("isAuthenticated()")
+  @GetMapping("/mypage/password")
+  public String mypagepassword(Model model,Principal principal,HttpSession session){
+    Member member = memberService.getMember(principal.getName());
+    session.setAttribute("member",member);
+
+    model.addAttribute("member",member);
 
 
+    return "/LoginandSignup/mypagepassword";
+  }
+  //마이페이지 비밀번호 수정메서드.
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypagepasswordupdate")
+  public String mypagepasswordupdate(Model model, @RequestParam String mypagepassword, @RequestParam String mypagepassword1, HttpSession session,@RequestParam String currentpassword) {
+    // 사용자가 입력한 비밀번호를 세션에 저장
+    session.setAttribute("password", mypagepassword);
+    session.setAttribute("password1", mypagepassword1);
+    Member member = (Member) session.getAttribute("member");
+    // DB에서 현재 사용자의 정보를 가져옴
+    Member dbMember = memberService.getMember(member.getLoginId());
+    String storedPassword = (String) session.getAttribute("password");
+    String storedPassword1 = (String) session.getAttribute("password1");
+    // Check if the current password is correct
+    if (!passwordEncoder.matches(currentpassword, dbMember.getPassword())) {
+      model.addAttribute("error", "현재 비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+      return "/LoginandSignup/mypagepassword";
+    }
+    if (storedPassword != null && storedPassword.equals(storedPassword1)) {
+      // 비밀번호를 암호화하여 저장
+      String encryptedPassword = passwordEncoder.encode(storedPassword);
+      member.setPassword(encryptedPassword);
+      memberService.updateMemberPassword(member);
+      model.addAttribute("member",member);
+      // 비밀번호 업데이트 후 세션에서 사용한 데이터를 삭제
+      session.removeAttribute("password");
+      session.removeAttribute("password1");
+    } else {
+      // 세션에 저장된 password와 password1이 일치하지 않는 경우
+      model.addAttribute("error", "입력한 비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+      return "/LoginandSignup/mypagepassword";
+    }
+    return "/LoginandSignup/mypage_form";
+  }
 
+
+  //마이페이지 닉네임 수정 부분 시작//
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/nickName")
   public String updatenickName(@RequestParam("nickName") String nickName, Model model, Principal principal) {
@@ -232,6 +360,9 @@ public class MemberController {
     if (nickName.equals(member1.getNickName())) {
       model.addAttribute("member",member1);
       // 닉네임이 같으면 에러 메시지를 사용자에게 보여줌
+
+      model.addAttribute("error", "현재 사용 중인 닉네임과 동일합니다.");
+
       model.addAttribute("errorMessage", "현재 사용 중인 닉네임과 동일합니다.");
       return "LoginandSignup/mypage_form";
     }
@@ -253,6 +384,12 @@ public class MemberController {
     }
     return "redirect:/member/mypage"; // 적절한 페이지로 리다이렉트
   }
+
+  //마이페이지 닉네임 수정 부분 끝//
+
+//아이디 찾기 메서드시작//
+
+
 
   @GetMapping("/findId")
   public String findId() {
@@ -360,7 +497,7 @@ public class MemberController {
     }
 
   }
-
+  //아이디 찾기 메서드 끝//
   @GetMapping("/findpassword")
   public String findpassword() {
 
