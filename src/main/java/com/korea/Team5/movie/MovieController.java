@@ -65,7 +65,6 @@ public class MovieController {
         Movie movie = this.movieService.getMovie(id);
         Page<Review> paging = this.reviewService.getList(page);
 
-
         model.addAttribute("movie", movie);
 
         model.addAttribute("paging",paging);

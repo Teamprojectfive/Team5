@@ -77,4 +77,13 @@ public class ReviewService {
     Pageable pageable = PageRequest.of(page, 10);
     return this.reviewRepository.findAll(pageable);
   }
+  public Page<Review> getListReveiwMember(int page, Member member) {
+    Pageable pageable = PageRequest.of(page, 10);
+    return this.reviewRepository.findByMember(member, pageable);
+  }
+
+  public Review findReviewById(Integer reviewId) {
+    // JpaRepository에서 제공하는 findById 메서드 활용
+    return reviewRepository.findById(reviewId).orElse(null);
+  }
 }

@@ -66,6 +66,8 @@ public class MemberService {
 
     // 만약 사용자가 존재한다면 삭제 수행
     memberOptional.ifPresent(member -> memberRepository.delete(member));
+
+
   }
 
   // 통합 메서드로 소셜 로그인 정보 저장 또는 업데이트

@@ -196,6 +196,17 @@ public class MemberController {
 
   }
   @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypagereviewdelete")
+  public String mypagereviewdelete(@RequestParam Integer reviewId){
+
+    // reviewId를 기반으로 Review를 검색합니다.
+    Review review = reviewService.findReviewById(reviewId);
+    reviewService.delete(review);
+//    Member member = this.memberService.getMember(principal.getName());
+//    List<Review> reviewList = member.getReviewList();
+    return "redirect:/member/mypagereview";
+  }
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/updatePhone")
   public String updatePhone() {
 
