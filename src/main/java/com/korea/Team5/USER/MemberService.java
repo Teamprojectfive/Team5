@@ -31,10 +31,20 @@ public class MemberService {
     member.setCreateDate(LocalDateTime.now());
 
 
+
+    // "admin"으로 등록되는 경우에는 ADMIN 역할 부여
+    if ("admin".equals(loginId)) {
+      member.setRole("ADMIN");
+      // 다른 관리자 권한 부여 로직 추가
+    } else {
+      member.setRole("USER"); // 기본적으로 USER 역할 부여
+    }
+
+
+
     this.memberRepository.save(member);
 
     return member;
-
   }
 
   public boolean isDuplicated(String loginId, String nickName) {
@@ -49,6 +59,17 @@ public class MemberService {
     } else {
       throw new DataNotFoundException("member not found");
     }
+  }
+
+  @Transactional
+  public void deleteMember(String memberId) {
+    // 여기에 사용자 삭제 로직을 구현합니다.
+    Optional<Member> memberOptional = memberRepository.findByloginId(memberId);
+
+    // 만약 사용자가 존재한다면 삭제 수행
+    memberOptional.ifPresent(member -> memberRepository.delete(member));
+
+
   }
 
   // 통합 메서드로 소셜 로그인 정보 저장 또는 업데이트
@@ -162,6 +183,7 @@ public class MemberService {
       throw new DataNotFoundException("Member not found");
     }
   }
+
   public List<Member> getMembersByEmail(String email) {
     List<Member> members = this.memberRepository.findByEmail(email);
     if (!members.isEmpty()) {
@@ -170,6 +192,13 @@ public class MemberService {
       throw new DataNotFoundException("members not found for email: " + email);
     }
   }
+
+  public List<Member> getMembersByPhone(String phone) {
+    List<Member> members = this.memberRepository.findByPhone(phone);
+
+    if (!members.isEmpty()) {
+      return members;
+    } else {
   public List<Member> getMembersByPhone(String phone){
     List<Member> members = this.memberRepository.findByPhone(phone);
 
