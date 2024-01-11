@@ -6,8 +6,12 @@
     </head>
     <body>
     <div id="movieForm">
+        <div th:if="${adminmoviespaging.isEmpty()}">
+            <label for="text">등록된 영화가 없습니다.</label>
+        </div>
+        <h2>영화 목록</h2>
+        <input type="submit" value="새로운 영화 등록하기">
         <div th:if="${adminmoviespaging}">
-            <h2>영화 목록</h2>
             <ul>
                 <li th:each="movie : ${adminmoviespaging.content}">
                     <!-- 멤버의 정보를 출력 -->
@@ -17,6 +21,15 @@
                     <p th:text="${movie.age}"></p>
                     <!-- 추가로 출력할 정보가 있다면 추가 -->
                     <!-- <p th:text="${member.someOtherField}"></p> -->
+                    <form th:action="@{/admin/adminmoviedelete}" method="post">
+                        <div>
+                            <input type="hidden" name="movie" th:value="${movie.id}">
+                            <input type="submit" value="삭제" onclick="return confirmWithdraw();">
+                        </div>
+                    </form>
+                    <div>
+                        <input type="submit" value="수정">
+                    </div>
                 </li>
             </ul>
             <!-- 페이징처리 시작 -->
@@ -43,5 +56,14 @@
             <!-- 페이징처리 끝 -->
         </div>
     </div>
+    <script>
+        function confirmWithdraw() {
+            // 확인창을 띄웁니다.
+            var confirmWithdraw = confirm("정말로 영화를 삭제하시겠습니까?");
+
+            // 확인을 눌렀을 경우에만 폼을 제출합니다.
+            return confirmWithdraw;
+        }
+    </script>
     </body>
 </html>

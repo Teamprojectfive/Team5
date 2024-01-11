@@ -59,6 +59,7 @@ public class AdminController {
     try {
       // 서비스를 통해 해당 회원 삭제
       memberService.deleteMember(loginId);
+      model.addAttribute("deleteform",true);
       // 삭제가 성공했을 경우, 다시 검색 폼으로 이동
       return "redirect:/admin/adminpage";
     } catch (DataNotFoundException e) {
@@ -98,7 +99,7 @@ public class AdminController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/adminreivewdelete")
-  public String adminreivewdelete(@RequestParam Integer reviewId,Model model,@RequestParam String loginId){
+  public String adminreivewdelete(@RequestParam Integer reviewId,@RequestParam String loginId){
 
     // reviewId를 기반으로 Review를 검색합니다.
     Review review = reviewService.findReviewById(reviewId);
@@ -130,5 +131,16 @@ public class AdminController {
       model.addAttribute("error","조회된 영화가 없습니다.");
     }
     return "admin_movielist";
+  }
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping("/adminmoviedelete")
+  public String adminmoviedelete(@RequestParam Integer movie) {
+
+    // reviewId를 기반으로 Review를 검색합니다.
+    Movie movie1 = movieService.getMovie(movie);
+    movieService.delete(movie1);
+
+
+    return "redirect:/admin/adminmovielist";
   }
 }

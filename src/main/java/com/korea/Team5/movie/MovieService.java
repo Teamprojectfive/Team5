@@ -75,6 +75,9 @@ public class MovieService {
         this.movieRepository.save(movie);
     }
 
+    public void delete(Movie movie) {
+        this.movieRepository.delete(movie);
+    }
 
 
 

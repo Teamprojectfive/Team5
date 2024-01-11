@@ -9,205 +9,212 @@
             display: none;
         }
     </style>
-</head>
-<body>
-<div>
-    <!--   회원 검색  -->
-    <div id="memberForm">
-        <form th:action="@{/admin/adminsignup}" method="get">
-            <h2>회원검색</h2>
-            <label for="search">회원 아이디 검색:</label>
-            <input type="text" id="loginId" name="loginId" placeholder="아이디를 입력하세요" th:value="${loginId}" required>
-            <input type="submit" value="검색">
-        </form>
-        <form th:action="@{/admin/admindelete}" method="post" id="myPageForm">
-            <div th:if="${validSearch != null and validSearch and memberExists != null and memberExists}">
-                <label for="text">검색된 회원</label>
-                <input type="text" name="loginId" th:value="${memberFromDB.loginId}" class="form-control" readonly>
-                <!-- 여기서 검색된 회원 정보를 표시할 수 있습니다. -->
-                <input type="submit" value="회원탈퇴시키기" onclick="return confirmWithdraw();">
-                <input type="submit" value="작성한 리뷰보기" onclick="submitForm('myPageForm', '/admin/adminreview')">
+    </head>
+    <body>
+    <div>
+        <!--   회원 검색  -->
+        <div id="memberForm">
+            <form th:action="@{/admin/adminsignup}" method="get">
+                <h2>회원검색</h2>
+                <label for="text" style="color: red;">아이디를 검색해야 회원탈퇴 및 기타관리가 가능합니다.</label>
+                <label for="search">회원 아이디 검색:</label>
+                <input type="text" id="loginId" name="loginId" placeholder="아이디를 입력하세요" th:value="${loginId}" required>
+                <input type="submit" value="검색">
+            </form>
+            <form th:action="@{/admin/admindelete}" method="post" id="myPageForm">
+                <div th:if="${validSearch != null and validSearch and memberExists != null and memberExists}">
+                    <label for="text">검색된 회원</label>
+                    <input type="text" name="loginId" th:value="${memberFromDB.loginId}" class="form-control" readonly>
+                    <!-- 여기서 검색된 회원 정보를 표시할 수 있습니다. -->
+                    <input type="submit" value="회원탈퇴시키기" onclick="return confirmWithdraw();">
+                    <input type="submit" value="작성한 리뷰보기" onclick="submitForm('myPageForm', '/admin/adminreview')">
+                </div>
+                <input type="hidden" id="error-msg" th:value="${error}">
+            </form>
+            <!-- 에러 메세지 표시 -->
+            <div th:if="${errorMessage}" class="error-message">
+                <p th:text="${errorMessage}" class="error-text"></p>
             </div>
-            <input type="hidden" id="error-msg" th:value="${error}">
-        </form>
-        <!-- 에러 메세지 표시 -->
-        <div th:if="${errorMessage}" class="error-message">
-            <p th:text="${errorMessage}" class="error-text"></p>
-        </div>
-        <div class="container my-3">
-            <div class="row">
-                <div class="col-md-8" style="width: 100%;">
-                    <div th:each="review : ${paging}" class="card mb-3">
-                        <!-- 리뷰 목록을 출력하는 반복문 -->
-                        <h2>이 회원이 작성한리뷰</h2>
-                        <ul>
-                            <div>
+            <div class="container my-3">
+                <div class="row">
+                    <div class="col-md-8" style="width: 100%;">
+                        <div th:each="review : ${paging}" class="card mb-3">
+                            <!-- 리뷰 목록을 출력하는 반복문 -->
+                            <h2>이 회원이 작성한리뷰</h2>
+                            <ul>
                                 <div>
-                                    <label for="loginId" class="form-label">영화이름</label>
-                                    <input type="text" th:value="${review.movie.name}" class="form-control" readonly>
-                                </div>
-                                <div>
-                                    <label for="loginId" class="form-label">리뷰제목</label>
-                                    <input type="text" th:value="${review.subject}" class="form-control" readonly>
-                                </div>
-                                <div>
-                                    <label for="loginId" class="form-label">리뷰내용</label>
-                                    <input type="text" th:value="${review.content}" class="form-control" readonly>
-                                </div>
-                                <div>
-                                    <label for="loginId" class="form-label">평점</label>
-                                    <input type="text" th:value="${review.starRating * 2}" class="form-control"
-                                           readonly>
-                                </div>
-                                <div>
-                                    <label for="loginId" class="form-label">가입일시</label>
-                                    <input type="text" th:value="${review.createDate}" class="form-control" readonly>
-                                </div>
-                                <form th:action="@{/admin/adminreivewdelete}" method="post">
                                     <div>
-                                        <input type="hidden" name="reviewId" th:value="${review.Id}">
-                                        <input type="hidden" name="loginId" th:value="${review.member.loginId}">
-                                        <input type="submit" value="삭제하기">
+                                        <label for="loginId" class="form-label">영화이름</label>
+                                        <input type="text" th:value="${review.movie.name}" class="form-control"
+                                               readonly>
                                     </div>
-                                </form>
-                            </div>
-                        </ul>
+                                    <div>
+                                        <label for="loginId" class="form-label">리뷰제목</label>
+                                        <input type="text" th:value="${review.subject}" class="form-control" readonly>
+                                    </div>
+                                    <div>
+                                        <label for="loginId" class="form-label">리뷰내용</label>
+                                        <input type="text" th:value="${review.content}" class="form-control" readonly>
+                                    </div>
+                                    <div>
+                                        <label for="loginId" class="form-label">평점</label>
+                                        <input type="text" th:value="${review.starRating * 2}" class="form-control"
+                                               readonly>
+                                    </div>
+                                    <div>
+                                        <label for="loginId" class="form-label">가입일시</label>
+                                        <input type="text" th:value="${review.createDate}" class="form-control"
+                                               readonly>
+                                    </div>
+                                    <form th:action="@{/admin/adminreivewdelete}" method="post">
+                                        <div>
+                                            <input type="hidden" name="reviewId" th:value="${review.Id}">
+                                            <input type="hidden" name="loginId" th:value="${review.member.loginId}">
+                                            <input type="submit" value="삭제하기">
+                                        </div>
+                                    </form>
+                                </div>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div th:if="${paging != null and !paging.isEmpty()}">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                    <a class="page-link"
-                       th:href="@{|?page=${paging.number-1}&loginId=${loginId}|}">
-                        <span>이전</span>
-                    </a>
-                </li>
-                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                    th:classappend="${page == paging.number} ? 'active'"
-                    class="page-item">
-                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}&loginId=${loginId}|}"></a>
-                </li>
-                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                    <a class="page-link" th:href="@{|?page=${paging.number+1}&loginId=${loginId}|}">
-                        <span>다음</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div>
-            <form th:action="@{/admin/adminsignlist}" method="get">
-                <div>
-                    <input type="submit" value="회원목록">
-                    <input type="hidden" name="member" th:value="${member}">
-                    <input type="hidden" id="toggleVisible" name="toggleVisible" th:value="${toggleVisible}">
-                </div>
-            </form>
-            <div th:if="${signpaging}" id="loginIdForm">
-                <label for="text">회원리스트</label>
-                <ul>
-                    <li th:each="member : ${signpaging.content}">
-                        <!-- 멤버의 정보를 출력 -->
-                        <p th:text="${member.loginId}"></p>
-                        <!-- 추가로 출력할 정보가 있다면 추가 -->
-                        <!-- <p th:text="${member.someOtherField}"></p> -->
+            <div th:if="${paging != null and !paging.isEmpty()}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{|?page=${paging.number-1}&loginId=${loginId}|}">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                        th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                        th:classappend="${page == paging.number} ? 'active'"
+                        class="page-item">
+                        <a th:text="${page}" class="page-link" th:href="@{|?page=${page}&loginId=${loginId}|}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${paging.number+1}&loginId=${loginId}|}">
+                            <span>다음</span>
+                        </a>
                     </li>
                 </ul>
-                <!-- 페이징처리 시작 -->
-                <div th:if="${!signpaging.isEmpty()}">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item" th:classappend="${!signpaging.hasPrevious} ? 'disabled'">
-                            <a class="page-link"
-                               th:href="@{|?page=${signpaging.number-1}|}">
-                                <span>이전</span>
-                            </a>
-                        </li>
-                        <li th:each="page: ${#numbers.sequence(0, signpaging.totalPages-1)}"
-                            th:classappend="${page == signpaging.number} ? 'active'"
-                            class="page-item">
-                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-                        </li>
-                        <li class="page-item" th:classappend="${!signpaging.hasNext} ? 'disabled'">
-                            <a class="page-link" th:href="@{|?page=${signpaging.number+1}|}">
-                                <span>다음</span>
-                            </a>
+            </div>
+            <div>
+                <form th:action="@{/admin/adminsignlist}" method="get">
+                    <div>
+                        <input type="submit" value="회원목록">
+                        <input type="hidden" name="member" th:value="${member}">
+                        <input type="hidden" id="toggleVisible" name="toggleVisible" th:value="${toggleVisible}">
+                    </div>
+                </form>
+                <div th:if="${signpaging}" id="loginIdForm">
+                    <ul>
+                        <li th:each="member : ${signpaging.content}">
+                            <!-- 멤버의 정보를 출력 -->
+                            <form th:action="@{/admin/admindelete}" method="post">
+                                <div>
+                                    <p th:text="${member.loginId}"></p>
+                                    <input type="hidden" name="loginId" th:value="${member.loginId}">
+                                    <input type="submit" value="회원 상세정보" onclick="submitForm('myPageForm', '/admin/adminreview')">
+                                    <input type="submit" value="회원탈퇴시키기">
+                                </div>
+                            </form>
                         </li>
                     </ul>
+                    <!-- 페이징처리 시작 -->
+                    <div th:if="${!signpaging.isEmpty()}">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${!signpaging.hasPrevious} ? 'disabled'">
+                                <a class="page-link"
+                                   th:href="@{|?page=${signpaging.number-1}|}">
+                                    <span>이전</span>
+                                </a>
+                            </li>
+                            <li th:each="page: ${#numbers.sequence(0, signpaging.totalPages-1)}"
+                                th:classappend="${page == signpaging.number} ? 'active'"
+                                class="page-item">
+                                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                            </li>
+                            <li class="page-item" th:classappend="${!signpaging.hasNext} ? 'disabled'">
+                                <a class="page-link" th:href="@{|?page=${signpaging.number+1}|}">
+                                    <span>다음</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 페이징처리 끝 -->
                 </div>
-                <!-- 페이징처리 끝 -->
             </div>
         </div>
     </div>
-</div>
 
-<!--<script>-->
-<!--    function toggleForm() {-->
-<!--        var form = document.getElementById('memberForm');-->
-<!--        if (form.style.display === 'none' || form.style.display === '') {-->
-<!--            form.style.display = 'block';-->
-<!--        } else {-->
-<!--            form.style.display = 'none';-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
-<script>
-    function movietoggleForm() {
-        var form = document.getElementById('movieForm');
-        console.log(form);
-        if (form.style.display === 'none' || form.style.display === '') {
-            form.style.display = 'block';
-        } else {
-            form.style.display = 'none';
+    <!--<script>-->
+    <!--    function toggleForm() {-->
+    <!--        var form = document.getElementById('memberForm');-->
+    <!--        if (form.style.display === 'none' || form.style.display === '') {-->
+    <!--            form.style.display = 'block';-->
+    <!--        } else {-->
+    <!--            form.style.display = 'none';-->
+    <!--        }-->
+    <!--    }-->
+    <!--</script>-->
+    <script>
+        function movietoggleForm() {
+            var form = document.getElementById('movieForm');
+            console.log(form);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
         }
-    }
-</script>
-<script>
-    function submitForm(formId, action) {
-        var form = document.getElementById(formId);
-        form.action = action; // 액션을 동적으로 설정
-        form.method = 'get';
-        form.submit(); // 폼 제출
-    }
-</script>
-<script>
-
-    function signtoggleForm() {
-        var loginIdForm = document.getElementById('loginIdForm');
-        var toggleVisible = document.getElementById('toggleVisible');
-
-        if (toggleVisible.value === 'true') {
-            loginIdForm.style.display = 'block';
-            toggleVisible.value = 'false';
-        } else {
-            loginIdForm.style.display = 'none';
-            toggleVisible.value = 'true';
+    </script>
+    <script>
+        function submitForm(formId, action) {
+            var form = document.getElementById(formId);
+            form.action = action; // 액션을 동적으로 설정
+            form.method = 'get';
+            form.submit(); // 폼 제출
         }
-    }
+    </script>
+    <script>
 
-    signtoggleForm();
-</script>
-<script>
-    test();
+        function signtoggleForm() {
+            var loginIdForm = document.getElementById('loginIdForm');
+            var toggleVisible = document.getElementById('toggleVisible');
 
-    function test() {
-        var errorMessage = document.getElementById('error-msg').value;
-        if (errorMessage.trim() !== "") {
-            // 여기에 스크립트 로직 추가
-            alert(errorMessage);
+            if (toggleVisible.value === 'true') {
+                loginIdForm.style.display = 'block';
+                toggleVisible.value = 'false';
+            } else {
+                loginIdForm.style.display = 'none';
+                toggleVisible.value = 'true';
+            }
         }
-    }
-</script>
-<script>
-    function confirmWithdraw() {
-        // 확인창을 띄웁니다.
-        var confirmWithdraw = confirm("정말로 회원을 탈퇴시키시겠습니까?");
 
-        // 확인을 눌렀을 경우에만 폼을 제출합니다.
-        return confirmWithdraw;
-    }
-</script>
-</body>
+        signtoggleForm();
+    </script>
+    <script>
+        test();
+
+        function test() {
+            var errorMessage = document.getElementById('error-msg').value;
+            if (errorMessage.trim() !== "") {
+                // 여기에 스크립트 로직 추가
+                alert(errorMessage);
+            }
+        }
+    </script>
+    <script>
+        function confirmWithdraw() {
+            // 확인창을 띄웁니다.
+            var confirmWithdraw = confirm("정말로 회원을 탈퇴시키시겠습니까?");
+
+            // 확인을 눌렀을 경우에만 폼을 제출합니다.
+            return confirmWithdraw;
+        }
+    </script>
+    </body>
 </div>
 </html>
