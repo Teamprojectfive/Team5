@@ -13,13 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import java.time.LocalDateTime;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -130,5 +123,12 @@ public class MovieService {
             e.printStackTrace();
             throw new RuntimeException("API 요청 중 오류가 발생했습니다.");
         }
+    }
+    public Page<Movie> getAllMovies(int page) {
+        // 페이징 처리를 위해 Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, 10); // PAGE_SIZE는 페이지당 보여줄 항목 수
+
+        // 모든 멤버를 가져오는 메서드 호출
+        return movieRepository.findAll(pageable);
     }
 }

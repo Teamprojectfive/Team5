@@ -1,5 +1,5 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<html layout:decorate="~{adminlayout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="admincontent" class="container my-3">
     <meta charset="UTF-8">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
@@ -11,21 +11,6 @@
     </style>
 </head>
 <body>
-<h2>관리자 페이지</h2>
-<ul class="nav">
-    <ul class="nav">
-        <li class="nav-item">
-            <input type="hidden" name="member" th:value="${member}">
-            <a class="admin" role="button" onclick="toggleForm()">회원관리</a>
-        </li>
-    </ul>
-    <li class="nav-item">
-        <a class="nav-link" href="#">리뷰관리</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">무비관리</a>
-    </li>
-</ul>
 <div>
     <!--   회원 검색  -->
     <div id="memberForm">
@@ -71,18 +56,19 @@
                                 </div>
                                 <div>
                                     <label for="loginId" class="form-label">평점</label>
-                                    <input type="text" th:value="${review.starRating * 2}" class="form-control" readonly>
+                                    <input type="text" th:value="${review.starRating * 2}" class="form-control"
+                                           readonly>
                                 </div>
                                 <div>
                                     <label for="loginId" class="form-label">가입일시</label>
                                     <input type="text" th:value="${review.createDate}" class="form-control" readonly>
                                 </div>
                                 <form th:action="@{/admin/adminreivewdelete}" method="post">
-                                <div>
-                                    <input type="hidden" name="reviewId" th:value="${review.Id}">
-                                    <input type="hidden" name="loginId" th:value="${loginId}" class="form-control">
-                                    <input type="submit" value="삭제하기">
-                                </div>
+                                    <div>
+                                        <input type="hidden" name="reviewId" th:value="${review.Id}">
+                                        <input type="hidden" name="loginId" th:value="${review.member.loginId}">
+                                        <input type="submit" value="삭제하기">
+                                    </div>
                                 </form>
                             </div>
                         </ul>
@@ -111,15 +97,65 @@
                 </li>
             </ul>
         </div>
+        <div>
+            <form th:action="@{/admin/adminsignlist}" method="get">
+                <div>
+                    <input type="submit" value="회원목록">
+                    <input type="hidden" name="member" th:value="${member}">
+                    <input type="hidden" id="toggleVisible" name="toggleVisible" th:value="${toggleVisible}">
+                </div>
+            </form>
+            <div th:if="${signpaging}" id="loginIdForm">
+                <label for="text">회원리스트</label>
+                <ul>
+                    <li th:each="member : ${signpaging.content}">
+                        <!-- 멤버의 정보를 출력 -->
+                        <p th:text="${member.loginId}"></p>
+                        <!-- 추가로 출력할 정보가 있다면 추가 -->
+                        <!-- <p th:text="${member.someOtherField}"></p> -->
+                    </li>
+                </ul>
+                <!-- 페이징처리 시작 -->
+                <div th:if="${!signpaging.isEmpty()}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${!signpaging.hasPrevious} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{|?page=${signpaging.number-1}|}">
+                                <span>이전</span>
+                            </a>
+                        </li>
+                        <li th:each="page: ${#numbers.sequence(0, signpaging.totalPages-1)}"
+                            th:classappend="${page == signpaging.number} ? 'active'"
+                            class="page-item">
+                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${!signpaging.hasNext} ? 'disabled'">
+                            <a class="page-link" th:href="@{|?page=${signpaging.number+1}|}">
+                                <span>다음</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 페이징처리 끝 -->
+            </div>
+        </div>
     </div>
 </div>
-<div>
-    <label for="text">회원 목록</label>
-    <input type="text" name="signloginId" th:value="${signloginId}">
-</div>
+
+<!--<script>-->
+<!--    function toggleForm() {-->
+<!--        var form = document.getElementById('memberForm');-->
+<!--        if (form.style.display === 'none' || form.style.display === '') {-->
+<!--            form.style.display = 'block';-->
+<!--        } else {-->
+<!--            form.style.display = 'none';-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
 <script>
-    function toggleForm() {
-        var form = document.getElementById('memberForm');
+    function movietoggleForm() {
+        var form = document.getElementById('movieForm');
+        console.log(form);
         if (form.style.display === 'none' || form.style.display === '') {
             form.style.display = 'block';
         } else {
@@ -134,6 +170,23 @@
         form.method = 'get';
         form.submit(); // 폼 제출
     }
+</script>
+<script>
+
+    function signtoggleForm() {
+        var loginIdForm = document.getElementById('loginIdForm');
+        var toggleVisible = document.getElementById('toggleVisible');
+
+        if (toggleVisible.value === 'true') {
+            loginIdForm.style.display = 'block';
+            toggleVisible.value = 'false';
+        } else {
+            loginIdForm.style.display = 'none';
+            toggleVisible.value = 'true';
+        }
+    }
+
+    signtoggleForm();
 </script>
 <script>
     test();
@@ -156,4 +209,5 @@
     }
 </script>
 </body>
+</div>
 </html>

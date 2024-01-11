@@ -3,13 +3,17 @@ package com.korea.Team5.USER;
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.Review.Review;
 import com.korea.Team5.Review.ReviewService;
+import com.korea.Team5.movie.Movie;
 import com.korea.Team5.movie.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -75,6 +79,10 @@ public class AdminController {
       // 가져온 리뷰 목록이 비어 있는지 확인
       if (paging.isEmpty()) {
         model.addAttribute("error", "작성한 리뷰가 존재하지 않습니다.");
+        Member memberFromDB = memberService.getMember(loginId);
+        model.addAttribute("memberFromDB",memberFromDB);
+        model.addAttribute("validSearch", true);
+        model.addAttribute("memberExists", true);
         return "admin_form";
       }
       // 가져온 리뷰 목록을 모델에 추가
@@ -90,12 +98,37 @@ public class AdminController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/adminreivewdelete")
-  public String adminreivewdelete(@RequestParam Integer reviewId,@RequestParam String loginId,Model model){
+  public String adminreivewdelete(@RequestParam Integer reviewId,Model model,@RequestParam String loginId){
 
     // reviewId를 기반으로 Review를 검색합니다.
     Review review = reviewService.findReviewById(reviewId);
     reviewService.delete(review);
-    model.addAttribute("loginId",loginId);
-    return  "redirect:/admin/adminreview";
+
+    return "redirect:/admin/adminreview?loginId=" + loginId;
+  }
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/adminsignlist")
+  public String adminsignlist(Model model,@RequestParam String member, @RequestParam(defaultValue = "true") boolean toggleVisible, @RequestParam(value="page", defaultValue="0") int page){
+    // getAllMembers 메서드를 사용하여 모든 멤버를 가져옴
+    Page<Member> signpaging = this.memberService.getAllMembers(page);
+    // Model에 페이징 정보 추가
+    model.addAttribute("signpaging", signpaging);
+    model.addAttribute("toggleVisible", toggleVisible);
+    // 데이터가 없을 경우 처리
+    if (signpaging.isEmpty()) {
+      model.addAttribute("error", "조회된 회원이 없습니다.");
+    }
+    return "admin_form";
+  }
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/adminmovielist")
+  public String adminmovielist(Model model, @RequestParam(value="page", defaultValue="0") int page,Movie movie){
+
+    Page<Movie> adminmoviespaging = this.movieService.getAllMovies(page);
+    model.addAttribute("adminmoviespaging",adminmoviespaging);
+    if(adminmoviespaging.isEmpty()){
+      model.addAttribute("error","조회된 영화가 없습니다.");
+    }
+    return "admin_movielist";
   }
 }

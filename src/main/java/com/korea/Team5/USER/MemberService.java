@@ -3,6 +3,9 @@ package com.korea.Team5.USER;
 import com.korea.Team5.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -197,6 +200,14 @@ public class MemberService {
     }else {
       throw new DataNotFoundException("members not found for phone: " + phone);
     }
+  }
+  // 모든 멤버를 가져오는 메서드 추가
+  public Page<Member> getAllMembers(int page) {
+    // 페이징 처리를 위해 Pageable 객체 생성
+    Pageable pageable = PageRequest.of(page, 10); // PAGE_SIZE는 페이지당 보여줄 항목 수
+
+    // 모든 멤버를 가져오는 메서드 호출
+    return memberRepository.findAll(pageable);
   }
 }
 

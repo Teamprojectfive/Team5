@@ -1,0 +1,47 @@
+<html layout:decorate="~{adminlayout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="admincontent" class="container my-3">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    <div id="movieForm">
+        <div th:if="${adminmoviespaging}">
+            <h2>영화 목록</h2>
+            <ul>
+                <li th:each="movie : ${adminmoviespaging.content}">
+                    <!-- 멤버의 정보를 출력 -->
+                    <p th:text="${movie.name}"></p>
+                    <p th:text="${movie.content}"></p>
+                    <p th:text="${movie.genre}"></p>
+                    <p th:text="${movie.age}"></p>
+                    <!-- 추가로 출력할 정보가 있다면 추가 -->
+                    <!-- <p th:text="${member.someOtherField}"></p> -->
+                </li>
+            </ul>
+            <!-- 페이징처리 시작 -->
+            <div th:if="${!adminmoviespaging.isEmpty()}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!adminmoviespaging.hasPrevious} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{|?page=${adminmoviespaging.number-1}|}">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, adminmoviespaging.totalPages-1)}"
+                        th:classappend="${page == adminmoviespaging.number} ? 'active'"
+                        class="page-item">
+                        <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!adminmoviespaging.hasNext} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${adminmoviespaging.number+1}|}">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 페이징처리 끝 -->
+        </div>
+    </div>
+    </body>
+</html>
