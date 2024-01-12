@@ -29,7 +29,9 @@ public class AdminController {
   public String adminpage() {
 
 
-    return "admin_form";
+
+
+    return "/ADMIN/admin_signform";
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -43,13 +45,13 @@ public class AdminController {
       model.addAttribute("validSearch", true);
       model.addAttribute("memberExists", true);
       model.addAttribute("memberFromDB", memberFromDB);
-      return "admin_form"; // 일치하는 경우
+      return "/ADMIN/admin_signform"; // 일치하는 경우
     } catch (DataNotFoundException ex) {
       // DB에 해당 loginId가 존재하지 않을 경우의 로직
       model.addAttribute("errorMessage", "해당 아이디가 존재하지 않습니다.");
       model.addAttribute("validSearch", true);
       model.addAttribute("memberExists", false);
-      return "admin_form";
+      return "/ADMIN/admin_signform";
     }
   }
 
@@ -65,7 +67,7 @@ public class AdminController {
     } catch (DataNotFoundException e) {
       // 데이터를 찾을 수 없는 경우의 예외 처리
       model.addAttribute("errorMessage", "해당 아이디가 존재하지 않습니다.");
-      return "admin_form"; // 예를 들어, notfound 뷰로 이동하거나 다른 방식으로 처리 가능
+      return "/ADMIN/admin_signform"; // 예를 들어, notfound 뷰로 이동하거나 다른 방식으로 처리 가능
     }
   }
 
@@ -84,15 +86,15 @@ public class AdminController {
         model.addAttribute("memberFromDB",memberFromDB);
         model.addAttribute("validSearch", true);
         model.addAttribute("memberExists", true);
-        return "admin_form";
+        return "/ADMIN/admin_signform";
       }
       // 가져온 리뷰 목록을 모델에 추가
       model.addAttribute("paging",paging);
-      return "admin_form";
+      return "/ADMIN/admin_signform";
     } catch (DataNotFoundException e) {
       // 데이터를 찾을 수 없는 경우의 예외 처리
       model.addAttribute("error", "아이디가 존재하지 않습니다.");
-      return "admin_form";
+      return "/ADMIN/admin_signform";
     }
 
   }
@@ -119,7 +121,7 @@ public class AdminController {
     if (signpaging.isEmpty()) {
       model.addAttribute("error", "조회된 회원이 없습니다.");
     }
-    return "admin_form";
+    return "/ADMIN/admin_signform";
   }
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/adminmovielist")
@@ -130,7 +132,7 @@ public class AdminController {
     if(adminmoviespaging.isEmpty()){
       model.addAttribute("error","조회된 영화가 없습니다.");
     }
-    return "admin_movielist";
+    return "/ADMIN/admin_movielist";
   }
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/adminmoviedelete")
@@ -142,5 +144,17 @@ public class AdminController {
 
 
     return "redirect:/admin/adminmovielist";
+  }
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/adminsigndetail")
+  public String adminsigndetail(Model model,@RequestParam String loginId){
+
+    Member member = memberService.getMember(loginId);
+      model.addAttribute("member",member);
+
+
+
+
+      return "/ADMIN/admindetail_form";
   }
 }

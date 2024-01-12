@@ -187,7 +187,7 @@ public class MemberController {
       // 리뷰를 수정합니다.
       reviewService.modify(review, newSubject, newContent,newStarRating);
       // 수정이 완료되면 마이페이지 리뷰로 리다이렉트합니다.
-      return "redirect:/member/mypage";
+      return "redirect:/member/mypagereview";
     } else {
       // 리뷰가 존재하지 않는 경우에 대한 예외 처리 로직을 추가할 수 있습니다.
       model.addAttribute("error","존재하지 않는 리뷰입니다.");

@@ -41,7 +41,7 @@
             </form>
         </div>
         <!-- 입력 폼 -->
-        <div th:id="${'editView_' + review.id}" th:style="${'display:none;'}">
+        <div th:id="${'editView_' + review.id}" th:data-review-id="${review.id}" class="editView" th:style="${'display:none;'}">
             <form th:action="@{ /member/mypagereviewmodify}" method="post">
                 <input type="hidden" name="reviewId" th:value="${review.id}">
                 <div>
@@ -56,12 +56,8 @@
                 <label class="form-label" style="margin-top:20px;">별점</label>
                 <div style="display: flex; justify-content: space-between;">
                     <div class="star-rating">
-                        <span class="star" data-rating="1" onmouseover="fillStars(1)" onclick="updateRating(1)">&#9734;</span>
-                        <span class="star" data-rating="2" onmouseover="fillStars(2)" onclick="updateRating(2)">&#9734;</span>
-                        <span class="star" data-rating="3" onmouseover="fillStars(3)" onclick="updateRating(3)">&#9734;</span>
-                        <span class="star" data-rating="4" onmouseover="fillStars(4)" onclick="updateRating(4)">&#9734;</span>
-                        <span class="star" data-rating="5" onmouseover="fillStars(5)" onclick="updateRating(5)">&#9734;</span>
-                        <input type="hidden" name="newStarRating" id="newStarRating" th:value="${review.starRating}" />
+                        <span th:each="num : ${#numbers.sequence(1,5)}" class="star" th:data-rating="${num}" th:onmouseover="fillStars([[${review.id}]], [[${num}]])" th:onclick="updateRating([[${review.id}]], [[${num}]])">&#9734;</span>
+                        <input type="hidden" name="newStarRating" th:id="${'newStarRating_' + review.id}" th:value="${review.starRating}" />
                     </div>
                 </div>
                 <div>
@@ -139,43 +135,51 @@
     }
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-     const stars = document.querySelectorAll('.star');
-     const ratingInput = document.getElementById('newStarRating');
+document.addEventListener('DOMContentLoaded', function () {
 
-     stars.forEach(star => {
-         star.addEventListener('mouseover', () => {
-             const rating = star.getAttribute('data-rating');
-             fillStars(rating);
-         });
+     const editViewList = document.querySelectorAll('.editView');
 
-         star.addEventListener('mouseout', () => {
-             const currentRating = ratingInput.value || 0;
-             fillStars(currentRating);
-         });
+     editViewList.forEach((editView) => {
+        let reviewId = editView.getAttribute("data-review-id");
+        const ratingInput = document.getElementById('newStarRating_' + reviewId);
+        const stars = editView.querySelectorAll('.star');
 
-         star.addEventListener('click', () => {
-             const rating = star.getAttribute('data-rating');
-             updateRating(rating);
+        stars.forEach(star => {
+             star.addEventListener('mouseover', () => {
+                 const rating = star.getAttribute('data-rating');
+                 fillStars(reviewId, rating);
+             });
+
+             star.addEventListener('mouseout', () => {
+                 const currentRating = ratingInput.value || 0;
+                 fillStars(reviewId, currentRating);
+             });
+
+             star.addEventListener('click', () => {
+                 const rating = star.getAttribute('data-rating');
+                 updateRating(reviewId, rating);
+             });
          });
      });
-
-     function fillStars(rating) {
-         stars.forEach(star => {
-             const starRating = star.getAttribute('data-rating');
-             if (starRating <= rating) {
-                 star.innerHTML = '&#9733;';  // filled star
-             } else {
-                 star.innerHTML = '&#9734;';  // empty star
-             }
-         });
-     }
-
-     function updateRating(rating) {
-         ratingInput.value = rating;
-         fillStars(rating);
-     }
  });
+
+function fillStars(reviewId, rating) {
+    let stars = document.querySelectorAll('#editView_' + reviewId + ' .star');
+     stars.forEach(star => {
+         const starRating = star.getAttribute('data-rating');
+         if (starRating <= rating) {
+             star.innerHTML = '&#9733;';  // filled star
+         } else {
+             star.innerHTML = '&#9734;';  // empty star
+         }
+     });
+ }
+
+ function updateRating(reviewId, rating) {
+     const ratingInput = document.getElementById('newStarRating_' + reviewId);
+     ratingInput.value = rating;
+     fillStars(rating);
+ }
 </script>
 <script>
     function confirmDelete() {
