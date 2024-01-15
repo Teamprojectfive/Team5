@@ -91,10 +91,6 @@ public class MovieController {
 
 
 
-
-
-
-
     @GetMapping("/addDetail")
     public String addDetail(Model model){
         MovieInfo movieInfo = this.movieService.getMovieDetail();
