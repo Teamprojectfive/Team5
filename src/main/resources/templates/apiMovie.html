@@ -19,6 +19,7 @@
 
 
 
+
 <form th:action="@{/weeklyMovie}" th:method="get" id="dateForm">
     <label for="targetDt">날짜 선택:</label>
     <input type="date" id="targetDt" name="targetDt" th:value="${selectedDate}">
@@ -28,52 +29,4 @@
 <button id="prevWeek">한 주 전</button>
 
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>순위</th>
-        <th>영화 제목</th>
-        <th>개봉일</th>
-        <th>매출액</th>
-        <th>관객수</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- movies에 대한 반복문 -->
-    <tr th:each="movie : ${movies}">
-        <td th:text="${movie.rank}"></td>
-        <td ><a th:href="@{/movie/addDetail(movieCd=${movie.movieCd})}" th:text="${movie.movieNm}"></a></td>
-        <td th:text="${movie.openDt}"></td>
-        <td th:text="${movie.salesAmt}"></td>
-        <td th:text="${movie.audiCnt}"></td>
-
-    </tr>
-    </tbody>
-</table>
-
-<script>
-    document.getElementById('prevWeek').addEventListener('click', function() {
-        changeDate(-7); // 한 주 전으로 변경
-    });
-
-    function changeDate(days) {
-        const currentDate = new Date(document.getElementById('targetDt').value);
-        const newDate = new Date(currentDate);
-        newDate.setDate(currentDate.getDate() + days);
-
-        const year = newDate.getFullYear();
-        let month = newDate.getMonth() + 1;
-        let day = newDate.getDate();
-
-        // 월과 일이 한 자리 숫자인 경우 앞에 0을 추가
-        month = month < 10 ? '0' + month : month;
-        day = day < 10 ? '0' + day : day;
-
-        const formattedDate = `${year}-${month}-${day}`;
-        document.getElementById('targetDt').value = formattedDate;
-
-        // 주간 박스오피스 조회
-        document.getElementById('dateForm').submit();
-    }
-</script>
 

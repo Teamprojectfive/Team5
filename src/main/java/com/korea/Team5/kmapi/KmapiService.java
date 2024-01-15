@@ -31,9 +31,13 @@ public class KmapiService {
     private final MovieRepository movieRepository;
     private final PlotRepository plotRepository;
 
+    private final VodRepository vodRepository;
+
 
     @Autowired
-    private KmapiService(RestTemplate restTemplate, @Value("${video.api.url}") String apiUrl, @Value("${video.api.key}") String apiKey, MovieInfoRepository movieInfoRepository, MovieService movieService, MovieRepository movieRepository, PlotRepository plotRepository) {
+    private KmapiService(RestTemplate restTemplate, @Value("${video.api.url}") String apiUrl, @Value("${video.api.key}") String apiKey, MovieInfoRepository movieInfoRepository, MovieService movieService, MovieRepository movieRepository, PlotRepository plotRepository,VodRepository vodRepository) {
+        this.vodRepository = vodRepository;
+
         this.plotRepository = plotRepository;
         this.movieRepository = movieRepository;
         this.movieInfoRepository = movieInfoRepository;
@@ -73,17 +77,20 @@ public class KmapiService {
                         String title = firstMovie.getTitle().replace(target1, "").replace(target2, "").substring(1);
                         String year = firstMovie.getProdYear();
                         if(title.equals(movieInfo.getMovieNm()) && year.equals(movieInfo.getPrdtYear())){
-                            System.out.println(movieInfo.getMovieNm());
-                            System.out.println(title);
-                            System.out.println(firstMovie.getPosters());
-                            System.out.println(firstMovie.getProdYear());
+
+                            System.out.println(firstMovie.getVods());
+
 
                             String posterUrl = firstMovie.getPosters().split("\\|")[0];
                             movieInfo.setPosters(posterUrl);
                             Plot plot = firstMovie.getPlots().getPlot().get(0);
+
+                            Vod vod = firstMovie.getVods().getVod().get(0);
                             // Plot 정보와 MovieInfo 연결
                             plot.setMovieInfo(movieInfo);
+                            vod.setMovieInfo(movieInfo);
                             // Plot 저장
+                            this.vodRepository.save(vod);
                             this.plotRepository.save(plot);
                             System.out.println("영화 제목: " + movieInfo.getMovieNm());
                             System.out.println("영화 줄거리: " + plot.getPlotText());

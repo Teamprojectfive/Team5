@@ -13,7 +13,7 @@ public class Actor1 {
     private Long id;
 
     private String peopleNm;  // 배우 이름
-    private String peopleNmEn;  // 배우 영어 이름
+    private String cast; // 역할
 
     @ManyToOne
     private MovieInfo movieInfo;
