@@ -378,7 +378,7 @@ public class MemberController {
   }
   //마이페이지 닉네임 수정 부분 끝//
 
-//아이디 찾기 메서드시작//
+  //아이디 찾기 메서드시작//
   @GetMapping("/findId")
   public String findId() {
 
