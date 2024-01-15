@@ -7,7 +7,14 @@
 <body>
 <h1>안녕하세요</h1>
 <span th:each="movie : ${movieInfoList}">
-    <span th:text="${movie.title}"></span>
+    <div th:text="${movie.title}"></div>
+    <a th:href="${movie.posters}" th:text="${movie.posters}"></a>
+
+
+
+
 </span>
+
+
 </body>
 </html>
