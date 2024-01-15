@@ -17,3 +17,16 @@
 </div>
 
 
+
+
+
+<form th:action="@{/weeklyMovie}" th:method="get" id="dateForm">
+    <label for="targetDt">날짜 선택:</label>
+    <input type="date" id="targetDt" name="targetDt" th:value="${selectedDate}">
+    <button type="submit">주간 박스오피스 조회</button>
+</form>
+
+<button id="prevWeek">한 주 전</button>
+
+
+

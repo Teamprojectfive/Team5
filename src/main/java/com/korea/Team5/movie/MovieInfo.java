@@ -3,7 +3,9 @@ package com.korea.Team5.movie;
 
 import com.korea.Team5.kmapi.Plot;
 import com.korea.Team5.kmapi.PlotWrapDto;
+
 import com.korea.Team5.kmapi.Vod;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -48,8 +50,10 @@ public class MovieInfo {
     @OneToMany(mappedBy = "movieInfo")
     private List<Vod> vods;
 
+
     @OneToMany(mappedBy = "movieInfo")
     private List<Staff> staffs;
+
 
 
 

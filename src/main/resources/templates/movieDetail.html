@@ -297,6 +297,7 @@
         <div class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
         >리뷰등록
         </div>
+
     </div>
     <!--            <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
     <div class="container my-3">
@@ -339,6 +340,7 @@
                                        th:href="@{|/review/delete/${review.id}|}"
                                        onclick="return confirmDelete();">리뷰
                                         삭제</a>
+
                                 </div>
                             </div>
                         </div>
@@ -368,6 +370,7 @@
         </ul>
     </div>
 </div>
+
 
 <!--        리뷰 end-->
 </section>
@@ -454,4 +457,5 @@
     }
 </script>
 </div>
+
 </html>

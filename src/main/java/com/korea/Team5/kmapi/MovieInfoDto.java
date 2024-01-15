@@ -20,8 +20,10 @@ public class MovieInfoDto {
     private String posters;
     @JsonProperty("prodYear")
     private String prodYear;
+
     @JsonProperty("vods")
     private VodWrapDto vods;
+
 
 
 
