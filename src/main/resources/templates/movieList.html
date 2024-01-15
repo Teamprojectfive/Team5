@@ -22,7 +22,7 @@
                             <p style="margin: 5px 0 0 0;">설명 : <span th:text="${movie.content}"></span></p>
                             <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
                             <div style="margin-top: 10px;" th:if="${movie.movieInfo != null}">
-                                <a th:if="${movie.movieCd} eq ${movie.movieInfo.movieCd}" th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
                             </div>
 
 
