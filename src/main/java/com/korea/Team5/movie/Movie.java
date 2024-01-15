@@ -37,6 +37,7 @@ public class Movie {
     private String yearWeekTime;  // 조회일자에 해당하는 연도와 주차
     private String rnum;  // 순번
     private String rank;  // 해당일자의 박스오피스 순위
+
     private String movieCd;  // 영화의 대표코드
     private String movieNm;  // 영화명(국문)
     private String openDt;  // 영화의 개봉일
@@ -56,6 +57,16 @@ public class Movie {
     private LocalDateTime modificationDateTime;
 
 
+
     @ManyToOne
     private MovieInfo movieInfo;
+
+
+
+
+
+
+
+
+
 }

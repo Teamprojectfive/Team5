@@ -31,6 +31,8 @@ nav{
     color: white;
 }
 
+
+
 .login> a {
     background-color: black;
     margin-right: 20px;
@@ -68,6 +70,7 @@ nav{
 
 
 .btn{
+
     width: 200px;
     display: flex;
     justify-content: space-between;
@@ -88,4 +91,38 @@ nav{
 
 ul{
     display: flex;
+}
+
+.m_p{
+    color:red;.
+   10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

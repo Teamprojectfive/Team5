@@ -6,7 +6,6 @@
 }
 
 body {
-    height: 100vh;
     background: black;
     align-items: center;
     justify-content: center;
@@ -104,6 +103,7 @@ body {
 
 
 .list_box_wrap {
+    margin-top: 3%;
     width:100vw;
     display:flex;
     transition: transform 1.5s ease;
@@ -127,8 +127,9 @@ body {
     height: 400px;
     box-sizing: border-box;
     border: 1px solid #ddd;
+    border-radius:5px;
     margin-bottom: 20px;
-    background-image: url(https://img3.yna.co.kr/etc/inner/KR/2019/04/04/AKR20190404160900005_01_i_P2.jpg);
+    background-image: url(https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/201705/02/7a0c5c97-f78d-4aac-bc6b-34013a33064b.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -165,6 +166,7 @@ body {
 }
 .list_item:hover .additional-info {
     visibility: visible;
+    color:white;
     opacity: 1;
 }
 
@@ -174,11 +176,36 @@ body {
     top: 0;
     left: 0;
     color:black;
-    background-color: rgba(102, 102, 102, 0.8);
-    width:100%;
+    background-color: rgba(051, 051, 051, 0.8);
+    width:101%;
     height:100%;
     transition: visibility 0s, opacity 0.5s ease;
 }
+
+.left{
+    position:absolute;
+    font-size: 87px;
+    color: white;
+    background: none;
+    border: 0px;
+    left:50px;
+    top:183%;
+    z-index:99;
+    cursor: pointer;
+}
+
+.right{
+    position:absolute;
+    font-size: 87px;
+    color: white;
+    background: none;
+    border: 0px;
+    right:50px;
+    top:183%;
+    z-index:99;
+    cursor: pointer;
+}
+
 
 
 

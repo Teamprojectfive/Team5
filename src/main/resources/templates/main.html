@@ -30,14 +30,14 @@
              <span class="icon-container">
                  <i class="fa-solid fa-video"></i>
              </span>
-             <span class="m_p" style="color:red;">M</span><span class="m_o">o</span><span class="m_v">v</span><span class="m_i">i</span><span class="m_e">e</span>
+            <span class="m_p" style="color:red;">M</span><span class="m_o">o</span><span class="m_v">v</span><span class="m_i">i</span><span class="m_e">e</span>
         </div>
         <div class="sub_nav">
             <div class="dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="btn m-1" style="color:white; background-color:black;">영화</div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
                     <li ><a  href="/movie/list">Top100</a></li>
-                    <li ><a  href="#">장르</a></li>
+                    <li ><a  href="/movie/mainlist">장르</a></li>
                 </ul>
             </div>
             <div class="dropdown dropdown-hover">
@@ -47,21 +47,21 @@
             <div class="dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="btn m-1"  style="color:white; background-color:black;">극장</div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
-                    <li><a href="#">지역</a></li>
+                    <li><a href="/theater/information">지역</a></li>
                     <li><a href="#">위치</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="login_container">
-            <a class="mypage" role="button" th:href="@{/member/mypage}">mypage</a>
+            <a class="admin" role="button" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}" th:href="@{/admin/adminpage}">관리자</a>
+            <a class="mypage" role="button" th:if="${#authorization.expression('isAuthenticated()')}"  th:href="@{/member/mypage}">mypage</a>
             <a class="Sign_in" role="button" sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
             <a class="Sign_in" role="button" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Sign_out</a>
             <a class="Sing_up" role="button" th:href="@{/member/signup}">Sing_up</a>
         </div>
     </div>
     <!-- 로그인컨테이너 여기까지-->
-
     <!-- 비디오컨테이너 -->
     <div class="video_container" >
         <div class="video_bg" style="background-image: url('pexels-blockhaus-malung-19298575 (Original).mp4');"></div>
@@ -89,24 +89,24 @@
         <div class="list_container">
             <ul th:each="movie, loop : ${paging}" class="list">
                 <a th:href="@{|/movie/detail/${movie.id}|}">
-                <li class="card">
-                    <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
-                </li>
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
+                    </li>
                 </a>
                 <a th:href="@{|/movie/detail/${movie.id}|}">
-                <li class="card">
-                    <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 2">
-                </li>
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 2">
+                    </li>
                 </a>
                 <a th:href="@{|/movie/detail/${movie.id}|}">
-                <li class="card">
-                    <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 3">
-                </li>
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 3">
+                    </li>
                 </a>
                 <a th:href="@{|/movie/detail/${movie.id}|}">
-                <li class="card">
-                    <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 4">
-                </li>
+                    <li class="card">
+                        <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 4">
+                    </li>
                     <li class="card">
                         <img th:text="${movie.movieNm}" src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
                     </li>

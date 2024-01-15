@@ -12,8 +12,11 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     Movie getMovieByMovieCd(String movieCd);
 
+
     List<Movie> findAllByOrderByAudiAccDesc();
 
     Optional<Movie> findByMovieCd(String movieCd);
+
+
 }
 

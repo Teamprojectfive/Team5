@@ -45,6 +45,7 @@ public class MovieInfo {
     private List<Actor1> actors;  // 배우 정보 (리스트)
 
 
+
     @OneToMany(mappedBy = "movieInfo")
     private List<Company> companys;  // 제작 및 배급 회사 정보 (리스트)
 
@@ -58,6 +59,8 @@ public class MovieInfo {
 
     @OneToMany(mappedBy = "movieInfo")
     private List<Movie> movieList;
+
+
 
 
 

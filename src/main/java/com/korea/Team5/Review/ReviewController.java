@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +30,13 @@ public class ReviewController {
 
 
   @GetMapping("/list")
-  public String list(Model model, @RequestParam(value="page", defaultValue="0") int page ,Movie movie) {
+  public String list(Model model, @RequestParam(value="page", defaultValue="0") int page ,Movie movie,@AuthenticationPrincipal Member member) {
+
+    if (member != null && member.getName().equals("admin")) {
+      // admin 계정의 경우 추가적인 로직 수행
+      // 예를 들어, 모델에 어떤 추가 정보를 추가하거나 특정 페이지로 리다이렉트하는 등의 작업을 수행할 수 있습니다.
+      model.addAttribute("isAdmin", member);
+    }
     Page<Review> paging = this.reviewService.getList(page);
     model.addAttribute("paging", paging);
     model.addAttribute("movie",movie);
@@ -54,11 +61,12 @@ public class ReviewController {
     Member member = this.memberService.getMember(principal.getName());
     if (bindingResult.hasErrors()) {
       model.addAttribute("movie", movie);
-      model.addAttribute("member", member);
+//      model.addAttribute("member", member);
       return "/Review/review_form";
     }
     this.reviewService.create(movie, reviewForm.getSubject(), reviewForm.getContent(), reviewForm.getStarRating(),
             member);
+    model.addAttribute("member",member);
 
     return String.format("redirect:/movie/detail/%s", movieId);
 

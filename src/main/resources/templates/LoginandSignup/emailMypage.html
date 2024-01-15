@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link rel="stylesheet" href="/subpage.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="subpage_cont" style="height:380px;">
+    <h2>이메일 수정하기</h2>
+    <form th:action="@{/member/mypage/email}" method="post">
+        <!-- 에러 메세지 표시 -->
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}" class="error-text"></p>
+        </div>
+        <div>
+            <input type="hidden" name="verificationCode" th:value="${verificationCode}">
+            <input type="text" name="email" th:value="${email}" class="form-control"  placeholder="변경할 이메일" style="margin-top:50px;">
+            <input class="btn btn-primary my-2" type="submit" value="인증하기">
+        </div>
+    </form>
+    <form th:action="@{/member/mypage/emailverification}" method="post">
+        <div>
+            <input type="hidden" name="email" th:value="${email}">
+            <input type="text" name="verificationCode" th:value="${verificationCode}" class="form-control" placeholder="인증번호">
+            <input  class="btn btn-primary my-2" type="submit" value="확인">
+        </div>
+    </form>
+</div>
+<script>
+    function createStar() {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.top = `${Math.random() * 100}vh`;
+      document.body.appendChild(star);
+    }
+
+    // 별빛 여러 개 생성
+    for (let i = 0; i < 500; i++) {
+      createStar();
+    }
+</script>
+
+
+<script>
+    function createGalaxy() {
+      const galaxy = document.createElement('div');
+      galaxy.className = 'galaxy';
+      galaxy.style.left = `${Math.random() * 100}vw`;
+      galaxy.style.top = `${Math.random() * 100}vh`;
+      document.body.appendChild(galaxy);
+    }
+
+
+    for (let i = 0; i < 100; i++) {
+      createGalaxy();
+    }
+</script>
+</body>
+</html>

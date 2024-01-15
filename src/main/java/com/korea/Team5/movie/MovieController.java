@@ -59,15 +59,20 @@ public class MovieController {
 
 
     @GetMapping("/detail/{id}")
+
     public String detail(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @PathVariable("id") Integer id) {
+
         Movie movie = this.movieService.getMovie(id);
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
+
 //        List<MovieInfoDto> movieInfoList = this.kmapiService.videoListSaveDataBase();
         model.addAttribute("movieInfo", movieInfo);
 //        model.addAttribute("movieInfoList", movieInfoList);
         model.addAttribute("movie", movie);
         model.addAttribute("paging", paging);
+
+
 
         return "movieDetail";
     }
@@ -83,6 +88,26 @@ public class MovieController {
 
         return "redirect:/movie/list";
     }
+
+
+
+
+
+
+
+    @GetMapping("/addDetail")
+    public String addDetail(Model model){
+        MovieInfo movieInfo = this.movieService.getMovieDetail();
+        model.addAttribute("movieInfo", movieInfo);
+        return "addDetail";
+    }
+
+    @GetMapping("/testDetail")
+    public String testDetail(){
+        return "testDetail";
+    }
+
+
 
 
     // api 데이터 넣는 메서드
@@ -105,12 +130,6 @@ public class MovieController {
     }
 
 
-    @GetMapping("/addDetail")
-    public String addDetail(String movieCd, Model model) {
-        MovieInfo movieInfo = this.movieService.getMovieDetail();
-        model.addAttribute("movieInfo", movieInfo);
-        return "addDetail";
-    }
 
 
     @GetMapping("/intro")
@@ -119,7 +138,9 @@ public class MovieController {
     }
 
 
+
 }
+
 
 
 

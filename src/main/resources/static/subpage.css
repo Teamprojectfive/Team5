@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #000022, #080E2F, #000022);
+}
+ /* 별빛 효과 */
+.star {
+    position: absolute;
+    background: white;
+    width: 1px;
+    height: 1px;
+}
+
+
+/* 행성과 위성 */
+.planet {
+    position: absolute;
+    background: #FFD700;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    transform: rotate(45deg) scale(1.2);
+}
+
+.big-planet {
+    width: 100px;
+    height: 100px;
+}
+
+.moon {
+    width: 20px;
+    height: 20px;
+}
+
+.galaxy {
+    position: absolute;
+    background: white;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    animation: twinkling 2s infinite;
+}
+
+@keyframes twinkling {
+    0%, 100% {
+         opacity: 1;
+    }
+    50% {
+         opacity: 0.5;
+    }
+}
+
+.subpage_cont{
+    background: black;
+    width: 20%;
+    border: solid 1px white;
+    border-radius: 10px;
+    padding: 25px;
+    position: relative;
+    top: 35%;
+    left: 40%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.subpage_cont h2{
+    text-align: center;
+    color: whitesmoke;
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.subpage_cont label{
+    color:white;
+}
+
+.subpage_cont input{
+     color:black
+
+ }

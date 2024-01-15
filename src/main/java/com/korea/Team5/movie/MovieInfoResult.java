@@ -6,7 +6,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 public class MovieInfoResult {
+
+
     @JsonProperty("movieInfoResult")
+
     private MovieInfoWrap movieInfoResult;
 }

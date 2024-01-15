@@ -16,9 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,7 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
     private final MovieInfoRepository movieInfoRepository;
+
     private final GenreRepository genreRepository;
     private final Actor1Repository actor1Repository;
     private final AuditRepository auditRepository;
@@ -37,6 +43,7 @@ public class MovieService {
 
 
 
+
     private final String apiUrl;
     private final String apiKey;
     private final String apiUrl2;
@@ -44,6 +51,7 @@ public class MovieService {
 
 
     @Autowired
+
     public MovieService(RestTemplate restTemplate, MovieRepository movieRepository, MovieInfoRepository movieInfoRepository, @Value("${movie.api.url2}") String apiUrl, @Value("${movie.api.key}") String apiKey, @Value("${movie.api.detail.url}") String apiUrl2, GenreRepository genreRepository, Actor1Repository actor1Repository, AuditRepository auditRepository, CompanyRepository companyRepository, NationRepository nationRepository, StaffRepository staffRepository, DirectorRepository directorRepository, PlotRepository plotRepository) {
         this.plotRepository = plotRepository;
         this.directorRepository = directorRepository;
@@ -57,10 +65,14 @@ public class MovieService {
         this.movieRepository = movieRepository;
         this.movieInfoRepository = movieInfoRepository;
         this.genreRepository = genreRepository;
+
+
+
         this.apiUrl = apiUrl;
         this.apiUrl2 = apiUrl2;
         this.apiKey = apiKey;
     }
+
 
 
     public List<Movie> list() {
@@ -108,9 +120,16 @@ public class MovieService {
         this.movieRepository.save(movie);
     }
 
+    public void delete(Movie movie) {
+        this.movieRepository.delete(movie);
+    }
+
+
+
 
     @Transactional
     public List<Movie> fetchDataAndSaveToDatabase(String targetDt) {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate targetDate = LocalDate.parse(targetDt, formatter);
         List<Movie> movieList = new ArrayList<>();
@@ -135,6 +154,8 @@ public class MovieService {
             // currentDate를 1주씩 감소
             targetDate = targetDate.minusWeeks(1);
 
+
+
         }
         return movieList;
 
@@ -152,6 +173,7 @@ public class MovieService {
         // 4. 요청해서 받아온 데이터를 저장 -> OneToMany 연결해서 저장(이미 존재하는 경우 저장 X)
         Set<String> movieCds = new HashSet<>();
         try {
+
             int i = 0;
             for (Movie movie : movieList) {
                 if (i == 30) {
@@ -217,6 +239,8 @@ public class MovieService {
                         throw new RuntimeException("API 응답이 null입니다.");
                     }
                     i++;
+
+
                 }
             }
             } catch(Exception e){
@@ -227,6 +251,13 @@ public class MovieService {
 
     }
 
+    public Page<Movie> getAllMovies(int page) {
+        // 페이징 처리를 위해 Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, 10); // PAGE_SIZE는 페이지당 보여줄 항목 수
+
+        // 모든 멤버를 가져오는 메서드 호출
+        return movieRepository.findAll(pageable);
+    }
 
 }
 

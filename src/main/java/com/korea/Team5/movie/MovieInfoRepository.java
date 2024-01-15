@@ -1,5 +1,6 @@
 package com.korea.Team5.movie;
 
+
 import com.korea.Team5.kmapi.MovieInfoDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +14,6 @@ public interface MovieInfoRepository extends JpaRepository<MovieInfo, Integer> {
 
 
     MovieInfo findByMovieCd(String movieCd);
+
+
 }
