@@ -427,7 +427,6 @@
                             <div class="card-body">
                                 <p class="card-text" th:unless="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}"th:text="${#strings.substring(review.member.loginId, 0, review.member.loginId.length() - 2) + '**'}"></p>
                                 <p class="card-text" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}" th:text="${review.member.loginId}"></p>
-                                <p class="card-text" th:text="${#strings.substring(review.member.loginId, 0, review.member.loginId.length() - 2) + '**'}"></p>
                                 <h5 class="card-title" th:text="${review.subject}"></h5>
                                 <p class="card-text" th:text="${review.content}"></p>
                                 <!-- 별점 -->

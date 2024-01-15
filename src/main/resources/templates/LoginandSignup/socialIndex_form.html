@@ -11,6 +11,7 @@
 </div>
 <form th:action="@{/member/duplicate}" method="post">
 <h1>닉네임 재설정</h1>
+    <label for="text" style="color:red;">사용하고 계시는 닉네임이 현재 다른 유저가 사용중인 닉네임입니다. 닉네임을 수정후 다시 로그인 해주세요.</label>
 <div>
     <label for="nickname" class="form-label">닉네임</label>
     <input type="text" name="nickname" id="nickname">
