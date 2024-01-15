@@ -3,6 +3,8 @@ import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.Email.EmailService;
 import com.korea.Team5.Review.Review;
 import com.korea.Team5.Review.ReviewService;
+import com.korea.Team5.Review.Review;
+import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.SMS.SMSService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -33,6 +35,8 @@ public class MemberController {
   private final EmailService emailService;
 
   private final ReviewService reviewService;
+
+
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -133,6 +137,9 @@ public class MemberController {
 
     return "/LoginandSignup/mypage_form";
   }
+
+
+
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypagedelete")
   public String mypagedelete(Model model, Principal principal){
@@ -198,7 +205,7 @@ public class MemberController {
   }
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypagereviewdelete")
-  public String mypagereviewdelete(@RequestParam Integer reviewId){
+  public String mypagereviewdelete(@RequestParam Integer reviewId,Principal principal){
 
     // reviewId를 기반으로 Review를 검색합니다.
     Review review = reviewService.findReviewById(reviewId);
@@ -211,7 +218,7 @@ public class MemberController {
   @GetMapping("/updatePhone")
   public String updatePhone() {
 
-    return "/LoginandSignup/phoneMypage"; // 적절한 리다이렉트 경로로 변경
+    return "/LoginandSignup/phoneMypage";  // 적절한 리다이렉트 경로로 변경
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -236,14 +243,14 @@ public class MemberController {
       // 인증 성공 시 처리 (예: DB에 전화번호 업데이트)
       memberService.updateMemberPhone(principal.getName(), phone);
       // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)
-      return "redirect:/member/mypage";
+      return "redirect:/member/mypage_form";
     } else {
       // 인증 실패 시 에러 메시지 설정
       model.addAttribute("errorMessage", "인증번호가 일치하지 않습니다.");
       // 모델에 전화번호를 추가하여 폼에 전달
       model.addAttribute("phone", phone);
       // 이전 페이지로 이동
-      return "/LoginandSignup/phoneMypage";
+      return "/LoginandSignup/mypage_form";
     }
   }
 
@@ -272,32 +279,6 @@ public class MemberController {
     return "/LoginandSignup/emailMypage";
   }
 
-  @PreAuthorize("isAuthenticated()")
-  @PostMapping("/mypage/emailverification")
-  public String emailverification(Model model, @RequestParam String email, HttpSession session, @RequestParam String verificationCode, Principal principal) {
-
-
-
-
-    // 세션에서 저장된 전송된 인증 코드 가져오기
-    String storedVerificationCode = (String) session.getAttribute("verificationCode");
-
-    // 입력한 인증 코드와 전송된 인증 코드 비교
-    if (storedVerificationCode != null && storedVerificationCode.equals(verificationCode)) {
-      model.addAttribute("email", email);
-      // 인증 성공 시 처리 (예: DB에 이메일 업데이트)
-      memberService.updateMemberemail(principal.getName(), email);
-      // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)
-      return "redirect:/member/mypage";
-    } else {
-      // 인증 실패 시 에러 메시지 설정
-      model.addAttribute("errorMessage", "인증번호가 일치하지 않습니다.");
-      // 모델에 이메일를 추가하여 폼에 전달
-      model.addAttribute("email", email);
-      // 이전 페이지로 이동
-      return "/LoginandSignup/emailMypage";
-    }
-  }
 
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/password")
@@ -310,6 +291,18 @@ public class MemberController {
 
     return "/LoginandSignup/mypagepassword";
   }
+
+
+
+  //마이페이지 닉네임 수정 부분 시작//
+
+
+
+  //마이페이지 닉네임 수정 부분//
+
+
+
+
   //마이페이지 비밀번호 수정메서드.
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypagepasswordupdate")
@@ -346,10 +339,7 @@ public class MemberController {
 
 
   //마이페이지 닉네임 수정 부분 시작//
-
-
-
-  //마이페이지 닉네임 수정 부분//
+  //마이페이지 닉네임 수정 부분 시작//
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage/nickName")
   public String updatenickName() {
@@ -368,7 +358,6 @@ public class MemberController {
     if (nickName.equals(member1.getNickName())) {
       // 닉네임이 같으면 에러 메시지를 사용자에게 보여줌
       model.addAttribute("error", "현재 사용 중인 닉네임과 동일합니다.");
-      model.addAttribute("errorMessage", "현재 사용 중인 닉네임과 동일합니다.");
       return "LoginandSignup/nickNameMypage";
     }
     // 새로운 닉네임이 이미 다른 사용자에 의해 사용 중인지 확인
@@ -526,6 +515,13 @@ public class MemberController {
   @PostMapping("/findpasswordemail")
   public String findpasswordemail(Model model, HttpSession session, @RequestParam String email) {
 
+    // 입력값이 없을 경우 에러 메시지 반환
+    if (email == null || email.isEmpty()) {
+      model.addAttribute("errorMessage", "이메일을 입력하세요.");
+      model.addAttribute("verificationform", true);
+
+      return "/LoginandSignup/findpassword_form"; // 또는 리다이렉트 등을 원하는 대로 처리 가능
+    }
     String storedVerificationCode = String.valueOf((int) (Math.random() * 9000) + 1000);
     // 이메일 전송 로직
     emailService.sendVerificationCode(email, storedVerificationCode);
@@ -540,7 +536,7 @@ public class MemberController {
     return "/LoginandSignup/findpassword_form";
   }
 
-  @PostMapping("/passwordemailverification")
+  @GetMapping("/passwordemailverification")
   public String passwordemailverification(Model model, @RequestParam String enterverificationCode, HttpSession session) {
 
     String storedVerificationCode = (String) session.getAttribute("emailverificationCode");
@@ -550,6 +546,9 @@ public class MemberController {
       model.addAttribute("member", member);
     } else {
       model.addAttribute("error", "인증번호가 일치하지 않습니다.");
+      model.addAttribute("email",member.getEmail());
+      model.addAttribute("verificationform", true);
+      model.addAttribute("emailverificationCodeform", true);
       session.removeAttribute("emailverificationCode");
       return "/LoginandSignup/findpassword_form";
     }
@@ -581,14 +580,20 @@ public class MemberController {
     return "/LoginandSignup/login_form";
   }
   // 패스워드찾기 휴대폰으로 인증 메서드 시작
-  @PostMapping("/findpasswordPhone")
+  @GetMapping("/findpasswordPhone")
   public String findpasswordPhone(@RequestParam String phone,Model model ,HttpSession session){
+    // 입력값이 없을 경우 에러 메시지 반환
+    if (phone == null || phone.isEmpty()) {
+      model.addAttribute("errorMessage", "휴대전화번호를 입력하세요.");
+      model.addAttribute("verificationform", true);
 
+      return "/LoginandSignup/findpassword_form"; // 또는 리다이렉트 등을 원하는 대로 처리 가능
+    }
     String storedVerificationCode = emailService.sendVerificationCodeSMS(phone);
     // 생성된 인증 코드를 세션에 저장
     session.setAttribute("phoneverificationCode", storedVerificationCode);
     session.getAttribute("member");
-    // 모델에 이메일을 추가하여 폼에 전달
+    // 모델에 폰을 추가하여 폼에 전달
     model.addAttribute("phone", phone);
     model.addAttribute("member");
     model.addAttribute("verificationform", true);
@@ -596,7 +601,7 @@ public class MemberController {
 
     return "/LoginandSignup/findpassword_form";
   }
-  @PostMapping("/passwordephoneverification")
+  @GetMapping("/passwordephoneverification")
   public String passwordephoneverification(Model model,@RequestParam String enterphoneverificationCode,HttpSession session){
     String storedVerificationCode = (String) session.getAttribute("phoneverificationCode");
     Member member = (Member) session.getAttribute("member");
@@ -604,6 +609,9 @@ public class MemberController {
       model.addAttribute("member", member);
     } else {
       model.addAttribute("error", "인증번호가 일치하지 않습니다.");
+      model.addAttribute("phone",member.getPhone());
+      model.addAttribute("verificationform", true);
+      model.addAttribute("phoneverificationCodeform", true);
       session.removeAttribute("phoneverificationCode");
       return "/LoginandSignup/findpassword_form";
     }

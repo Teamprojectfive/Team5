@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -30,9 +31,10 @@ public class AdminController {
 
 
 
-
     return "/ADMIN/admin_signform";
   }
+
+
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/adminsignup")
@@ -45,13 +47,18 @@ public class AdminController {
       model.addAttribute("validSearch", true);
       model.addAttribute("memberExists", true);
       model.addAttribute("memberFromDB", memberFromDB);
+
       return "/ADMIN/admin_signform"; // 일치하는 경우
+
     } catch (DataNotFoundException ex) {
       // DB에 해당 loginId가 존재하지 않을 경우의 로직
       model.addAttribute("errorMessage", "해당 아이디가 존재하지 않습니다.");
       model.addAttribute("validSearch", true);
       model.addAttribute("memberExists", false);
+
       return "/ADMIN/admin_signform";
+
+
     }
   }
 
@@ -61,13 +68,19 @@ public class AdminController {
     try {
       // 서비스를 통해 해당 회원 삭제
       memberService.deleteMember(loginId);
+
       model.addAttribute("deleteform",true);
+
+
       // 삭제가 성공했을 경우, 다시 검색 폼으로 이동
       return "redirect:/admin/adminpage";
     } catch (DataNotFoundException e) {
       // 데이터를 찾을 수 없는 경우의 예외 처리
       model.addAttribute("errorMessage", "해당 아이디가 존재하지 않습니다.");
+
       return "/ADMIN/admin_signform"; // 예를 들어, notfound 뷰로 이동하거나 다른 방식으로 처리 가능
+
+
     }
   }
 
@@ -82,6 +95,7 @@ public class AdminController {
       // 가져온 리뷰 목록이 비어 있는지 확인
       if (paging.isEmpty()) {
         model.addAttribute("error", "작성한 리뷰가 존재하지 않습니다.");
+
         Member memberFromDB = memberService.getMember(loginId);
         model.addAttribute("memberFromDB",memberFromDB);
         model.addAttribute("validSearch", true);

@@ -41,6 +41,8 @@ public class MemberService {
     } else {
       member.setRole("USER"); // 기본적으로 USER 역할 부여
     }
+
+
     this.memberRepository.save(member);
     return member;
   }
@@ -77,8 +79,7 @@ public class MemberService {
 
 
     // 소셜 로그인 사용자 정보를 가져오거나 생성합니다.
-    Member member = memberRepository.findByloginId(loginId)
-            .orElse(new Member());
+    Member member = memberRepository.findByloginId(loginId).orElse(new Member());
 
     // 공통 속성 설정
     member.setLoginId(loginId);
@@ -192,15 +193,17 @@ public class MemberService {
     }
   }
 
-  public List<Member> getMembersByPhone(String phone){
+
+  public List<Member> getMembersByPhone(String phone) {
     List<Member> members = this.memberRepository.findByPhone(phone);
 
-    if (!members.isEmpty()){
+    if (!members.isEmpty()) {
       return members;
-    }else {
+    } else {
       throw new DataNotFoundException("members not found for phone: " + phone);
     }
   }
+
   // 모든 멤버를 가져오는 메서드 추가
   public Page<Member> getAllMembers(int page) {
     // 페이징 처리를 위해 Pageable 객체 생성
@@ -209,5 +212,6 @@ public class MemberService {
     // 모든 멤버를 가져오는 메서드 호출
     return memberRepository.findAll(pageable);
   }
-}
 
+
+}
