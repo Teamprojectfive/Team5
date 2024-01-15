@@ -1,9 +1,6 @@
 package com.korea.Team5.movie;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +13,8 @@ public class Staff {
     private Long id;
 
     private String peopleNm;  // 스태프 이름
-    private String peopleNmEn;  // 스태프 영어 이름
-    private String staffRoleNm;  // 스태프 역할
+
+
+    @ManyToOne
+    private MovieInfo movieInfo;
 }
