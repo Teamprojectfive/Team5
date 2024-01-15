@@ -10,12 +10,14 @@
 <div class="subpage_cont">
     <h2>닉네임 수정</h2>
     <form th:action="@{/member/mypage/nickName}" method="post" style="padding-top: 15%; text-align: center;">
+
         <!-- 에러 메세지 표시 -->
         <div th:if="${errorMessage}" class="error-message">
             <p th:text="${errorMessage}" class="error-text"></p>
         </div>
-        <input type="text" name="nickName" th:value="${nickName}" class="form-control" placeholder="닉네임을 입력해주세요." style="    margin-bottom: 35px">
-        <input  class="btn btn-primary my-2" type="submit" value="수정하기">
+        <input type="text" name="nickName" th:value="${nickName}" class="form-control" placeholder="닉네임을 입력해주세요."
+               style="    margin-bottom: 35px">
+        <input class="btn btn-primary my-2" type="submit" value="수정하기">
     </form>
 </div>
 <script>

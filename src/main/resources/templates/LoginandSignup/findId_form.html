@@ -17,9 +17,7 @@
             </div>
             <section id="emailVerificationForm" style="display: none;" >
                 <div>
-                    <div th:if="${error}" class="error-message">
-                        <p th:text="${error}"></p>
-                    </div>
+                    <input type="hidden" id="error-msg" th:value="${error}">
                     <form th:action="@{/member/findId}" method="post" id="myPageForm" >
                         <div>
                             <label for="email" class="form-label">본인확인 이메일 인증</label>
@@ -76,13 +74,17 @@
         </section>
     </div>
     <script>
-
-        window.onload = function() {
+        window.onload = function () {
             var selectedTab = localStorage.getItem('selectedTab');
+            var emailRadio = document.getElementById("flexRadioDefault1");
+            var phoneRadio = document.getElementById("flexRadioDefault2");
+
             if (selectedTab === 'phone') {
                 showPhoneForm();
+                phoneRadio.checked = true;
             } else {
                 showEmailForm();
+                emailRadio.checked = true;
             }
         };
 
@@ -97,6 +99,17 @@
             document.getElementById("phoneVerificationForm").style.display = "block";
             localStorage.setItem('selectedTab', 'phone');
         }
+    </script>
+    <script>
+    test();
+
+    function test() {
+    var errorMessage = document.getElementById('error-msg').value;
+    if (errorMessage.trim() !== "") {
+    // 여기에 스크립트 로직 추가
+    alert(errorMessage);
+    }
+    }
     </script>
 </div>
 </body>
