@@ -1,4 +1,3 @@
-
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -8,24 +7,15 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="subpage_cont" style="height:350px;">
-    <h2>휴대전화번호 수정하기</h2>
-    <form th:action="@{/member/updatePhone}" method="post" style="margin-top:40px;">
+<div class="subpage_cont">
+    <h2>닉네임 수정</h2>
+    <form th:action="@{/member/mypage/nickName}" method="post" style="padding-top: 15%; text-align: center;">
         <!-- 에러 메세지 표시 -->
         <div th:if="${errorMessage}" class="error-message">
             <p th:text="${errorMessage}" class="error-text"></p>
         </div>
-        <div>
-            <input type="text" name="phone" th:value="${phone}" class="form-control" placeholder="변경할 휴대전화번호">
-            <input class="btn btn-primary my-2" type="submit" value="인증하기">
-        </div>
-    </form>
-    <form th:action="@{/member/updatePhoneverification}" method="post">
-        <div>
-            <input type="hidden" name="phone" id="phone" th:value="${phone}">
-            <input type="text" name="verificationCode" class="form-control" th:value="${verificationCode}" placeholder="인증번호">
-            <input class="btn btn-primary my-2" type="submit" value="확인">
-        </div>
+        <input type="text" name="nickName" th:value="${nickName}" class="form-control" placeholder="닉네임을 입력해주세요." style="    margin-bottom: 35px">
+        <input  class="btn btn-primary my-2" type="submit" value="수정하기">
     </form>
 </div>
 <script>
@@ -42,8 +32,6 @@
       createStar();
     }
 </script>
-
-
 <script>
     function createGalaxy() {
       const galaxy = document.createElement('div');
