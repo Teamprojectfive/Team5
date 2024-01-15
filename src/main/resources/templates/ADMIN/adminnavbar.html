@@ -1,0 +1,25 @@
+<html lang="en" layout:decorate="~{ADMIN/adminlayout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav th:fragment="navbarFragment">
+    <a th:href="@{/main}">메인으로</a>
+    <h2>관리자 페이지</h2>
+    <ul class="nav">
+        <ul class="nav">
+            <li class="nav-item">
+                <input type="hidden" name="member" th:value="${member}">
+                <a class="admin" role="button" th:href="@{/admin/adminpage}">회원관리</a>
+            </li>
+        </ul>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="admin" role="button" th:href="@{/admin/adminmovielist}">무비관리</a>
+            </li>
+        </ul>
+    </ul>
+</nav>
+</body>
+</html>

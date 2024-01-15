@@ -1,0 +1,69 @@
+<html layout:decorate="~{ADMIN/adminlayout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="admincontent" class="container my-3">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    <div id="movieForm">
+        <div th:if="${adminmoviespaging.isEmpty()}">
+            <label for="text">등록된 영화가 없습니다.</label>
+        </div>
+        <h2>영화 목록</h2>
+        <input type="submit" value="새로운 영화 등록하기">
+        <div th:if="${adminmoviespaging}">
+            <ul>
+                <li th:each="movie : ${adminmoviespaging.content}">
+                    <!-- 멤버의 정보를 출력 -->
+                    <p th:text="${movie.name}"></p>
+                    <p th:text="${movie.content}"></p>
+                    <p th:text="${movie.genre}"></p>
+                    <p th:text="${movie.age}"></p>
+                    <!-- 추가로 출력할 정보가 있다면 추가 -->
+                    <!-- <p th:text="${member.someOtherField}"></p> -->
+                    <form th:action="@{/admin/adminmoviedelete}" method="post">
+                        <div>
+                            <input type="hidden" name="movie" th:value="${movie.id}">
+                            <input type="submit" value="삭제" onclick="return confirmWithdraw();">
+                        </div>
+                    </form>
+                    <div>
+                        <input type="submit" value="수정">
+                    </div>
+                </li>
+            </ul>
+            <!-- 페이징처리 시작 -->
+            <div th:if="${!adminmoviespaging.isEmpty()}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!adminmoviespaging.hasPrevious} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{|?page=${adminmoviespaging.number-1}|}">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, adminmoviespaging.totalPages-1)}"
+                        th:classappend="${page == adminmoviespaging.number} ? 'active'"
+                        class="page-item">
+                        <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!adminmoviespaging.hasNext} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${adminmoviespaging.number+1}|}">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 페이징처리 끝 -->
+        </div>
+    </div>
+    <script>
+        function confirmWithdraw() {
+            // 확인창을 띄웁니다.
+            var confirmWithdraw = confirm("정말로 영화를 삭제하시겠습니까?");
+
+            // 확인을 눌렀을 경우에만 폼을 제출합니다.
+            return confirmWithdraw;
+        }
+    </script>
+    </body>
+</html>

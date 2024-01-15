@@ -7,8 +7,8 @@
 </head>
 <body>
 <h2>내가 작성한 리뷰 </h2>
-    <!-- 작성한 리뷰 목록 출력 -->
-    <label for="text">작성한 리뷰</label>
+<!-- 작성한 리뷰 목록 출력 -->
+<label for="text">작성한 리뷰</label>
 <div th:if="${paging.isEmpty()}">
     <label for="text">작성한 리뷰가 없습니다.</label>
 </div>
@@ -26,8 +26,9 @@
                 <svg height="25" width="23" class="star1" style="color:gold;"
                      th:each="star : ${#numbers.sequence(1, 5)}">
                     <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
-                    <polygon  th:if="${star} &lt;= ${review.starRating}"
-                              points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2" fill="gold"/>
+                    <polygon th:if="${star} &lt;= ${review.starRating}"
+                             points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2"
+                             fill="gold"/>
                 </svg>
             </div>
             <strong></strong>평점:<span th:text="${review.starRating * 2}"></span><br>
@@ -41,35 +42,35 @@
             </form>
         </div>
         <!-- 입력 폼 -->
-        <div th:id="${'editView_' + review.id}" th:style="${'display:none;'}">
-            <form th:action="@{ /member/mypagereviewmodify}" method="post">
-                <input type="hidden" name="reviewId" th:value="${review.id}">
-                <div>
-                    <label for="newSubject">리뷰제목</label>
-                    <input type="text" id="newSubject" name="newSubject" th:value="${review.subject}" required />
-                </div>
-                <div>
-                    <label for="newContent">리뷰내용</label>
-                    <textarea id="newContent" name="newContent" required th:text="${review.content}"></textarea>
-                </div>
-                <!-- 별점 선택 -->
-                <label class="form-label" style="margin-top:20px;">별점</label>
-                <div style="display: flex; justify-content: space-between;">
-                    <div class="star-rating">
-                        <span class="star" data-rating="1" onmouseover="fillStars(1)" onclick="updateRating(1)">&#9734;</span>
-                        <span class="star" data-rating="2" onmouseover="fillStars(2)" onclick="updateRating(2)">&#9734;</span>
-                        <span class="star" data-rating="3" onmouseover="fillStars(3)" onclick="updateRating(3)">&#9734;</span>
-                        <span class="star" data-rating="4" onmouseover="fillStars(4)" onclick="updateRating(4)">&#9734;</span>
-                        <span class="star" data-rating="5" onmouseover="fillStars(5)" onclick="updateRating(5)">&#9734;</span>
-                        <input type="hidden" name="newStarRating" id="newStarRating" th:value="${review.starRating}" />
+        <div th:id="${'editView_' + review.id}" th:data-review-id="${review.id}" class="editView"
+             th:style="${'display:none;'}">
+                <form th:action="@{ /member/mypagereviewmodify}" method="post">
+                    <input type="hidden" name="reviewId" th:value="${review.id}">
+                    <div>
+                        <label for="newSubject">리뷰제목</label>
+                        <input type="text" id="newSubject" name="newSubject" th:value="${review.subject}" required/>
                     </div>
-                </div>
-                <div>
-                    <button type="button" th:onclick="|cancelEdit(${review.id})|">취소</button>
-                    <input type="submit" value="수정">
-                </div>
-            </form>
-        </div>
+                    <div>
+                        <label for="newContent">리뷰내용</label>
+                        <textarea id="newContent" name="newContent" required th:text="${review.content}"></textarea>
+                    </div>
+                    <!-- 별점 선택 -->
+                    <label class="form-label" style="margin-top:20px;">별점</label>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="star-rating">
+                            <span th:each="num : ${#numbers.sequence(1,5)}" class="star" th:data-rating="${num}"
+                                  th:onmouseover="fillStars([[${review.id}]], [[${num}]])"
+                                  th:onclick="updateRating([[${review.id}]], [[${num}]])">&#9734;</span>
+                            <input type="hidden" name="newStarRating" th:id="${'newStarRating_' + review.id}"
+                                   th:value="${review.starRating}"/>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" th:onclick="|cancelEdit(${review.id})|">취소</button>
+                        <input type="submit" value="수정">
+                    </div>
+                </form>
+            </div>
     </li>
 </ul>
 <!-- 페이징처리 시작 -->
@@ -140,27 +141,35 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-     const stars = document.querySelectorAll('.star');
-     const ratingInput = document.getElementById('newStarRating');
 
-     stars.forEach(star => {
-         star.addEventListener('mouseover', () => {
-             const rating = star.getAttribute('data-rating');
-             fillStars(rating);
-         });
+         const editViewList = document.querySelectorAll('.editView');
 
-         star.addEventListener('mouseout', () => {
-             const currentRating = ratingInput.value || 0;
-             fillStars(currentRating);
-         });
+         editViewList.forEach((editView) => {
+            let reviewId = editView.getAttribute("data-review-id");
+            const ratingInput = document.getElementById('newStarRating_' + reviewId);
+            const stars = editView.querySelectorAll('.star');
 
-         star.addEventListener('click', () => {
-             const rating = star.getAttribute('data-rating');
-             updateRating(rating);
+            stars.forEach(star => {
+                 star.addEventListener('mouseover', () => {
+                     const rating = star.getAttribute('data-rating');
+                     fillStars(reviewId, rating);
+                 });
+
+                 star.addEventListener('mouseout', () => {
+                     const currentRating = ratingInput.value || 0;
+                     fillStars(reviewId, currentRating);
+                 });
+
+                 star.addEventListener('click', () => {
+                     const rating = star.getAttribute('data-rating');
+                     updateRating(reviewId, rating);
+                 });
+             });
          });
      });
 
-     function fillStars(rating) {
+    function fillStars(reviewId, rating) {
+        let stars = document.querySelectorAll('#editView_' + reviewId + ' .star');
          stars.forEach(star => {
              const starRating = star.getAttribute('data-rating');
              if (starRating <= rating) {
@@ -171,11 +180,11 @@
          });
      }
 
-     function updateRating(rating) {
+     function updateRating(reviewId, rating) {
+         const ratingInput = document.getElementById('newStarRating_' + reviewId);
          ratingInput.value = rating;
          fillStars(rating);
      }
- });
 </script>
 <script>
     function confirmDelete() {

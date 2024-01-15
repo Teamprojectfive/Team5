@@ -3,6 +3,9 @@ package com.korea.Team5.USER;
 import com.korea.Team5.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +34,6 @@ public class MemberService {
     member.setCreateDate(LocalDateTime.now());
 
 
-
     // "admin"으로 등록되는 경우에는 ADMIN 역할 부여
     if ("admin".equals(loginId)) {
       member.setRole("ADMIN");
@@ -41,9 +43,7 @@ public class MemberService {
     }
 
 
-
     this.memberRepository.save(member);
-
     return member;
   }
 
@@ -79,8 +79,7 @@ public class MemberService {
 
 
     // 소셜 로그인 사용자 정보를 가져오거나 생성합니다.
-    Member member = memberRepository.findByloginId(loginId)
-            .orElse(new Member());
+    Member member = memberRepository.findByloginId(loginId).orElse(new Member());
 
     // 공통 속성 설정
     member.setLoginId(loginId);
@@ -184,6 +183,7 @@ public class MemberService {
     }
   }
 
+
   public List<Member> getMembersByEmail(String email) {
     List<Member> members = this.memberRepository.findByEmail(email);
     if (!members.isEmpty()) {
@@ -193,20 +193,25 @@ public class MemberService {
     }
   }
 
+
   public List<Member> getMembersByPhone(String phone) {
     List<Member> members = this.memberRepository.findByPhone(phone);
 
     if (!members.isEmpty()) {
       return members;
     } else {
-  public List<Member> getMembersByPhone(String phone){
-    List<Member> members = this.memberRepository.findByPhone(phone);
-
-    if (!members.isEmpty()){
-      return members;
-    }else {
       throw new DataNotFoundException("members not found for phone: " + phone);
     }
   }
-}
 
+  // 모든 멤버를 가져오는 메서드 추가
+  public Page<Member> getAllMembers(int page) {
+    // 페이징 처리를 위해 Pageable 객체 생성
+    Pageable pageable = PageRequest.of(page, 10); // PAGE_SIZE는 페이지당 보여줄 항목 수
+
+    // 모든 멤버를 가져오는 메서드 호출
+    return memberRepository.findAll(pageable);
+  }
+
+
+}
