@@ -10,6 +10,7 @@
     <div class="list_title">
         <h1><strong>박스오피스</strong></h1>
     </div>
+
     <section class="list_box_wrap" id="listContainer">
         <section class="list_box" th:each="movieList, iterStat : ${movieSubList}">
             <div th:each="movie : ${movieList}" class="list">
@@ -20,8 +21,13 @@
                         <div class="sub_info">
                             <p style="margin: 5px 0 0 0;">설명 : <span th:text="${movie.content}"></span></p>
                             <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
-                            <div style="margin-top: 10px;">
-                                <a th:href="@{/movie/detail(key=${apiKey},movieCd=${movie.movieCd})}">상세보기</a></div>
+                            <div style="margin-top: 10px;" th:if="${movie.movieInfo != null}">
+
+                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+
+                            </div>
+
+
                             <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
                                th:data-uri="@{|/movie/vote/${movie.id}|}"
                                style="text-decoration: none; color: #007bff;">

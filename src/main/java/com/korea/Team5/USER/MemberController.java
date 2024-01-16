@@ -224,6 +224,11 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/updatePhone")
   public String updatePhone(@RequestParam String phone, Model model, HttpSession session) {
+    // 입력값이 없을 경우 에러 메시지 반환
+    if (phone == null || phone.isEmpty()) {
+      model.addAttribute("errorMessage", "핸드폰번호를 입력하세요.");
+      return "/LoginandSignup/phoneMypage"; // 또는 리다이렉트 등을 원하는 대로 처리 가능
+    }
     String verificationCode = emailService.sendVerificationCodeSMS(phone);
     // 생성된 인증 코드를 세션에 저장
     session.setAttribute("verificationCode", verificationCode);
@@ -243,14 +248,13 @@ public class MemberController {
       // 인증 성공 시 처리 (예: DB에 전화번호 업데이트)
       memberService.updateMemberPhone(principal.getName(), phone);
       // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)
-      return "redirect:/member/mypage_form";
+      return "redirect:/member/mypage";
     } else {
       // 인증 실패 시 에러 메시지 설정
       model.addAttribute("errorMessage", "인증번호가 일치하지 않습니다.");
       // 모델에 전화번호를 추가하여 폼에 전달
       model.addAttribute("phone", phone);
-      // 이전 페이지로 이동
-      return "/LoginandSignup/mypage_form";
+      return "/LoginandSignup/phoneMypage";
     }
   }
 
@@ -266,6 +270,11 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypage/email")
   public String updateEmail(Model model, @RequestParam String email, @RequestParam String verificationCode, HttpSession session) {
+    // 입력값이 없을 경우 에러 메시지 반환
+    if (email == null || email.isEmpty()) {
+      model.addAttribute("errorMessage", "이메일을 입력하세요.");
+      return "/LoginandSignup/emailMypage"; // 또는 리다이렉트 등을 원하는 대로 처리 가능
+    }
     String storedVerificationCode = String.valueOf((int) (Math.random() * 9000) + 1000);
 // 이메일 전송 로직
     emailService.sendVerificationCode(email, storedVerificationCode);
@@ -277,6 +286,27 @@ public class MemberController {
     model.addAttribute("email", email);
 
     return "/LoginandSignup/emailMypage";
+  }
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/mypage/emailverification")
+  public String emailverification(@RequestParam String email, @RequestParam String enterverificationCode, Model model, HttpSession session, Principal principal) {
+    // 세션에서 저장된 전송된 인증 코드 가져오기
+    String storedVerificationCode = (String) session.getAttribute("verificationCode");
+    // 입력한 인증 코드와 전송된 인증 코드 비교
+    if (storedVerificationCode != null && storedVerificationCode.equals(enterverificationCode)) {
+      model.addAttribute("email",email);
+      // 인증 성공 시 처리 (예: DB에 전화번호 업데이트)
+      memberService.updateMemberemail(principal.getName(), email);
+      // 인증 성공 시 처리 (예: 마이페이지로 리다이렉션)f
+      return "redirect:/member/mypage";
+    } else {
+      // 인증 실패 시 에러 메시지 설정
+      model.addAttribute("errorMessage", "인증번호가 일치하지 않습니다.");
+      // 모델에 전화번호를 추가하여 폼에 전달
+      model.addAttribute("email", email);
+      // 이전 페이지로 이동
+      return "/LoginandSignup/emailMypage";
+    }
   }
 
 
@@ -357,7 +387,7 @@ public class MemberController {
     // 새로운 닉네임이 현재의 닉네임과 같은지 확인
     if (nickName.equals(member1.getNickName())) {
       // 닉네임이 같으면 에러 메시지를 사용자에게 보여줌
-      model.addAttribute("error", "현재 사용 중인 닉네임과 동일합니다.");
+      model.addAttribute("errorMessage", "현재 사용 중인 닉네임과 동일합니다.");
       return "LoginandSignup/nickNameMypage";
     }
     // 새로운 닉네임이 이미 다른 사용자에 의해 사용 중인지 확인
@@ -378,7 +408,7 @@ public class MemberController {
   }
   //마이페이지 닉네임 수정 부분 끝//
 
-//아이디 찾기 메서드시작//
+  //아이디 찾기 메서드시작//
   @GetMapping("/findId")
   public String findId() {
 
@@ -389,6 +419,11 @@ public class MemberController {
   @PostMapping("/findId")
   public String findId(Model model, @RequestParam String verificationCode, HttpSession session, @RequestParam String email) {
 
+    if (email == null || email.isEmpty()) {
+      // 이메일이 제공되지 않았을 경우에 대한 처리
+      model.addAttribute("error", "이메일을 입력해주세요.");
+      return "/LoginandSignup/findId_form";
+    }
     String storedVerificationCode = String.valueOf((int) (Math.random() * 9000) + 1000);
     // 이메일 전송 로직
     emailService.sendVerificationCode(email, storedVerificationCode);
@@ -442,6 +477,11 @@ public class MemberController {
 
   @PostMapping("/findIdPhone")
   public String findIdPhone(@RequestParam String phone, Model model, HttpSession session) {
+    if (phone == null || phone.isEmpty()) {
+      // 전화번호가 제공되지 않았을 경우에 대한 처리
+      model.addAttribute("error", "전화번호를 입력해주세요.");
+      return "/LoginandSignup/findId_form";
+    }
     String storedVerificationCode = emailService.sendVerificationCodeSMS(phone);
     // 생성된 인증 코드를 세션에 저장
     session.setAttribute("phoneverificationCode", storedVerificationCode);

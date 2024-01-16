@@ -1,78 +1,107 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link rel="stylesheet" href="/myreview.css">
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
-<h2>내가 작성한 리뷰 </h2>
-<!-- 작성한 리뷰 목록 출력 -->
-<label for="text">작성한 리뷰</label>
-<div th:if="${paging.isEmpty()}">
+<body >
+<div>
+    <a href="/main" style="font-size: 50px;position: absolute;left: 5%; top: 4%;">
+        <i class="fa-solid fa-video"
+           style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+        <span class="m_p">M</span><span class="m_o">o</span><span class="m_v">v</span><span class="m_i">i</span><span class="m_e">e</span>
+    </a>
+    <h2 class="review_title">내가 작성한 리뷰 </h2>
+</div>
+<div th:if="${paging.isEmpty()}" style="text-align: center;">
     <label for="text">작성한 리뷰가 없습니다.</label>
 </div>
-<ul th:each="review : ${paging}">
-    <li>
-        <!-- 정보 표시 -->
-        <div th:id="${'readView_' + review.id}" th:style="${'display:block;'} ">
-            <input type="hidden" name="reviews" th:value="${reviews}">
-            <strong>영화 제목:</strong> <span th:text="${review.movie.name}"></span><br>
-            <strong>리뷰 제목:</strong> <span th:text="${review.subject}"></span><br>
-            <strong>리뷰 내용:</strong> <span th:text="${review.content}"></span><br>
-            <!-- 별점 -->
-            <div class="star-rating" th:if="${review.starRating != null}"
-                 th:attr="data-rating=${review.starRating}">
-                <svg height="25" width="23" class="star1" style="color:gold;"
-                     th:each="star : ${#numbers.sequence(1, 5)}">
-                    <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
-                    <polygon th:if="${star} &lt;= ${review.starRating}"
-                             points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2"
-                             fill="gold"/>
-                </svg>
-            </div>
-            <strong></strong>평점:<span th:text="${review.starRating * 2}"></span><br>
-            <!-- 수정 버튼 클릭 시, 입력 폼으로 전환 -->
-            <button th:onclick="switchView('editView', [[${review.id}]])">수정</button>
-            <form th:action="@{/member/mypagereviewdelete}" method="post" onsubmit="return confirmDelete();">
-                <div>
-                    <input type="hidden" name="reviewId" th:value="${review.id}">
-                    <input type="submit" value="삭제">
+<section class="review-box">
+    <ul th:each="review : ${paging}">
+        <li>
+            <section class="review_cont">
+                <!-- 정보 표시 -->
+                <div class="main_review" th:id="${'readView_' + review.id}"
+                     th:style="${'display: flex;flex-direction: column;'} ">
+                    <input type="hidden" name="reviews" th:value="${reviews}">
+                    <div style="display:flex">
+                        <strong>영화 제목:</strong>&nbsp;<span th:text="${review.movie.name}"></span><br>
+                    </div>
+                    <div style="display:flex">
+                        <strong>리뷰 제목:</strong>&nbsp; <span th:text="${review.subject}"></span><br><br>
+                    </div>
+                    <div class="star-rating" th:if="${review.starRating != null}"
+                         th:attr="data-rating=${review.starRating}">
+                        <strong>별점</strong>&nbsp;
+                        <svg height="25" width="23" class="star1" style="color:gold;"
+                             th:each="star : ${#numbers.sequence(1, 5)}">
+                            <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
+                            <polygon th:if="${star} &lt;= ${review.starRating}"
+                                     points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2"
+                                     fill="gold"/>
+                        </svg>
+                    </div>
+                    <br>
+                    <strong>리뷰 내용:</strong> <span class="limited-text" th:text="${review.content}"></span><br>
+                    <!-- 별점 -->
+                    <!--                    <strong></strong>평점:<span th:text="${review.starRating * 2}"></span><br>-->
+                    <!-- 수정 버튼 클릭 시, 입력 폼으로 전환 -->
+                    <section class="review_btn">
+                        <button class="btn btn-primary my-2" th:onclick="switchView('editView', [[${review.id}]])">수정
+                        </button>&nbsp;
+                        <form th:action="@{/member/mypagereviewdelete}" method="post"
+                              onsubmit="return confirmDelete();">
+                            <div>
+                                <input type="hidden" name="reviewId" th:value="${review.id}">
+                                <input class="btn btn-primary my-2" type="submit" value="삭제">
+                            </div>
+                        </form>
+                    </section>
                 </div>
-            </form>
-        </div>
-        <!-- 입력 폼 -->
-        <div th:id="${'editView_' + review.id}" th:data-review-id="${review.id}" class="editView"
-             th:style="${'display:none;'}">
-                <form th:action="@{ /member/mypagereviewmodify}" method="post">
-                    <input type="hidden" name="reviewId" th:value="${review.id}">
-                    <div>
-                        <label for="newSubject">리뷰제목</label>
-                        <input type="text" id="newSubject" name="newSubject" th:value="${review.subject}" required/>
-                    </div>
-                    <div>
-                        <label for="newContent">리뷰내용</label>
-                        <textarea id="newContent" name="newContent" required th:text="${review.content}"></textarea>
-                    </div>
-                    <!-- 별점 선택 -->
-                    <label class="form-label" style="margin-top:20px;">별점</label>
-                    <div style="display: flex; justify-content: space-between;">
-                        <div class="star-rating">
+
+                <!-- 입력 폼 -->
+                <div class="main_review" th:id="${'editView_' + review.id}" th:style="${'display:none;'}">
+                    <form th:action="@{ /member/mypagereviewmodify}" method="post">
+                        <input type="hidden" name="reviewId" th:value="${review.id}">
+                        <div>
+                            <label for="newSubject"><strong>리뷰제목</strong>:</label>
+                            <input style="background:white;box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; border-radius:10px;"
+                                   type="text" id="newSubject" name="newSubject" th:value="${review.subject}" required/>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div class="star-rating" style="color: gold; width:25px; height:23px;">
                             <span th:each="num : ${#numbers.sequence(1,5)}" class="star" th:data-rating="${num}"
                                   th:onmouseover="fillStars([[${review.id}]], [[${num}]])"
-                                  th:onclick="updateRating([[${review.id}]], [[${num}]])">&#9734;</span>
-                            <input type="hidden" name="newStarRating" th:id="${'newStarRating_' + review.id}"
-                                   th:value="${review.starRating}"/>
+                                  th:onclick="updateRating([[${review.id}]], [[${num}]])" style="cursor: pointer;">&#9734;</span>
+                                <input type="hidden" name="newStarRating" th:id="${'newStarRating_' + review.id}"
+                                       th:value="${review.starRating}"/>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <button type="button" th:onclick="|cancelEdit(${review.id})|">취소</button>
-                        <input type="submit" value="수정">
-                    </div>
-                </form>
-            </div>
-    </li>
-</ul>
+                        <div style="display: flex;margin-top: 30px;">
+                            <label for="newContent"><strong>리뷰내용:</strong></label>&nbsp;
+                            <textarea
+                                    style="background:white; box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; border-radius:10px;"
+                                    id="newContent" name="newContent" required th:text="${review.content}"></textarea>
+                        </div>
+                        <!-- 별점 선택 -->
+                        <section class="review_btn">
+                            <div>
+                                <input class="btn btn-primary my-2" type="submit" value="수정">
+                                <button class="btn btn-primary my-2" type="button"
+                                        th:onclick="|cancelEdit(${review.id})|">취소
+                                </button>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </section>
+        </li>
+    </ul>
+</section>
 <!-- 페이징처리 시작 -->
 <div th:if="${!paging.isEmpty()}">
     <ul class="pagination justify-content-center">
@@ -94,6 +123,23 @@
         </li>
     </ul>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var elements = document.getElementsByClassName("limited-text");
+
+      for (var i = 0; i < elements.length; i++) {
+        var text = elements[i].innerText;
+        var maxLength = 200; // 최대 글자 수
+
+        if (text.length > maxLength) {
+          var shortenedText = text.slice(0, maxLength);
+          elements[i].innerText = shortenedText;
+        }
+      }
+    });
+</script>
+
+<!-- 페이징처리 끝 -->
 <!-- 페이징처리 끝 -->
 <script th:inline="javascript">
     // 리뷰 상태를 관리할 객체
@@ -195,5 +241,6 @@
         return confirmDelete;
     }
 </script>
+
 </body>
 </html>

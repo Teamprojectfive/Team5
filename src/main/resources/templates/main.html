@@ -48,6 +48,7 @@
                 <div tabindex="0" role="button" class="btn m-1"  style="color:white; background-color:black;">극장</div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
                     <li><a href="/theater/information">전체극장</a></li>
+                    <li><a href="/theater/information">지역</a></li>
                     <li><a href="#">위치</a></li>
                 </ul>
             </div>
@@ -108,12 +109,12 @@
                         <img src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 4">
                     </li>
                     <li class="card">
-                        <img th:text="${movie.name}" src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
+                        <img th:text="${movie.movieNm}" src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 1">
                     </li>
                 </a>
                 <a th:href="@{|/movie/detail/${movie.id}|}">
                     <li class="card">
-                        <img th:text="${movie.name}"
+                        <img th:text="${movie.movieNm}"
                              src="https://cdn.pixabay.com/photo/2023/11/14/15/46/nikon-8388022_1280.jpg" alt="Card 2">
                     </li>
                 </a>

@@ -1,10 +1,10 @@
 package com.korea.Team5.theater;
 
-
 import com.korea.Team5.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,29 +22,40 @@ public class TheaterService {
       throw new DataNotFoundException("theater not found");
     }
   }
-  public Excel getExcel(Integer id){
+
+  public Excel getExcel(Integer id) {
     Optional<Excel> excel = this.excelRepository.findById(id);
     if (excel.isPresent()) {
       return excel.get();
     } else {
-      throw new DataNotFoundException("excel not found");
+      throw new DataNotFoundException("Excel not found");
     }
-
   }
 
-//  public Excel getRegion(){
-//    List<Excel> excelList = this.excelRepository.findAll();
-//    excelList.get(g)
-//
-//
-//
-//
-//
-//  }
+
+  public List<Excel> getExcelRegion(String bigRegion,String smallRegion){
+    List<Excel> excelList = this.excelRepository.findByBigRegionAndSmallRegion(bigRegion, smallRegion);
+    System.out.println(excelList);
+    return excelList;
+  }
+
+  public List<String> getBigRegion(){
+
+    List<String> bigRegionList = this.excelRepository.findDistinctBigRegionList();
+    System.out.println("sdf");
+    return bigRegionList;
+  }
+
+  public List<String> getSmallRegion(String targetBigRegion){
 
 
+    List<String> smallRegionList = this.excelRepository.findDistinctSmallRegionListForBigRegion(targetBigRegion);
+
+    return smallRegionList;
+  }
 
 
 
 
 }
+

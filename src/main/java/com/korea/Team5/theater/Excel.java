@@ -33,7 +33,7 @@ public class Excel {
 
     private String businessname;
 
-    private String  address;
+    private String address;
 
     private String homepage;
 

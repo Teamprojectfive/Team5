@@ -1,47 +1,37 @@
-<!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
-<div layout:fragment="content" >
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<a href="/theater/information">극장</a>
-<label for="text">-></label>
-<a href="/theater/information">전체극장</a>
-
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-        <a class="nav-link" href="#">서울</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">경기</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">인천</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">대전/충청/세종</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">부산/대구/경상</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">광주/전라</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">강원</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">제주</a>
-    </li>
-</ul>
-<div>
-    <a class="nav-link" href="/theater/detail">강남</a>
-</div>
-<div>
-    <a class="nav-link" href="/theater/detail">동대문</a>
-</div>
-</body>
-</div>
+<div layout:fragment="content">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    <a href="/theater/information">극장</a>
+    <label for="text">-></label>
+    <a href="/theater/information">전체극장</a>
+    <ul>
+        <li th:each="region : ${bigRegionlList}">
+            <div>
+                <a class="nav-link" th:href="@{|/theater/smallRegion?targetBigRegion=${region}|}" th:text="${region}"></a>
+            </div>
+        </li>
+    </ul>
+    <ul>
+        <li th:each="bigregion : ${bigList}">
+            <div>
+                <a href="/theater/information" th:text="${bigregion}"></a>
+            </div>
+        </li>
+        <li th:each="smallregion : ${smallList}">
+            <div>
+                <a href="#" th:text="${smallregion}"></a>
+            </div>
+        </li>
+    </ul>
+    <div th:each="smallRegion : ${smallRegionList}">
+        <div>
+            <a class="nav-link" href="/theater/detail?bigRegion=${bigRegion}&smallRegion=${smallRegion}"
+               th:text="${smallRegion}"></a>
+        </div>
+    </div>
+    </body>
 </html>

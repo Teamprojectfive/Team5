@@ -1,21 +1,51 @@
-<html>
-<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link rel="stylesheet" href="/subpage.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<h2>닉네임 수정</h2>
-<div>
-    <form th:action="@{/member/mypage/nickName}" method="post">
+<div class="subpage_cont">
+    <h2>닉네임 수정</h2>
+    <form th:action="@{/member/mypage/nickName}" method="post" style="padding-top: 15%; text-align: center;">
         <!-- 에러 메세지 표시 -->
         <div th:if="${errorMessage}" class="error-message">
             <p th:text="${errorMessage}" class="error-text"></p>
         </div>
-        <label for="nickName">닉네임</label>
-        <input type="text" name="nickName" th:value="${nickName}"  class="form-control" >
-        <input type="submit" value="수정하기">
+        <input type="text" name="nickName" th:value="${nickName}" class="form-control" placeholder="닉네임을 입력해주세요."
+               style="    margin-bottom: 35px">
+        <input class="btn btn-primary my-2" type="submit" value="수정하기">
     </form>
 </div>
+<script>
+    function createStar() {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.top = `${Math.random() * 100}vh`;
+      document.body.appendChild(star);
+    }
+
+    // 별빛 여러 개 생성
+    for (let i = 0; i < 500; i++) {
+      createStar();
+    }
+</script>
+<script>
+    function createGalaxy() {
+      const galaxy = document.createElement('div');
+      galaxy.className = 'galaxy';
+      galaxy.style.left = `${Math.random() * 100}vw`;
+      galaxy.style.top = `${Math.random() * 100}vh`;
+      document.body.appendChild(galaxy);
+    }
+
+
+    for (let i = 0; i < 100; i++) {
+      createGalaxy();
+    }
+</script>
 </body>
 </html>
