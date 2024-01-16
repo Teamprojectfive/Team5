@@ -5,15 +5,15 @@ import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import com.korea.Team5.kmapi.KmapiService;
-import com.korea.Team5.kmapi.MovieInfoDto;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -61,7 +61,6 @@ public class MovieController {
     @GetMapping("/detail/{id}")
 
     public String detail(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @PathVariable("id") Integer id) {
-
         Movie movie = this.movieService.getMovie(id);
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
