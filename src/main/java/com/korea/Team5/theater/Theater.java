@@ -1,11 +1,10 @@
 package com.korea.Team5.theater;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,9 +16,8 @@ public class Theater {
   // 상영관 명
   private String name;
   //광역시지역
-  private String region;
-  //구나,시지역
-  private String basicregion;
+  @OneToMany(mappedBy = "theater")
+  private List<Region> region;
   //영화 상영관코드
   private String code;
   //영화 상영사업주회사이름
@@ -30,5 +28,7 @@ public class Theater {
   private String screensnum;
   //좌석수
   private String seatsnum;
+  //주소
+  private String address;
 
 }

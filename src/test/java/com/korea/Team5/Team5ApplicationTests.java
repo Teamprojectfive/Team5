@@ -3,6 +3,7 @@ package com.korea.Team5;
 import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.movie.Movie;
 import com.korea.Team5.movie.MovieRepository;
+import com.korea.Team5.theater.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,15 @@ class Team5ApplicationTests {
 	private MovieRepository movieRepository;
 
 	private ReviewService reviewService;
+
+	@Autowired
+	private TheaterRepository theaterRepository;
+
+	@Autowired
+	private RegionRepository regionRepository;
+
+	@Autowired
+	private SmallRegionRepository smallRegionRepository;
 
 
 
@@ -84,6 +94,77 @@ class Team5ApplicationTests {
 		m10.setContent("영화설명10");
 		m10.setMovieRelease("2013-12-13");
 		this.movieRepository.save(m10);
+
+
+	}
+	@Test
+	void contextLoads1() {
+
+		Theater t1 = new Theater();
+		t1.setName("극장이름1");
+		t1.setBusinessname("사업회사 명1");
+		t1.setAddress("극장주소1");
+		this.theaterRepository.save(t1);
+
+		Theater t2 = new Theater();
+		t2.setName("극장이름2");
+		t2.setBusinessname("사업회사 명2");
+		t2.setAddress("극장주소2");
+		this.theaterRepository.save(t2);
+
+		Theater t3 = new Theater();
+		t3.setName("극장이름3");
+		t3.setBusinessname("사업회사 명3");
+		t3.setAddress("극장주소3");
+		this.theaterRepository.save(t3);
+
+		Theater t4 = new Theater();
+		t4.setName("극장이름4");
+		t4.setBusinessname("사업회사 명4");
+		t4.setAddress("극장주소4");
+		this.theaterRepository.save(t4);
+
+		Theater t5 = new Theater();
+		t5.setName("극장이름5");
+		t5.setBusinessname("사업회사 명5");
+		t5.setAddress("극장주소5");
+		this.theaterRepository.save(t5);
+
+		Theater t6 = new Theater();
+		t6.setName("극장이름6");
+		t6.setBusinessname("사업회사 명6");
+		t6.setAddress("극장주소6");
+		this.theaterRepository.save(t6);
+
+		Theater t7 = new Theater();
+		t7.setName("극장이름7");
+		t7.setBusinessname("사업회사 명7");
+		t7.setAddress("극장주소7");
+		this.theaterRepository.save(t7);
+
+		Theater t8 = new Theater();
+		t8.setName("극장이름8");
+		t8.setBusinessname("사업회사 명8");
+		t8.setAddress("극장주소8");
+		this.theaterRepository.save(t8);
+
+
+		Region r1 = new Region();
+		r1.setName("서울시");
+		this.regionRepository.save(r1);
+
+		Region r2 = new Region();
+		r2.setName("부산시");
+		this.regionRepository.save(r1);
+
+		SmallRegion sr1 = new SmallRegion();
+		sr1.setName("강남구");
+		this.smallRegionRepository.save(sr1);
+
+		SmallRegion sr2 = new SmallRegion();
+		sr2.setName("강남구");
+		this.smallRegionRepository.save(sr1);
+
 	}
 
 
