@@ -53,7 +53,6 @@
                 </ul>
             </div>
         </div>
-
         <div class="login_container">
             <a class="admin" role="button" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}" th:href="@{/admin/adminpage}">관리자</a>
             <a class="mypage" role="button" th:if="${#authorization.expression('isAuthenticated()')}"  th:href="@{/member/mypage}">mypage</a>

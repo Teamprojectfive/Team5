@@ -16,11 +16,6 @@
         </li>
     </ul>
     <ul>
-        <li th:each="bigregion : ${bigList}">
-            <div>
-                <a href="/theater/information" th:text="${bigregion}"></a>
-            </div>
-        </li>
         <li th:each="smallregion : ${smallList}">
             <div>
                 <a href="#" th:text="${smallregion}"></a>
