@@ -7,12 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="subpage_cont" style="height:380px;">
+<div class="subpage_cont" style="height:40%">
     <h2>이메일 수정하기</h2>
     <form th:action="@{/member/mypage/email}" method="post">
         <!-- 에러 메세지 표시 -->
-        <div th:if="${errorMessage}" class="error-message">
-            <p th:text="${errorMessage}" class="error-text"></p>
+        <div th:if="${errorMessage}" class="error-message" style="margin-bottom:-25px;margin-top:15px;">
+            <p th:text="${errorMessage}" class="error-text" style="color:red;"></p>
         </div>
         <div>
             <input type="hidden" name="verificationCode" th:value="${verificationCode}">
@@ -23,7 +23,8 @@
     <form th:action="@{/member/mypage/emailverification}" method="post">
         <div>
             <input type="hidden" name="email" th:value="${email}">
-            <input type="text" name="verificationCode" th:value="${verificationCode}" class="form-control" placeholder="인증번호">
+            <input type="hidden" name="verificationCode" th:value="${verificationCode}">
+            <input type="text" name="enterverificationCode" th:value="${enterverificationCode}" class="form-control" placeholder="인증번호">
             <input  class="btn btn-primary my-2" type="submit" value="확인">
         </div>
     </form>

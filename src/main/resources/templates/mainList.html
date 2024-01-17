@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/mainlist.css">
 </head>
 <body>
@@ -38,24 +39,26 @@
             </div>
         </div>
     </section>
-    <div class="dropdown">
+    <div class="dropdown" style="left: 1px;">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            장르
+           장르
         </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">액션</a></li>
-            <li><a class="dropdown-item" href="#">범죄</a></li>
-            <li><a class="dropdown-item" href="#">SF</a></li>
-            <li><a class="dropdown-item" href="#">코미디</a></li>
-            <li><a class="dropdown-item" href="#">로맨스</a></li>
-            <li><a class="dropdown-item" href="#">스릴러</a></li>
-            <li><a class="dropdown-item" href="#">공포</a></li>
-            <li><a class="dropdown-item" href="#">전쟁</a></li>
-            <li><a class="dropdown-item" href="#">스포츠</a></li>
-            <li><a class="dropdown-item" href="#">판타지</a></li>
-            <li><a class="dropdown-item" href="#">음악</a></li>
-            <li><a class="dropdown-item" href="#">뮤지컬</a></li>
-            <li><a class="dropdown-item" href="#">멜로</a></li>
+        <ul class="dropdown-menu" style="background:black; border: 1px solid black;
+            border-radius: 5px; float:left;
+            transition: background 0.3s ease, color 0.3s ease;">
+            <li><a class="dropdown-item" href="#" style="color: white;">액션</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">범죄</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">SF</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">코미디</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">로맨스</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">스릴러</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">공포</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">전쟁</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">스포츠</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">판타지</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">음악</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">뮤지컬</a></li>
+            <li><a class="dropdown-item" href="#" style="color: white;">멜로</a></li>
         </ul>
     </div>
     <section class="list_box_wrap" id="listContainer">
@@ -138,7 +141,11 @@
     imgContainer.appendChild(last);
     }, 2500);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
 
 </div>
+
 </body>
 </html>
