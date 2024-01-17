@@ -5,6 +5,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import com.korea.Team5.DataNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class TheaterService {
@@ -77,8 +84,8 @@ public class TheaterService {
 
     Map<String, List<String>> groupMap = GroupRegion.getGroupMap();
 
-    for(String key : groupMap.keySet()) {
-      if(groupMap.get(key).contains(region)) {
+    for (String key : groupMap.keySet()) {
+      if (groupMap.get(key).contains(region)) {
         return key;
       }
     }
@@ -89,7 +96,7 @@ public class TheaterService {
   // bigRegion에 해당하는 smallRegion 리스트 구하기
   public List<String> getSmallRegion(String targetBigRegion) { // targetBigRegion => 대상 bigRegion
 
-    if(!GroupRegion.getGroupNameList().contains(targetBigRegion)) { // bigRegion이 그룹인가? 아니오
+    if (!GroupRegion.getGroupNameList().contains(targetBigRegion)) { // bigRegion이 그룹인가? 아니오
       return this.excelRepository.findDistinctSmallRegionListForBigRegion(targetBigRegion); // 일반 samllRegion 가져오기
     }
 
