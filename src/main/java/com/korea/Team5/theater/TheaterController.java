@@ -14,7 +14,6 @@ import java.util.List;
 @RequestMapping("/theater")
 public class TheaterController {
 
-
   private final TheaterService theaterService;
 
   @GetMapping("/information")
@@ -38,24 +37,39 @@ public class TheaterController {
 //    return "/Theater/theater_form";
 //  }
 
+
+
+
+
+
+//  @GetMapping("/bigregion")
+//  public String bigregion(Model model,@RequestParam String bigRegion,@RequestParam String smallRegion){
+//
+//    List<Excel> regionexcelList = this.theaterService.getExcelRegion(bigRegion, smallRegion);
+//    model.addAttribute("region",regionexcelList);
+//
+//
+//    return "/Theater/theater_form";
+//  }
+
   @GetMapping("/detail")
-  public String detail(Model model,@RequestParam String bigRegion, @RequestParam String smallRegion){
+  public String detail(Model model, @RequestParam String targetBigRegion, @RequestParam String targetSmallRegion) {
+    List<Excel> regionList = theaterService.getExcelRegion(targetBigRegion, targetSmallRegion);
+    // 필요한 작업 수행
+    model.addAttribute("regionList", regionList);
+    model.addAttribute("targetBigRegion", targetBigRegion);
+    model.addAttribute("targetSmallRegion", targetSmallRegion);
 
-    List<Excel> excelList = this.theaterService.getExcelRegion(bigRegion, smallRegion);
-    System.out.println(excelList);
     return "/Theater/theater_detail";
-
   }
 
   @GetMapping("/smallRegion")
   public String smallRegion(Model model,@RequestParam String targetBigRegion){
-
     List<String> smallList = this.theaterService.getSmallRegion(targetBigRegion);
     List<String> bigList = this.theaterService.getBigRegion();
     model.addAttribute("smallList",smallList);
-    model.addAttribute("bigList",bigList);
-
-
+    model.addAttribute("bigRegionlList",bigList);
+    model.addAttribute("bigRegion",targetBigRegion);
 
     return "/Theater/theater_form";
   }
