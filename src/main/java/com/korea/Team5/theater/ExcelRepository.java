@@ -17,4 +17,10 @@ public interface ExcelRepository extends JpaRepository<Excel,Integer> {
   @Query("SELECT DISTINCT e.smallRegion FROM Excel e WHERE e.bigRegion = :targetBigRegion")
   List<String> findDistinctSmallRegionListForBigRegion(@Param("targetBigRegion") String targetBigRegion);
 
+
+  @Query("SELECT e FROM Excel e WHERE e.bigRegion IN :bigRegionList AND e.smallRegion = :targetSmallRegion")
+  List<Excel> findAllByBigRegionListAndSmallRegion(
+          @Param("bigRegionList") List<String> bigRegionList,
+          @Param("targetSmallRegion") String targetSmallRegion
+  );
 }
