@@ -12,10 +12,24 @@ public class TheaterService {
   private final TheaterRepository theaterRepository;
   private final ExcelRepository excelRepository;
 
-  public List<Excel> getExcelRegion(String bigRegion, String smallRegion) {
-    List<Excel> excelList = this.excelRepository.findByBigRegionAndSmallRegion(bigRegion, smallRegion);
-    System.out.println(excelList);
-    return excelList;
+  public List<Excel> getExcelRegion(String targetBigRegion, String targetSmallRegion) {
+    List<String> bigRegionList = GroupRegion.getGroupList(targetBigRegion);
+
+    List<Excel> result = new ArrayList<>();
+
+    if (bigRegionList != null && !bigRegionList.isEmpty()) {
+      for (String bigRegion : bigRegionList) {
+        List<Excel> tmp = excelRepository.findAllByBigRegionAndSmallRegion(bigRegion, targetSmallRegion);
+        result.addAll(tmp);
+      }
+    } else {
+      List<Excel> tmp = excelRepository.findAllByBigRegionAndSmallRegion(targetBigRegion, targetSmallRegion);
+      result.addAll(tmp);
+      // bigRegionList가 null이거나 비어있을 때의 로직 추가
+      // 예시: 특정 기본값이나 다른 방식으로 데이터를 가져오거나 처리
+    }
+
+    return result;
   }
 
   public List<String> getBigRegion() {
@@ -55,32 +69,21 @@ public class TheaterService {
 
   // 그룹 네임에 맞는 bigRegion 리스트
   private List<String> getBigRegionGroupList(String groupName) {
-    if(groupName.equals(GroupRegion.CHUNG_CHEONG_GROUP_NAME)) {
-      return GroupRegion.CHUNG_CHEONG_LIST;
-    }
-    if(groupName.equals(GroupRegion.KYEONG_SANG_GROUP_NAME)) {
-      return GroupRegion.KYEONG_SANG_LIST;
-    }
-
-    return GroupRegion.JEON_LA_LIST;
+    return GroupRegion.getGroupList(groupName);
   }
-
 
   // bigRegion이 그룹이면 그룹 네임 아니면 그냥 원래 이름 반환
   private String getBigRegionGroupName(String region) {
 
-    if (GroupRegion.CHUNG_CHEONG_LIST.contains(region)) {
-      return GroupRegion.CHUNG_CHEONG_GROUP_NAME;
-    }
+    Map<String, List<String>> groupMap = GroupRegion.getGroupMap();
 
-    if (GroupRegion.KYEONG_SANG_LIST.contains(region)) {
-      return GroupRegion.KYEONG_SANG_GROUP_NAME;
-    }
-
-    if (GroupRegion.JEON_LA_LIST.contains(region)) {
-      return GroupRegion.JEON_LA_GROUP_NAME;
+    for(String key : groupMap.keySet()) {
+      if(groupMap.get(key).contains(region)) {
+        return key;
+      }
     }
     return region;
+
   }
 
   // bigRegion에 해당하는 smallRegion 리스트 구하기

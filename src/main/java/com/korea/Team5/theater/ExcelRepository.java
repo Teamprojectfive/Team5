@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ExcelRepository extends JpaRepository<Excel,Integer> {
   List<Excel> findByBigRegionAndSmallRegion(String bigRegion,String smallRegion);
+  List<Excel> findAllByBigRegionAndSmallRegion(String bigRegion, String smallRegion);
 
   @Query("SELECT DISTINCT e.bigRegion FROM Excel e")
   List<String> findDistinctBigRegionList();

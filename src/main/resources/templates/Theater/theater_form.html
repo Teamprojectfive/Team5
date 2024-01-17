@@ -18,15 +18,10 @@
     <ul>
         <li th:each="smallregion : ${smallList}">
             <div>
-                <a th:href="@{|/theater/detail?targetBigRegion=${smallregion}|}" th:text="${smallregion}"></a>
+                <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}" th:text="${smallregion}"></a>
             </div>
         </li>
     </ul>
-    <div th:each="smallRegion : ${smallRegionList}">
-        <div>
-            <a class="nav-link" href="/theater/detail?bigRegion=${bigRegion}&smallRegion=${smallRegion}"
-               th:text="${smallRegion}"></a>
-        </div>
-    </div>
     </body>
+</div>
 </html>
