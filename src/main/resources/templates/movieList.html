@@ -14,11 +14,13 @@
     <section class="list_box_wrap" id="listContainer">
         <section class="list_box" th:each="movieList, iterStat : ${movieSubList}">
             <div th:each="movie : ${movieList}" class="list">
+
                 <div class="list_item">
                     <div class="additional-info">
                         <div style="padding-top: 10px;text-align: center;font-weight: bold;font-size: 25px;"
                              th:text="${movie.movieNm}"></div>
                         <div class="sub_info">
+
                             <p style="margin: 5px 0 0 0;">설명 : <span th:text="${movie.content}"></span></p>
                             <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
                             <div style="margin-top: 10px;" th:if="${movie.movieInfo != null}">

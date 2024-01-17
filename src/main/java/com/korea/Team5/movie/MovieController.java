@@ -62,13 +62,14 @@ public class MovieController {
 
     public String detail(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @PathVariable("id") Integer id) {
 
+        List<Movie> movies = this.movieService.list();
         Movie movie = this.movieService.getMovie(id);
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
 
-//        List<MovieInfoDto> movieInfoList = this.kmapiService.videoListSaveDataBase();
+
         model.addAttribute("movieInfo", movieInfo);
-//        model.addAttribute("movieInfoList", movieInfoList);
+        model.addAttribute("movies", movies);
         model.addAttribute("movie", movie);
         model.addAttribute("paging", paging);
 
@@ -133,7 +134,10 @@ public class MovieController {
         return "movie_intro";
     }
 
-
+    @GetMapping("/mainlist")
+    public String movielist(){
+        return "mainList";
+    }
 
 }
 
