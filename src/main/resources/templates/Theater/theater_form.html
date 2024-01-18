@@ -11,35 +11,20 @@
     <ul>
         <li th:each="region : ${bigRegionlList}">
             <div>
-                <a class="nav-link" th:href="@{|/theater/smallRegion?targetBigRegion=${region}|}" th:text="${region}"></a>
+                <a class="nav-link" th:href="@{|/theater/smallRegion?targetBigRegion=${region}|}"
+                   th:text="${region}"></a>
             </div>
         </li>
     </ul>
     <ul>
         <li th:each="smallregion : ${smallList}">
             <div>
-                <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}" th:text="${smallregion}"></a>
+                <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}"
+                   th:text="${smallregion}"></a>
             </div>
         </li>
     </ul>
     </body>
 </div>
-        <li th:each="bigregion : ${bigList}">
-            <div>
-                <a href="/theater/information" th:text="${bigregion}"></a>
-            </div>
-        </li>
-        <li th:each="smallregion : ${smallList}">
-            <div>
-                <a href="#" th:text="${smallregion}"></a>
-            </div>
-        </li>
-    </ul>
-    <div th:each="smallRegion : ${smallRegionList}">
-        <div>
-            <a class="nav-link" href="/theater/detail?bigRegion=${bigRegion}&smallRegion=${smallRegion}"
-               th:text="${smallRegion}"></a>
-        </div>
-    </div>
-    </body>
+</body>
 </html>

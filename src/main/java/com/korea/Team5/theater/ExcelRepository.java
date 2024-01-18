@@ -20,4 +20,5 @@ public interface ExcelRepository extends JpaRepository<Excel,Integer> {
           @Param("bigRegionList") List<String> bigRegionList,
           @Param("targetSmallRegion") String targetSmallRegion
   );
+
 }

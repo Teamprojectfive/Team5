@@ -55,6 +55,7 @@ public class TheaterController {
   @GetMapping("/detail")
   public String detail(Model model, @RequestParam String targetBigRegion, @RequestParam String targetSmallRegion) {
     List<Excel> regionList = theaterService.getExcelRegion(targetBigRegion, targetSmallRegion);
+
     // 필요한 작업 수행
     model.addAttribute("regionList", regionList);
     model.addAttribute("targetBigRegion", targetBigRegion);
@@ -64,8 +65,8 @@ public class TheaterController {
   }
 
   @GetMapping("/smallRegion")
-  public String smallRegion(Model model,@RequestParam String targetBigRegion){
-    List<String> smallList = this.theaterService.getSmallRegion(targetBigRegion);
+  public String smallRegion(Model model, @RequestParam String targetBigRegion){
+    List<String> smallList = this.theaterService.getTargetSmallRegion(targetBigRegion);
     List<String> bigList = this.theaterService.getBigRegion();
     model.addAttribute("smallList",smallList);
     model.addAttribute("bigRegionlList",bigList);
