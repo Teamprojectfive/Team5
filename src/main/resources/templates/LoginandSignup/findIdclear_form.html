@@ -10,11 +10,13 @@
     <a th:href="@{/main}" class="btn btn-primary">메인으로 이동</a>
     <form th:action="@{/member/phonesendVerificationCode}" method="post">
         <div th:if="${enteredphoneVerificationCode != null and enteredphoneVerificationCode == session.phoneverificationCode}">
-            <label for="findId">찾은아이디</label>
-            <input type="hidden" name="phoneverificationCode" th:value="${phoneverificationCode}">
-            <input type="hidden" name="phone" th:value="${phone}">
-            <div th:each="loginId : ${loginIds}">
-                <p th:text="${loginId}" style="display:inline-block;"></p>
+            <div class="id_find">
+                <label for="findId" >찾은아이디</label>
+                <input type="hidden" name="phoneverificationCode" th:value="${phoneverificationCode}">
+                <input type="hidden" name="phone" th:value="${phone}">
+                <div th:each="loginId : ${loginIds}" style="display: flex;">
+                    <p>아이디:</p>&nbsp; <p th:text="${loginId}" style="display:inline-block;"></p>
+                </div>
             </div>
             <label for="findId">가입일시</label>
             <div th:each="createDate : ${createDates}">
@@ -37,6 +39,5 @@
         </div>
     </form>
 </div>
-
 </body>
 </html>

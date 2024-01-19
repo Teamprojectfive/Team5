@@ -1,12 +1,14 @@
 <html layout:decorate="~{ADMIN/adminlayout}" xmlns:layout="http://www.w3.org/1999/xhtml">
-<div layout:fragment="admincontent" class="container my-3">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-    <div id="movieForm">
-        <div th:if="${adminmoviespaging.isEmpty()}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/admin_detail.css">
+</head>
+<body>
+<div layout:fragment="admincontent" class="container my-3" >
+    <div class="member_btn_cont"
+         id="movieForm" style="text-align: center;">
+        <div th:if="${adminmoviespaging.isEmpty()}" style="margin-bottom:20px;">
             <label for="text">등록된 영화가 없습니다.</label>
         </div>
         <h2>영화 목록</h2>
@@ -65,5 +67,6 @@
             return confirmWithdraw;
         }
     </script>
-    </body>
+</div>
+</body>
 </html>

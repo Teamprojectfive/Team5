@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
 <head>
     <meta charset="UTF-8">
@@ -7,130 +5,62 @@
     <link rel="stylesheet" href="/theater.css">
 </head>
 <body>
-<div layout:fragment="content">
-    <div class="theater_title_cont">
-        <div class="theater_title_box">
-            <h1>극장</h1>
-        </div>
+<div layout:fragment="content"  style="position: relative; top: 15%;">
+    <div class="slide_cont">
+
     </div>
     <div class="theater_warp">
-        <section class="theater_box">
-            <div class="theater_place">
+        <div class="select">
+            <a href="/theater/information">극장</a>
+            <label for="text">-></label>
+            <a href="/theater/information">전체극장</a>
+        </div>
+        <div class="theater_cont">
+            <div class="theater_title">
                 <ul>
-                    <li>
-                        <button>서울</button>
-                        <div class="theater_list">
-                            <ul>
-                                <li></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <button>경기</button>
-                        <div class="theater_list">
-                            <ul>
-                                <li></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <button>인천</button>
-                        <div class="theater_list">
-                            <ul>
-                                <li></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <button>대전/충청/세종</button>
-                        <div class="theater_list">
-                            <ul>
-                                <li></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <button>부산/대구/경상</button>
-                        <div class="theater_list">
-                            <ul>
-                                <li></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <button>광주/전라</button>
-                        <div class="theater_list">
-                            <ul>
-                                <li></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <button>강원</button>
-                        <div class="theater_list">
-                            <ul>
-                                <li></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <button>제주</button>
-                        <div class="theater_list">
-                            <ul>
-                                <li></li>
-                            </ul>
+                    <li th:each="region : ${bigRegionlList}">
+                        <div>
+                            <a class="nav-link" th:href="@{|/theater/smallRegion?targetBigRegion=${region}|}"
+                               th:text="${region}"></a>
                         </div>
                     </li>
                 </ul>
             </div>
-        </section>
-    </div>
-</div>
-</body>
-=======
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
-<div layout:fragment="content">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-    <a href="/theater/information">극장</a>
-    <label for="text">-></label>
-    <a href="/theater/information">전체극장</a>
-    <ul>
-        <li th:each="region : ${bigRegionlList}">
-            <div>
-                <a class="nav-link" th:href="@{|/theater/smallRegion?targetBigRegion=${region}|}" th:text="${region}"></a>
+            <div class="theater_sub_menu">
+                <ul>
+                    <li th:each="smallregion : ${smallList}">
+                        <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}"
+                           th:text="${smallregion}"></a>
+                    </li>
+                    <li th:each="bigregion : ${bigList}">
+                        <a href="/theater/information" th:text="${bigregion}"></a>
+                    </li>
+                    <li th:each="smallregion : ${smallList}">
+                        <a href="#" th:text="${smallregion}"></a>
+                    </li>
+                </ul>
             </div>
-        </li>
-    </ul>
-    <ul>
-        <li th:each="smallregion : ${smallList}">
-            <div>
-                <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}" th:text="${smallregion}"></a>
+            <div th:each="smallRegion : ${smallRegionList}">
+                <div>
+                    <a class="nav-link" href="/theater/detail?bigRegion=${bigRegion}&smallRegion=${smallRegion}"
+                       th:text="${smallRegion}"></a>
+                </div>
             </div>
-        </li>
-    </ul>
-    </body>
-</div>
-        <li th:each="bigregion : ${bigList}">
-            <div>
-                <a href="/theater/information" th:text="${bigregion}"></a>
-            </div>
-        </li>
-        <li th:each="smallregion : ${smallList}">
-            <div>
-                <a href="#" th:text="${smallregion}"></a>
-            </div>
-        </li>
-    </ul>
-    <div th:each="smallRegion : ${smallRegionList}">
-        <div>
-            <a class="nav-link" href="/theater/detail?bigRegion=${bigRegion}&smallRegion=${smallRegion}"
-               th:text="${smallRegion}"></a>
         </div>
     </div>
-    </body>
->>>>>>> 86bbbfbc1c67affbda4ed9f4c645fb3b0e759352
+    <script>
+        window.onload = function() {
+  // 대상 목록을 가져와서 클릭 이벤트를 추가합니다.
+  var regionList = document.getElementById('regionList').getElementsByTagName('a');
+
+  for (var i = 0; i < regionList.length; i++) {
+    regionList[i].addEventListener('click', function() {
+      // 클릭된 링크에 'clicked' 클래스를 추가하여 스타일 변경
+      this.classList.add('clicked');
+    });
+  }
+};
+    </script>
+</div>
+</body>
 </html>
