@@ -1,0 +1,45 @@
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="content" class="container" style="height:82vh">
+    <h2>극장 상세정보</h2>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">극장이름</label>
+        <input type="text" class="form-control" th:value="${theaterName.name}" id="formGroupExampleInput"
+               placeholder="Example input placeholder">
+    </div>
+    <form th:action="@{/theater/navermap}" method="get">
+        <div class="mb-3">
+            <label for="formGroupExampleInput2" class="form-label">주소</label>
+            <input type="text" class="form-control"  name="address" th:value="${theaterName.address}" id="formGroupExampleInput2"
+                   placeholder="Another input placeholder">
+            <input type="submit" value="지도 길찾기">
+        </div>
+    </form>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">사업자명</label>
+        <input type="text" class="form-control" th:value="${theaterName.businessname}" id="formGroupExampleInput3"
+               placeholder="Example input placeholder">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">극장 홈페이지</label>
+        <input type="text" class="form-control" th:value="${theaterName.homepage}" id="formGroupExampleInput4"
+               placeholder="Another input placeholder">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">2D 상영관</label>
+        <input type="text" class="form-control"th:value="${theaterName.twoDnum + ' 관'}"  id="formGroupExampleInput5"
+               placeholder="Example input placeholder">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">3D 상영관</label>
+        <input type="text" class="form-control" th:value="${theaterName.threeDnum  + ' 관'}" id="formGroupExampleInput6"
+               placeholder="Another input placeholder">
+    </div>
+</div>
+</body>
+</html>
