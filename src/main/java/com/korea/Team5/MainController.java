@@ -1,6 +1,6 @@
 package com.korea.Team5;
 
-import com.korea.Team5.movie.Movie;
+import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.MovieService;
 import com.korea.Team5.theater.TheaterService;
 import jakarta.servlet.http.HttpSession;

@@ -1,8 +1,13 @@
 package com.korea.Team5;
 
 import com.korea.Team5.Review.ReviewService;
+<<<<<<< HEAD
+import com.korea.Team5.movie.entity.Movie;
+import com.korea.Team5.movie.repository.MovieRepository;
+=======
 import com.korea.Team5.movie.MovieRepository;
 import com.korea.Team5.theater.*;
+>>>>>>> fa39e7d40445b183bac1108d138825ff9b7fc048
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
