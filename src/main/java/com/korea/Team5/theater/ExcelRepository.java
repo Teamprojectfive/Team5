@@ -11,7 +11,7 @@ public interface ExcelRepository extends JpaRepository<Excel,Integer> {
   List<Excel> findAllByBigRegionAndSmallRegion(String bigRegion, String smallRegion);
 
   // region에 해당하는 데이터 가져오기
-   Excel findAllByName(String name);
+  Excel findAllByName(String name);
 
   @Query("SELECT DISTINCT e.bigRegion FROM Excel e")
   List<String> findDistinctBigRegionList();

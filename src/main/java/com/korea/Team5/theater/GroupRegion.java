@@ -11,7 +11,7 @@ public class GroupRegion {
   static final private List<String> cityList = new ArrayList<>(Arrays.asList("대전시", "세종시", "부산시", "대구시"));;
   static final private List<String> areaList = new ArrayList<>(Arrays.asList("경상남도", "경상북도", "충청북도", "충청남도"));;
   static final private List<String> smalltargetList = new ArrayList<>(Arrays.asList("부산시 + 구","대구시 + 구","부산시 + 군","대구시 + 군",
-                                                                                    "대전시 + 구","세종시 + 구","대전시 + 군","세종시 + 군"));
+          "대전시 + 구","세종시 + 구","대전시 + 군","세종시 + 군"));
   static {
     String chungcheongGroup = "대전/충청/세종";
     String kyeongsangGroup = "부산/대구/경상";

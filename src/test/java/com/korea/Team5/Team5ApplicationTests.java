@@ -1,12 +1,11 @@
 package com.korea.Team5;
 
 import com.korea.Team5.Review.ReviewService;
-import com.korea.Team5.movie.MovieRepository;
+import com.korea.Team5.movie.repository.MovieRepository;
 import com.korea.Team5.theater.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 @SpringBootTest
 
 class Team5ApplicationTests {

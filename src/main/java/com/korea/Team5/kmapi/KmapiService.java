@@ -3,7 +3,15 @@ package com.korea.Team5.kmapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.korea.Team5.kmapi.dto.MovieInfoDto;
+import com.korea.Team5.kmapi.entity.Plot;
+import com.korea.Team5.kmapi.entity.Vod;
+import com.korea.Team5.kmapi.repository.PlotRepository;
+import com.korea.Team5.kmapi.repository.VodRepository;
 import com.korea.Team5.movie.*;
+import com.korea.Team5.movie.entity.MovieInfo;
+import com.korea.Team5.movie.repository.MovieInfoRepository;
+import com.korea.Team5.movie.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,12 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -83,6 +86,7 @@ public class KmapiService {
 
                             String posterUrl = firstMovie.getPosters().split("\\|")[0];
                             movieInfo.setPosters(posterUrl);
+
                             Plot plot = firstMovie.getPlots().getPlot().get(0);
 
                             Vod vod = firstMovie.getVods().getVod().get(0);
