@@ -10,7 +10,6 @@
 <div class="subpage_cont">
     <h2>닉네임 수정</h2>
     <form th:action="@{/member/mypage/nickName}" method="post" style="padding-top: 15%; text-align: center;">
-
         <!-- 에러 메세지 표시 -->
         <div th:if="${errorMessage}" class="error-message">
             <p th:text="${errorMessage}" class="error-text"></p>

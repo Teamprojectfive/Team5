@@ -2,6 +2,7 @@ package com.korea.Team5;
 
 import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.MovieService;
+import com.korea.Team5.theater.TheaterService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MainController {
 
   private final MovieService movieService;
+  private final TheaterService theaterService;
 
 
   @GetMapping
@@ -36,6 +38,7 @@ public class MainController {
     model.addAttribute("paging", paging);
     session.removeAttribute("verificationCode");
     session.removeAttribute("phoneverificationCode");
+
     return "main";
   }
 

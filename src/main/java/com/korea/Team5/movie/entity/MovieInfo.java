@@ -1,9 +1,11 @@
 package com.korea.Team5.movie.entity;
 
 
+
 import com.korea.Team5.kmapi.entity.Plot;
 
 import com.korea.Team5.kmapi.entity.Vod;
+
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -52,6 +54,7 @@ public class MovieInfo {
 
     @OneToMany(mappedBy = "movieInfo")
     private List<Staff> staffs;
+
 
 
     @OneToMany(mappedBy = "movieInfo")

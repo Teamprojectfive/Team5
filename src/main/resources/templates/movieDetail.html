@@ -4,10 +4,12 @@
     <!--    메인 포스터&설명 start-->
     <div th:each="movie : ${movieInfo}">
     <div class="detail_container">
+
         <div th:style="'background-image: url(' + ${movie.posters } + ');'">
             <div class="movie_content">
                 <h1 th:text="${movie.movieNm}"></h1>
                 <img th:src="${movie.posters}" alt="">
+
 
 
                 <div class="detail_content">
@@ -122,10 +124,12 @@
                             <p th:text="${actor.cast}"></p><strong>역</strong>
 
 
+<<<<<<< HEAD
                         </div>
 
                         <div class="cast_ex">
                             <strong class="cast_name" style="text-align: center;">
+
 
                             </strong>
                             <span class="cast_role">
@@ -299,9 +303,11 @@
 <!--        리뷰 start-->
 <div id="ratings_container" class="explanation_container" style="display: none;">
     <div class="registration_cont">
+
         <div class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
         >리뷰등록
         </div>
+
 
     </div>
     <!--            <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
@@ -463,4 +469,6 @@
 </script>
 </div>
 
+
 </html>
+
