@@ -34,6 +34,17 @@ public class TheaterService {
 
     return result;
   }
+  public List<Excel> allExcel(){
+    return this.excelRepository.findAll();
+  }
+
+  public Excel getExcelTheater(String region) {
+
+    Excel excelDataList = excelRepository.findAllByName(region);
+
+
+    return excelDataList;
+  }
 
 
   public List<String> getBigRegion() {
@@ -134,5 +145,6 @@ public class TheaterService {
     return regionBits[SMALL_REGION_IDX];
 
   }
+
 }
 

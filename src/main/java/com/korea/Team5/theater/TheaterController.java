@@ -74,4 +74,24 @@ public class TheaterController {
 
     return "/Theater/theater_form";
   }
+  @GetMapping("/listdetail")
+  public String listdetail(Model model,@RequestParam String region){
+
+
+    // region에 해당하는 데이터의 name 속성값 가져오기
+    Excel theaterName = theaterService.getExcelTheater(region);
+    // 모델에 데이터 추가
+
+    model.addAttribute("theaterName", theaterName);
+
+
+    return "/Theater/theater_listdetail";
+  }
+  @GetMapping("/navermap")
+  public String theatermap(Model model,@RequestParam String address){
+
+    model.addAttribute("address",address);
+    System.out.println(address);
+    return  "/Theater/theaterNavermap";
+  }
 }
