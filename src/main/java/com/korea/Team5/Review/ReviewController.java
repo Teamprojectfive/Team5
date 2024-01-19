@@ -2,7 +2,7 @@ package com.korea.Team5.Review;
 
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
-import com.korea.Team5.movie.Movie;
+import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.MovieService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

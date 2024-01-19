@@ -1,6 +1,6 @@
 package com.korea.Team5.Review;
 import com.korea.Team5.USER.Member;
-import com.korea.Team5.movie.Movie;
+import com.korea.Team5.movie.entity.Movie;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

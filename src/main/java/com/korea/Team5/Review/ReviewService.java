@@ -3,7 +3,7 @@ package com.korea.Team5.Review;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.USER.Member;
-import com.korea.Team5.movie.Movie;
+import com.korea.Team5.movie.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

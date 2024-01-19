@@ -136,7 +136,7 @@ body{
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-bottom: 20px;
-    background-image: url(https://img3.yna.co.kr/etc/inner/KR/2019/04/04/AKR20190404160900005_01_i_P2.jpg);
+
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -182,11 +182,9 @@ body{
     left: 0;
     color:black;
     background-color: rgba(051, 051, 051, 0.8);
-<<<<<<< HEAD
+
     width:100%;
-=======
-    width:101%;
->>>>>>> 79ec102519830826fa3b283882f8d473757244c3
+
     height:100%;
     transition: visibility 0s, opacity 0.5s ease;
 
