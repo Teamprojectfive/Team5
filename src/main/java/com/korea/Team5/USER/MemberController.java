@@ -670,4 +670,10 @@ public class MemberController {
     return "/LoginandSignup/passwordreset";
   }
   // 패스워드찾기 휴대폰으로 인증 메서드 끝
+
+  @GetMapping("/my_movie")
+  public String mypagemoive(){
+    return "/LoginandSignup/mypage_moive.html";
+  }
 }
+

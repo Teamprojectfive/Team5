@@ -7,11 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="subpage_cont" style="height:380px;">
+<div class="subpage_cont" style="height:40%">
     <h2>이메일 수정하기</h2>
     <form th:action="@{/member/mypage/email}" method="post">
         <!-- 에러 메세지 표시 -->
-        <div th:if="${errorMessage}" class="error-message">
+        <div th:if="${errorMessage}" class="error-message" style="margin-bottom:-25px;margin-top:15px;">
             <p th:text="${errorMessage}" class="error-text" style="color:red;"></p>
         </div>
         <div>

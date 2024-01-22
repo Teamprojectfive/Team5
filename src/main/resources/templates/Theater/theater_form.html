@@ -1,30 +1,66 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
-<div layout:fragment="content">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-    <a href="/theater/information">극장</a>
-    <label for="text">-></label>
-    <a href="/theater/information">전체극장</a>
-    <ul>
-        <li th:each="region : ${bigRegionlList}">
-            <div>
-                <a class="nav-link" th:href="@{|/theater/smallRegion?targetBigRegion=${region}|}"
-                   th:text="${region}"></a>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/theater.css">
+</head>
+<body>
+<div layout:fragment="content"  style="position: relative; top: 15%;">
+    <div class="slide_cont">
+    </div>
+    <div class="theater_warp">
+        <div class="select">
+            <a href="/theater/information">극장</a>
+            <label for="text">-></label>
+            <a href="/theater/information">전체극장</a>
+        </div>
+        <div class="theater_cont">
+            <div class="theater_title">
+                <ul>
+                    <li th:each="region : ${bigRegionlList}">
+                        <div>
+                            <a class="nav-link" th:href="@{|/theater/smallRegion?targetBigRegion=${region}|}"
+                               th:text="${region}"></a>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </li>
-    </ul>
-    <ul>
-        <li th:each="smallregion : ${smallList}">
-            <div>
-                <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}"
-                   th:text="${smallregion}"></a>
+            <div class="theater_sub_menu">
+                <ul>
+                    <li th:each="smallregion : ${smallList}">
+                        <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}"
+                           th:text="${smallregion}"></a>
+                    </li>
+                    <li th:each="bigregion : ${bigList}">
+                        <a href="/theater/information" th:text="${bigregion}"></a>
+                    </li>
+                    <li th:each="smallregion : ${smallList}">
+                        <a href="#" th:text="${smallregion}"></a>
+                    </li>
+                </ul>
             </div>
-        </li>
-    </ul>
-    </body>
+            <div th:each="smallRegion : ${smallRegionList}">
+                <div>
+                    <a class="nav-link" href="/theater/detail?bigRegion=${bigRegion}&smallRegion=${smallRegion}"
+                       th:text="${smallRegion}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = function() {
+  // 대상 목록을 가져와서 클릭 이벤트를 추가합니다.
+  var regionList = document.getElementById('regionList').getElementsByTagName('a');
+
+  for (var i = 0; i < regionList.length; i++) {
+    regionList[i].addEventListener('click', function() {
+      // 클릭된 링크에 'clicked' 클래스를 추가하여 스타일 변경
+      this.classList.add('clicked');
+    });
+  }
+};
+    </script>
 </div>
 </body>
 </html>

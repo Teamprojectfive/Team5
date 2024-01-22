@@ -100,12 +100,17 @@ public class MovieController {
 
     @GetMapping("/detail/{id}")
     public String detail(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @PathVariable("id") Integer id) {
+
+
+        List<Movie> movies = this.movieService.list();
+
         Movie movie = this.movieService.getMovie(id);
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
-//        List<MovieInfoDto> movieInfoList = this.kmapiService.videoListSaveDataBase();
+
+//        List<MovieInfoDto> movieInfoList = this.kmapiService.videoListSaveDataBase();8
         model.addAttribute("movieInfo", movieInfo);
-//        model.addAttribute("movieInfoList", movieInfoList);
+        model.addAttribute("movies", movies);
         model.addAttribute("movie", movie);
         model.addAttribute("paging", paging);
 
@@ -136,6 +141,7 @@ public class MovieController {
     public String checkDataBase() {
         return "movie";
     }
+
 
 
     @GetMapping("/addDetail")
@@ -175,6 +181,7 @@ public class MovieController {
     public String movieintro() {
         return "movie_intro";
     }
+
 
 
 }

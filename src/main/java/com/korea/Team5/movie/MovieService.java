@@ -191,7 +191,7 @@ public class MovieService {
             List<Movie> movieList = new ArrayList<>();
 
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 10; i++) {
                 String url = apiUrl + "?key=" + apiKey + "&targetDt=" + targetDate.format(formatter);
                 System.out.println(url);
                 ResponseEntity<WeeklyBoxOfficeList> responseEntity = restTemplate.getForEntity(url, WeeklyBoxOfficeList.class);
@@ -225,7 +225,7 @@ public class MovieService {
 
                 int i = 0;
                 for (Movie movie : movieList) {
-                    if (i == 30) {
+                    if (i == 80) {
                         break;
                     }
 

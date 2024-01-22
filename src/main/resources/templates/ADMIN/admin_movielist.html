@@ -1,35 +1,33 @@
-<html layout:decorate="~{ADMIN/adminlayout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html layout:decorate="~{ADMIN/adminlayout}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/admin_detail.css">
+</head>
+<body>
 <div layout:fragment="admincontent" class="container my-3">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-    <div id="movieForm">
-        <div th:if="${adminmoviespaging.isEmpty()}">
+    <div class="member_btn_cont" id="movieForm" style="text-align: center;">
+        <div th:if="${adminmoviespaging.isEmpty()}" style="margin-bottom:20px;">
             <label for="text">등록된 영화가 없습니다.</label>
         </div>
         <h2>영화 목록</h2>
         <input type="submit" value="새로운 영화 등록하기">
         <div th:if="${adminmoviespaging}">
-            <ul>
-                <li th:each="movie : ${adminmoviespaging.content}">
+            <ul style="display: flex;align-items: flex-end;flex-wrap: wrap; justify-content: space-between;">
+                <li th:each="movie : ${adminmoviespaging.content}" style="    max-width: 20%;    list-style: none;">
                     <!-- 멤버의 정보를 출력 -->
-                    <p th:text="${movie.name}"></p>
-                    <p th:text="${movie.content}"></p>
-                    <p th:text="${movie.genre}"></p>
-                    <p th:text="${movie.age}"></p>
+                    <p th:text="${movie.movieNm}" style="font-weight: bold;"></p>
+                    <img th:src="${movie.movieInfo.posters}">
                     <!-- 추가로 출력할 정보가 있다면 추가 -->
                     <!-- <p th:text="${member.someOtherField}"></p> -->
-                    <form th:action="@{/admin/adminmoviedelete}" method="post">
+                    <form th:action="@{/admin/adminmoviedelete}" method="post" style="display:flex; justify-content: center;">
                         <div>
                             <input type="hidden" name="movie" th:value="${movie.id}">
                             <input type="submit" value="삭제" onclick="return confirmWithdraw();">
                         </div>
                     </form>
-                    <div>
-                        <input type="submit" value="수정">
-                    </div>
+
                 </li>
             </ul>
             <!-- 페이징처리 시작 -->
@@ -65,5 +63,6 @@
             return confirmWithdraw;
         }
     </script>
-    </body>
+</div>
+</body>
 </html>
