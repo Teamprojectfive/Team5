@@ -14,27 +14,25 @@
     <section class="list_box_wrap" id="listContainer">
         <section class="list_box" th:each="movieList, iterStat : ${movieSubList}">
             <div th:each="movie : ${movieList}" class="list">
-                <div class="list_item"  th:style="'background-image: url(' + ${movie.movieInfo.posters } + ');'">
+                <div class="list_item" th:style="'background-image: url(' + ${movie.movieInfo.posters } + ');'">
                     <div class="additional-info">
                         <div style="padding-top: 10px;text-align: center;font-weight: bold;font-size: 25px;"
                              th:text="${movie.movieNm}"></div>
 
-                    <div class="sub_info">
-                        <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
-                        <div style="margin-top: 10px;" th:if="${movie.movieCd != null}">
-                            <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                        <div class="sub_info">
+                            <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
+                            <div style="margin-top: 10px;" th:if="${movie.movieCd != null}">
+                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+
+                            </div>
+                            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                               th:data-uri="@{|/movie/vote2/${movie.id}|}" onclick="voteMovie(${movie.id})">
+                                찜하기
+                            </a>
 
                         </div>
-                        <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-                           th:data-uri="@{|/movie/vote/${movie.id}|}"
-                           style="text-decoration: none; color: #007bff;">
-                            추천
-                            <span class="badge rounded-pill bg-success" th:text="${#lists.size(movie.voter)}"
-                                  style="margin-left: 5px;"></span>
-                        </a>
                     </div>
                 </div>
-                                </div>
             </div>
         </section>
     </section>
@@ -74,7 +72,7 @@
         const recommendElements = document.getElementsByClassName('recommend');
         Array.from(recommendElements).forEach(function(element) {
             element.addEventListener('click', function() {
-                if (confirm('정말로 추천하시겠습니까?')) {
+                if (confirm('이 영화를 찜하시겠습니까?')) {
                     location.href = this.dataset.uri;
                 }
             });

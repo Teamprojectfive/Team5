@@ -31,12 +31,14 @@ public class Movie {
 
 
     @ManyToMany
-    private Set<Member> voter;
-    /*DB 저장 일자*/
+    private List<Member> voter;
+
 
 
     @ManyToOne
     private MovieInfo movieInfo;
+
+
 
 
 }
