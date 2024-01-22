@@ -3,49 +3,45 @@
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
     <div th:each="movie : ${movieInfo}">
-    <div class="detail_container">
+        <div class="detail_container">
 
-        <div th:style="'background-image: url(' + ${movie.posters } + ');'">
-            <div class="movie_content">
-                <h1 th:text="${movie.movieNm}"></h1>
-                <img th:src="${movie.posters}" alt="">
+            <div>
+                <div class="movie_content">
+                    <h1 th:text="${movie.movieNm}"></h1>
+                    <img th:src="${movie.posters}" alt="">
+                    <div class="detail_content">
+                        <div class="detail_cont">
+                            <p class="detail_cont_sub">개봉일</p>
+                            <p th:text="${movie.openDt}"></p>
+                        </div>
+                        <div th:each="movieList : ${movie.movieList}">
+                            <p class="detail_cont_sub">누적관객수</p>
+                            <p th:text="${movieList.audiAcc}"></p>
+                        </div>
+                        <div th:each="genre : ${movie.genres}" class="detail_cont">
+                            <p class="detail_cont_sub">장르</p>
+                            <p th:text="${genre.genreNm}"></p>
+                        </div>
+                        <div th:each="nation : ${movie.nations}" class="detail_cont">
+                            <p class="detail_cont_sub">국가</p>
+                            <p th:text="${nation.nationNm}"></p>
+                        </div>
+                        <div th:each="audit : ${movie.audits}" class="detail_cont">
+                            <p class="detail_cont_sub">등급</p>
+                            <p th:text="${audit.watchGradeNm}"></p>
+                        </div>
 
-
-
-                <div class="detail_content">
-                    <div class="detail_cont">
-                        <p class="detail_cont_sub">개봉일</p>
-                        <p th:text="${movie.openDt}"></p>
+                        <!--                <div class="detail_cont">-->
+                        <!--                    <p class="detail_cont_sub">영화 설명</p>-->
+                        <!--                    <p th:text="${movie.content}"></p>-->
+                        <!--                </div>-->
+                        <!--                <div class="detail_cont">-->
+                        <!--                    <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
+                        <!--                </div>-->
                     </div>
-                    <div th:each="movieList : ${movie.movieList}">
-                        <p class="detail_cont_sub">누적관객수</p>
-                        <p th:text="${movieList.audiAcc}"></p>
-                    </div>
-                    <div th:each="genre : ${movie.genres}" class="detail_cont">
-                        <p class="detail_cont_sub">장르</p>
-                        <p th:text="${genre.genreNm}"></p>
-                    </div>
-                    <div th:each="nation : ${movie.nations}" class="detail_cont">
-                        <p class="detail_cont_sub">국가</p>
-                        <p th:text="${nation.nationNm}"></p>
-                    </div>
-                    <div th:each="audit : ${movie.audits}" class="detail_cont">
-                        <p class="detail_cont_sub">등급</p>
-                        <p th:text="${audit.watchGradeNm}"></p>
-                    </div>
-
-
-                    <!--                <div class="detail_cont">-->
-                    <!--                    <p class="detail_cont_sub">영화 설명</p>-->
-                    <!--                    <p th:text="${movie.content}"></p>-->
-                    <!--                </div>-->
-                    <!--                <div class="detail_cont">-->
-                    <!--                    <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
-                    <!--                </div>-->
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <!--    메인 포스터&설명 end-->
     <!--    주요정보 start-->
@@ -119,12 +115,7 @@
                     <li class="cast_card">
                         <div class="cast_item" th:each="actor : ${movie.actors}">
                             <div th:text="${actor.peopleNm}">
-
                             </div>
-                            <p th:text="${actor.cast}"></p><strong>역</strong>
-
-
-<<<<<<< HEAD
                         </div>
 
                         <div class="cast_ex">
