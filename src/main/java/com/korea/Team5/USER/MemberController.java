@@ -6,6 +6,9 @@ import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.Review.Review;
 import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.SMS.SMSService;
+import com.korea.Team5.movie.MovieService;
+import com.korea.Team5.movie.entity.Movie;
+import com.korea.Team5.movie.entity.MovieInfo;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +38,7 @@ public class MemberController {
   private final EmailService emailService;
 
   private final ReviewService reviewService;
+  private final MovieService movieService;
 
 
 
@@ -117,10 +121,18 @@ public class MemberController {
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/mypage")
   public String mypage(Model model, Principal principal) {
+    String loginId = principal.getName();
 
-    Member member = this.memberService.getMember(principal.getName());
-    // 모델에 Member 객체 추가
+    // MemberService를 이용하여 사용자 정보 가져오기
+    Member member = this.memberService.getMember(loginId);
+
+    // MemberService를 이용하여 사용자의 찜 목록 가져오기
+    List<MovieInfo> wishlist = this.memberService.getWishList(loginId);
+
+    // 모델에 Member 객체와 찜 목록 추가
     model.addAttribute("member", member);
+    model.addAttribute("wishlist", wishlist);
+
     return "/LoginandSignup/mypage_form";
   }
 
@@ -201,7 +213,6 @@ public class MemberController {
       // 예를 들어, 오류 페이지로 리다이렉트하거나 메시지를 보여줄 수 있습니다.
       return "redirect:/member/mypagereview"; // 혹은 다른 처리를 수행할 수 있습니다.
     }
-
   }
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypagereviewdelete")

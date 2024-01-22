@@ -94,4 +94,5 @@ public class TheaterController {
     System.out.println(address);
     return  "/Theater/theaterNavermap";
   }
+
 }

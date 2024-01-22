@@ -107,17 +107,24 @@ public class MovieController {
         return "movieDetail";
     }
 
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
-    public String movieVote(Principal principal, @PathVariable("id") Integer id) {
-        Movie movie = this.movieService.getMovie(id);
+    public String movieVote(Principal principal, @PathVariable("id") Integer id){
+        MovieInfo movie = this.movieService.getMovieInfo(id);
         Member member = this.memberService.getMember(principal.getName());
-
         this.movieService.vote(movie, member);
-
-        return "redirect:/movie/list";
+        return String.format("redirect:/member/mypage");
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote2/{id}")
+    public String movieInfoVote(Principal principal, @PathVariable("id") Integer id){
+        MovieInfo movieInfo = this.movieService.getMovieInfo(id);
+        Member member = this.memberService.getMember(principal.getName());
+        this.movieService.vote(movieInfo, member);
+        return String.format("redirect:/member/mypage");
+    }
+
 
 
 

@@ -2,6 +2,9 @@ package com.korea.Team5.movie;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.USER.Member;
+
+import com.korea.Team5.USER.MemberRepository;
+
 import com.korea.Team5.kmapi.repository.PlotRepository;
 import com.korea.Team5.movie.entity.*;
 import com.korea.Team5.movie.repository.*;
@@ -41,6 +44,9 @@ public class MovieService {
     private final PlotRepository plotRepository;
     private final GenreMovieInfoRepository genreMovieInfoRepository;
 
+    private final MemberRepository memberRepository;
+
+
 
     private final String apiUrl;
     private final String apiKey;
@@ -50,7 +56,10 @@ public class MovieService {
 
     @Autowired
 
-    public MovieService(RestTemplate restTemplate, MovieRepository movieRepository, MovieInfoRepository movieInfoRepository, @Value("${movie.api.url2}") String apiUrl, @Value("${movie.api.key}") String apiKey, @Value("${movie.api.detail.url}") String apiUrl2, GenreRepository genreRepository, Actor1Repository actor1Repository, AuditRepository auditRepository, CompanyRepository companyRepository, NationRepository nationRepository, StaffRepository staffRepository, DirectorRepository directorRepository, PlotRepository plotRepository, GenreMovieInfoRepository genreMovieInfoRepository) {
+
+    public MovieService(RestTemplate restTemplate, MovieRepository movieRepository, MovieInfoRepository movieInfoRepository, @Value("${movie.api.url2}") String apiUrl, @Value("${movie.api.key}") String apiKey, @Value("${movie.api.detail.url}") String apiUrl2, GenreRepository genreRepository, Actor1Repository actor1Repository, AuditRepository auditRepository, CompanyRepository companyRepository, NationRepository nationRepository, StaffRepository staffRepository, DirectorRepository directorRepository, PlotRepository plotRepository, GenreMovieInfoRepository genreMovieInfoRepository, MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+
         this.genreMovieInfoRepository = genreMovieInfoRepository;
         this.plotRepository = plotRepository;
         this.directorRepository = directorRepository;
@@ -154,20 +163,24 @@ public class MovieService {
         }
         return movieInfoList;
     }
-    public void vote (Movie movie, Member member){
-        movie.getVoter().add(member);
-        this.movieRepository.save(movie);
-    }
 
-    public void voteCancle (Movie movie, Member member){
-        movie.getVoter().remove(member);
-        this.movieRepository.save(movie);
-    }
+
+
 
     public void delete (Movie movie){
         this.movieRepository.delete(movie);
     }
 
+
+
+
+    public void vote(MovieInfo movieInfo, Member member) {
+        // 사용자가 이미 찜한 목록에 해당 영화가 있는지 확인
+        if (!member.getVoter().contains(movieInfo)) {
+            member.getVoter().add(movieInfo);
+            memberRepository.save(member);
+        }
+    }
 
 
 

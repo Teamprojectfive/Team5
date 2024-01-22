@@ -52,6 +52,10 @@
                     <li><a href="#">위치</a></li>
                 </ul>
             </div>
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="btn m-1"  style="color:white; background-color:black;"><a
+                        href="/notice/list">공지사항</a></div>
+            </div>
         </div>
         <div class="login_container">
             <a class="admin" role="button" th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}" th:href="@{/admin/adminpage}">관리자</a>

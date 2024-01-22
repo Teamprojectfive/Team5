@@ -1,0 +1,77 @@
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
+<div layout:fragment="content">
+    <head>
+        <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    <h2>
+        공 지 사 항
+    </h2>
+    <div>
+        <label for="text">전체글보기</label>
+        <form th:action="@{/admin/notice/create}" method="get">
+            <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
+                <input type="submit" value="공지사항 작성">
+            </div>
+        </form>
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}" class="error-text"></p>
+        </div>
+        <div>
+            <ul th:each="notice : ${noticeList}">
+                <li>
+                    <div id="noticeDetails-${notice.Id}" class="notice-details">
+                        <label for="text">제목</label>
+                        <h5 class="card-title" th:text="${notice.subject}"></h5>
+                        <label for="text">내용</label>
+                        <p class="card-text" th:text="${notice.content}"></p>
+                        <label for="text">작성일시</label>
+                        <p class="card-text"
+                           th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                        <label for="text">작성자:</label>
+                        <p class="card-text" th:text="${notice.member.loginId}"></p>
+                        <form th:action="@{/admin/notice/delete}" method="post">
+                            <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
+                                <input type="hidden" name="noticeId" th:value="${notice.Id}">
+                                <input type="submit" value="공지사항 삭제">
+                            </div>
+                        </form>
+                    </div>
+                    <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
+                        <!-- 수정 버튼 -->
+                        <button onclick="toggleElements('editForm-${notice.Id}', 'noticeDetails-${notice.Id}')">공지사항 수정</button>
+                    </div>
+                    <form th:action="@{/admin/notice/modify}" method="post">
+                    <div id="editForm-${notice.Id}" style="display:none;">
+                        <input type="hidden" name="noticeId" th:value="${notice.Id}">
+                        <label for="newSubject"><strong>공지사항 제목</strong>:</label>
+                        <input type="text" name="newsubject" th:value="${notice.subject}" required/>
+                        <label for="newcontent"><strong>공지사항 내용</strong>:</label>
+                        <input type="text" name="newcontent"th:value="${notice.content}">
+                        <input type="submit" value="수정하기">
+                    </div>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </body>
+    <script>
+        // 요소들을 토글하는 함수
+        function toggleElements(formId, detailsId) {
+            var editForm = document.getElementById(formId);
+            var noticeDetails = document.getElementById(detailsId);
+
+            if (editForm.style.display === 'none' || editForm.style.display === '') {
+                editForm.style.display = 'block';
+                noticeDetails.style.display = 'none';
+            } else {
+                editForm.style.display = 'none';
+                noticeDetails.style.display = 'block';
+            }
+        }
+    </script>
+</div>
+</html>

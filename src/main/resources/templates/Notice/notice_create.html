@@ -1,0 +1,27 @@
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
+<div layout:fragment="content">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>
+    공지사항 등록
+</h2>
+<div>
+    <form th:action="@{/notice/create}" method="post" th:object="${noticecreateForm}">
+        <input type="hidden" name="adminLoginId" th:value="${adminLoginId}">
+        <div class="mb-3">
+            <label for="subject" class="form-label">제목</label>
+            <input type="text" name="subject" id="subject" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+        </div>
+        <input type="submit" value="등록하기" class="btn btn-primary my-2">
+    </form>
+</div>
+</body>
+</div>
+</html>

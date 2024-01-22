@@ -1,6 +1,5 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -53,10 +52,14 @@
             <h1><span style="color:red;">M</span>&nbsp;o&nbsp;v&nbsp;i&nbsp;e</h1>
         </div>
     </div>
+
     <div layout:fragment="content" class="container my-3" style="width:50%;">
         <form th:action="@{/member/mypage}" method="get" id="myPageForm" class="correction_cont">
             <div class="correction_title">내프로필</div>
             <section>
+                <div th:each="wishList : ${wishlist}">
+                    <a th:href="@{|/movie/detail/${wishList.id}|}"><img th:src="${wishList.posters}" alt=""></a>
+                </div>
                 <div class="crn_box">
                     <label for="loginId" class="form-label">아이디</label>
                     <input type="hidden" name="loginId" th:value="${member}">
