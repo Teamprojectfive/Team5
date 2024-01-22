@@ -79,16 +79,26 @@ public class KmapiService {
                     for (MovieInfoDto firstMovie : movieInfoDtoList) {
                         String title = firstMovie.getTitle().replace(target1, "").replace(target2, "").substring(1);
                         String year = firstMovie.getProdYear();
+                        if("괴물".equals(title)){
+                            movieInfo.setPosters("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzEyMDlfMjA2%2FMDAxNzAyMTE5ODU3MzE0.vVswg-3_t0goE9Hn_3Ossm8WocPOkhNUsrLBUo7UBeIg.gC6ypnF7OwY79sMYDrEmCY7WLqZIjmRWv25xFkfOC1Yg.JPEG.ksw2069%2FIMG_2513.jpg&type=sc960_832");
+                        }
+                        if("스즈메의 문단속".equals(title)){
+                            movieInfo.setPosters("https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000087/87936/87936221923_727.jpg");
+                        }
                         if(title.equals(movieInfo.getMovieNm()) && year.equals(movieInfo.getPrdtYear())){
 
                             System.out.println(firstMovie.getVods());
 
 
+
+
+
                             String posterUrl = firstMovie.getPosters().split("\\|")[0];
                             movieInfo.setPosters(posterUrl);
 
-                            Plot plot = firstMovie.getPlots().getPlot().get(0);
 
+
+                            Plot plot = firstMovie.getPlots().getPlot().get(0);
                             Vod vod = firstMovie.getVods().getVod().get(0);
                             // Plot 정보와 MovieInfo 연결
                             plot.setMovieInfo(movieInfo);

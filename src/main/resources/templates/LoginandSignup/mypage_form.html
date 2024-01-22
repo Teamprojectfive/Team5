@@ -52,9 +52,13 @@
         </div>
     </div>
     <div layout:fragment="content" class="container my-3" style="width:50%;height: 820px; ">
+
         <form th:action="@{/member/mypage}" method="get" id="myPageForm" class="correction_cont">
             <div class="correction_title">내프로필</div>
             <section>
+                <div th:each="wishList : ${wishlist}">
+                    <a th:href="@{|/movie/detail/${wishList.id}|}"><img th:src="${wishList.posters}" alt=""></a>
+                </div>
                 <div class="crn_box">
                     <label for="loginId" class="form-label">아이디</label>
                     <input type="hidden" name="loginId" th:value="${member}">

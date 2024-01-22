@@ -1,3 +1,4 @@
+
 //<<<<<<< HEAD
 ////<<<<<<< HEAD
 //////package com.korea.Team5;
@@ -23,6 +24,14 @@
 ////package com.korea.Team5;
 //=======
 //package com.korea.Team5;
+
+
+
+
+//	@Test
+//	void contextLoads() {
+//		Movie m = new Movie();
+
 //
 //import com.korea.Team5.Review.ReviewService;
 //import com.korea.Team5.movie.repository.MovieRepository;
