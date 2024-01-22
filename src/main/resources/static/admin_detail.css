@@ -44,14 +44,12 @@
 .btn_o:hover{
     background:rgb(255,204,220) !important;
 }
-
-
-
-
-
-
-
-
+input{
+transition:0.7s;
+}
+input:hover{
+    background:white;
+}
 
 
 

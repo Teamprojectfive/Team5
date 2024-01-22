@@ -1,5 +1,6 @@
 package com.korea.Team5.movie;
 
+import com.korea.Team5.movie.entity.Movie;
 import lombok.Getter;
 import lombok.Setter;
 

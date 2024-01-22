@@ -1,6 +1,4 @@
-body {
-    background-color: #f8f9fa;
-}
+
 
 .sub_nav{
     display: flex;
@@ -10,6 +8,8 @@ body {
     margin-right: auto;
     padding-top: 20px;
     padding-bottom: 90px;
+    position: relative;
+    z-index: 100;
 }
 
 .mypage_title{
@@ -452,6 +452,7 @@ body {
 	}
 
 .pro_cont{
+    top: -70px;
     position: relative;
     z-index:99;
     display:flex;
@@ -492,4 +493,24 @@ body {
 .nick_t_cont{
     display: flex;
     flex-direction: column;
+}
+
+
+
+.my_movie_cont{
+    width: 90%;
+    height: 400px;
+    border: solid 3px beige;
+    margin: auto;
+}
+
+
+
+.cast-btn{
+ transition:1s;
+}
+
+.cast-btn:hover{
+    background:gray;
+    font-weight: bold;
 }

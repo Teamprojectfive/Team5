@@ -44,6 +44,16 @@ body{
         border-radius: 10px;
         background: linear-gradient(to right, rgb(90, 50, 50), rgb(255, 102, 102));
 }
+.theater_cont a{
+    margin-right: 15px;
+    text-decoration: none;
+    color: black;
+    transition: transform 0.3s ease-in-out;
+}
+
+.theater_cont a:hover {
+  transform: scale(1.2); /* 크기를 1.2배로 확대합니다. */
+}
 
 .expand {
     width: 50%;

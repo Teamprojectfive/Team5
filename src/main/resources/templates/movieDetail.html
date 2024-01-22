@@ -1,41 +1,42 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px" lang="">
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
-    <div class="detail_container">
-        <!--        <img class="detail_img" th:src="${movie.image}" alt="">-->
-        <div th:each="movie : ${movieInfo}" class="movie_content">
-
-            <section class="post_cont">
-                <div class="main_img">
-                    <img th:src="${movie.posters}" alt="">
-                    <button class="custom-btn btn-4"><span>예매</span></button>
-                </div>
-                <div th:each="movieList : ${movie.movieList}" class="attendance_cont">
-                    <i class="fa-regular fa-user" style="font-size:100px;color:white;"></i>&nbsp;
-                    <p class="detail_cont_sub">누적관객수</p>&nbsp;
-                    <p th:text="${movieList.audiAcc}"></p>
-                </div>
-                <div class="detail_content">
-                    <h1 th:text="${movie.movieNm}"></h1>
-                    <div class="detail_cont">
-                        <p class="detail_cont_sub">개봉일</p>
-                        <p class="detail_cont_subb" th:text="${movie.openDt}"></p>
+    <div th:each="movie : ${movieInfo}">
+        <div class="detail_container">
+            <!--        <img class="detail_img" th:src="${movie.image}" alt="">-->
+            <div th:each="movie : ${movieInfo}" class="movie_content">
+                <section class="post_cont">
+                    <div class="main_img">
+                        <img th:src="${movie.posters}" alt="">
+                        <button class="custom-btn btn-4"><span>예매</span></button>
                     </div>
-                    <div th:each="genre : ${movie.genres}" class="detail_cont">
-                        <p class="detail_cont_sub">장르</p>
-                        <p class="detail_cont_subb" th:text="${genre.genreNm}"></p>
+                    <div th:each="movieList : ${movie.movieList}" class="attendance_cont">
+                        <i class="fa-regular fa-user" style="font-size:100px;color:white;"></i>&nbsp;
+                        <p class="detail_cont_sub">누적관객수</p>&nbsp;
+                        <p th:text="${movieList.audiAcc}"></p>
                     </div>
-                    <div th:each="nation : ${movie.nations}" class="detail_cont">
-                        <p class="detail_cont_sub">국가</p>
-                        <p class="detail_cont_subb" th:text="${nation.nationNm}"></p>
+                    <div class="detail_content">
+                        <h1 th:text="${movie.movieNm}"></h1>
+                        <div class="detail_cont">
+                            <p class="detail_cont_sub">개봉일</p>
+                            <p class="detail_cont_subb" th:text="${movie.openDt}"></p>
+                        </div>
+                        <div th:each="genre : ${movie.genres}" class="detail_cont">
+                            <p class="detail_cont_sub">장르</p>
+                            <p class="detail_cont_subb" th:text="${genre.genreNm}"></p>
+                        </div>
+                        <div th:each="nation : ${movie.nations}" class="detail_cont">
+                            <p class="detail_cont_sub">국가</p>
+                            <p class="detail_cont_subb" th:text="${nation.nationNm}"></p>
+                        </div>
+                        <div th:each="audit : ${movie.audits}" class="detail_cont">
+                            <p class="detail_cont_sub">등급</p>
+                            <p class="detail_cont_subb" th:text="${audit.watchGradeNm}"></p>
+                        </div>
                     </div>
-                    <div th:each="audit : ${movie.audits}" class="detail_cont">
-                        <p class="detail_cont_sub">등급</p>
-                        <p class="detail_cont_subb" th:text="${audit.watchGradeNm}"></p>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
     </div>
     <!--    메인 포스터&설명 end-->
@@ -124,7 +125,8 @@
                                    th:data-recommended="${doNotVote}"
                                    style="text-decoration: none; color: #007bff;">
                                     추천
-                                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.voter)}"
+                                    <span class="badge rounded-pill bg-success"
+                                          th:text="${#lists.size(review.voter)}"
                                           style="margin-left: 5px;"></span>
                                 </a>
                                 <div class="correction">
@@ -144,29 +146,28 @@
                     </div>
                 </div>
             </div>
+            <div th:if="${!paging.isEmpty()}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${paging.number-1}|}">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                        th:classappend="${page == paging.number} ? 'active'"
+                        class="page-item">
+                        <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <!--        리뷰 end-->
     </section>
-
-    <div th:if="${!paging.isEmpty()}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number-1}|}">
-                    <span>이전</span>
-                </a>
-            </li>
-            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                th:classappend="${page == paging.number} ? 'active'"
-                class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                    <span>다음</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <!--        리뷰 end-->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var showButton = document.querySelector('.show_btn');

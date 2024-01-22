@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>간단한 지도 표시하기</title>
+    <script type="text/javascript"
+            src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sep2kn9hcw&submodules=geocoder"></script>
+</head>
+<body>
+<div>
+    <button onclick="getCurrentLocation()">내 위치 확인</button>
+</div>
+<div id="map" style="width:100%;height:850px;"></div>
+<div>
+    <input type="submit" onclick="searchOnNaverMap()" value="지도에서 검색">
+</div>
+<input type="hidden" id="addressInput" th:value="${address}">
+<script>
+    var addressnaver = document.getElementById('addressInput').value;
+    var map = null;
+
+    // 초기에 극장 데이터를 표시
+    var center = new naver.maps.LatLng(37.3595316, 127.1052133);
+    map = new naver.maps.Map('map', {
+        center: center,
+        zoom: 18
+    });
+
+    naver.maps.Service.geocode({ address: addressnaver }, function(status, response) {
+        if (status === naver.maps.Service.Status.ERROR) {
+            console.error('Geocode Error:', response);
+            return alert('Something wrong!');
+        }
+
+        console.log(response);
+
+        var location = new naver.maps.LatLng(response.result.items[0].point.y, response.result.items[0].point.x);
+        map.panTo(location);
+
+        var marker = new naver.maps.Marker({
+            position: location,
+            map: map,
+            title: '극장 위치'
+        });
+
+        var infowindow = new naver.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:10px;">' + addressnaver + '</div>'
+        });
+
+        infowindow.open(map, marker);
+    });
+
+   function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var myLocation = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+            // 역지오코딩
+            naver.maps.Service.reverseGeocode({
+                coords: myLocation
+            }, function(status, response) {
+                if (status !== naver.maps.Service.Status.OK) {
+                    console.error('Error during reverse geocoding:', status, response);
+                    return alert('Something wrong!');
+                }
+                var address = response.v2.address.jibunAddress;
+                console.log(response);
+                // 현재 위치 주소를 콘솔에 출력
+                console.log('Address:', address);
+
+                // 지도 관련 작업 시작
+                if (!map) {
+                    map = new naver.maps.Map('map', {
+                        center: myLocation,
+                        zoom: 15
+                    });
+                } else {
+                    map.panTo(myLocation);
+                }
+
+                var marker = new naver.maps.Marker({
+                    position: myLocation,
+                    map: map,
+                    title: '내 위치'
+                });
+
+                var infowindow = new naver.maps.InfoWindow({
+                    content: '<div style="width:200px;text-align:center;padding:10px;">현재 위치: ' + address + '</div>'
+                });
+
+                infowindow.open(map, marker);
+            });
+        }, function(error) {
+            console.error('Error getting location:', error);
+            alert('Unable to retrieve your location.');
+        });
+    } else {
+        alert('Geolocation is not supported by this browser.');
+    }
+}
+    function searchOnNaverMap() {
+        var naverMapLink = "https://map.naver.com/v5/search/";
+        var theaterAddress = encodeURIComponent(addressnaver);  // 극장 주소를 인코딩
+        var myLocationLink = getCurrentLocationLink();  // 내 위치 링크
+
+        // 검색 링크 생성
+        var searchLink = naverMapLink + theaterAddress + "?" + myLocationLink;
+
+        // 검색 페이지로 이동
+        window.location.href = searchLink;
+    }
+
+    function getCurrentLocationLink() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+
+                return "c=" + latitude + "," + longitude;
+            }, function(error) {
+                console.error('Error getting location:', error);
+                alert('Unable to retrieve your location.');
+            });
+        } else {
+            alert('Geolocation is not supported by this browser.');
+        }
+    }
+</script>
+</body>
+</html>
