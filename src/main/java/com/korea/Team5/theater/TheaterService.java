@@ -3,14 +3,10 @@ package com.korea.Team5.theater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-import com.korea.Team5.DataNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -20,17 +16,17 @@ public class TheaterService {
   private final ExcelRepository excelRepository;
 
   public List<Excel> getExcelRegion(String targetBigRegion, String targetSmallRegion) {
+
+    String smallRegion = getSmallRegionByCombinedRegion(targetSmallRegion);
     List<String> bigRegionList = GroupRegion.getGroupList(targetBigRegion);
-
     List<Excel> result = new ArrayList<>();
-
     if (bigRegionList != null && !bigRegionList.isEmpty()) {
       for (String bigRegion : bigRegionList) {
-        List<Excel> tmp = excelRepository.findAllByBigRegionAndSmallRegion(bigRegion, targetSmallRegion);
+        List<Excel> tmp = excelRepository.findAllByBigRegionAndSmallRegion(bigRegion, smallRegion);
         result.addAll(tmp);
       }
     } else {
-      List<Excel> tmp = excelRepository.findAllByBigRegionAndSmallRegion(targetBigRegion, targetSmallRegion);
+      List<Excel> tmp = excelRepository.findAllByBigRegionAndSmallRegion(targetBigRegion, smallRegion);
       result.addAll(tmp);
       // bigRegionList가 null이거나 비어있을 때의 로직 추가
       // 예시: 특정 기본값이나 다른 방식으로 데이터를 가져오거나 처리
@@ -38,6 +34,18 @@ public class TheaterService {
 
     return result;
   }
+  public List<Excel> allExcel(){
+    return this.excelRepository.findAll();
+  }
+
+  public Excel getExcelTheater(String region) {
+
+    Excel excelDataList = excelRepository.findAllByName(region);
+
+
+    return excelDataList;
+  }
+
 
   public List<String> getBigRegion() {
     List<String> bigRegionList = this.excelRepository.findDistinctBigRegionList();
@@ -93,17 +101,49 @@ public class TheaterService {
 
   }
 
-  // bigRegion에 해당하는 smallRegion 리스트 구하기
-  public List<String> getSmallRegion(String targetBigRegion) { // targetBigRegion => 대상 bigRegion
 
-    if (!GroupRegion.getGroupNameList().contains(targetBigRegion)) { // bigRegion이 그룹인가? 아니오
-      return this.excelRepository.findDistinctSmallRegionListForBigRegion(targetBigRegion); // 일반 samllRegion 가져오기
+  // bigRegion에 해당하는 smallRegion 리스트 구하기
+  public List<String> getTargetSmallRegion(String targetBigRegion) {
+
+    if(!GroupRegion.getGroupNameList().contains(targetBigRegion)) {
+      return this.excelRepository.findDistinctSmallRegionListForBigRegion(targetBigRegion);
     }
 
-    // bigRegion이 그룹인 경우
-    String groupName = getBigRegionGroupName(targetBigRegion); // 해당 bigRegion이 속한 그룹명을 가져와라
-    List<String> group = getBigRegionGroupList(groupName); // 해당 그룹명으로 smallRegion 가져와라
-    return getSmallRegionListByBigRegionGroup(group); // 리턴
-  }
-}
+    List<String> resultList = new ArrayList<>();
+    List<String> regionList = GroupRegion.getGroupList(targetBigRegion);
 
+    for (String region : regionList) {
+      List<String> smallRegionList = this.excelRepository.findDistinctSmallRegionListForBigRegion(region);
+      if (GroupRegion.getCityList().contains(region)) {
+        smallRegionList = getCombinedSmallRegionByCity(region);
+      }
+      resultList.addAll(smallRegionList);
+    }
+
+
+    return resultList;
+  }
+
+  private List<String> getCombinedSmallRegionByCity(String cityName) {
+    List<String> citySmallRegion = this.excelRepository.findDistinctSmallRegionListForBigRegion(cityName);
+    List<String> combinedSmallRegion = new ArrayList<>();
+    for (String region : citySmallRegion) {
+      String combinedRegion = cityName + " " + region;
+      combinedSmallRegion.add(combinedRegion);
+    }
+    return combinedSmallRegion;
+  }
+
+  private String getSmallRegionByCombinedRegion(String combinedRegion) {
+    final int COMBINED_RESULT_COUNT = 2;
+    final int SMALL_REGION_IDX = 1;
+    String[] regionBits = combinedRegion.split(" ");
+    if(regionBits.length != COMBINED_RESULT_COUNT) {
+      return combinedRegion;
+    }
+
+    return regionBits[SMALL_REGION_IDX];
+
+  }
+
+}

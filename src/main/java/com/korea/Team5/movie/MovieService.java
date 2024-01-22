@@ -2,7 +2,9 @@ package com.korea.Team5.movie;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.USER.Member;
+
 import com.korea.Team5.USER.MemberRepository;
+
 import com.korea.Team5.kmapi.repository.PlotRepository;
 import com.korea.Team5.movie.entity.*;
 import com.korea.Team5.movie.repository.*;
@@ -41,7 +43,9 @@ public class MovieService {
     private final DirectorRepository directorRepository;
     private final PlotRepository plotRepository;
     private final GenreMovieInfoRepository genreMovieInfoRepository;
+
     private final MemberRepository memberRepository;
+
 
 
     private final String apiUrl;
@@ -52,8 +56,10 @@ public class MovieService {
 
     @Autowired
 
+
     public MovieService(RestTemplate restTemplate, MovieRepository movieRepository, MovieInfoRepository movieInfoRepository, @Value("${movie.api.url2}") String apiUrl, @Value("${movie.api.key}") String apiKey, @Value("${movie.api.detail.url}") String apiUrl2, GenreRepository genreRepository, Actor1Repository actor1Repository, AuditRepository auditRepository, CompanyRepository companyRepository, NationRepository nationRepository, StaffRepository staffRepository, DirectorRepository directorRepository, PlotRepository plotRepository, GenreMovieInfoRepository genreMovieInfoRepository, MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+
         this.genreMovieInfoRepository = genreMovieInfoRepository;
         this.plotRepository = plotRepository;
         this.directorRepository = directorRepository;
@@ -153,9 +159,12 @@ public class MovieService {
     }
 
 
+
+
     public void delete (Movie movie){
         this.movieRepository.delete(movie);
     }
+
 
 
 
@@ -166,6 +175,10 @@ public class MovieService {
             memberRepository.save(member);
         }
     }
+
+
+
+
 
 
 

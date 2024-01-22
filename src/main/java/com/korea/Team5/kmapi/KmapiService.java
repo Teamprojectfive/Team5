@@ -96,6 +96,8 @@ public class KmapiService {
                             String posterUrl = firstMovie.getPosters().split("\\|")[0];
                             movieInfo.setPosters(posterUrl);
 
+
+
                             Plot plot = firstMovie.getPlots().getPlot().get(0);
                             Vod vod = firstMovie.getVods().getVod().get(0);
                             // Plot 정보와 MovieInfo 연결

@@ -31,13 +31,14 @@ public class Movie {
 
 
     @ManyToMany
+
     private List<Member> voter;
+
 
 
 
     @ManyToOne
     private MovieInfo movieInfo;
-
 
 
 

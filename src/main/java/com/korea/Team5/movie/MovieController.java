@@ -132,9 +132,6 @@ public class MovieController {
     }
 
 
-
-
-
     @GetMapping("/check")
     public String checkDataBase() {
         return "movie";

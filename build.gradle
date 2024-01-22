@@ -45,7 +45,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:3.1.5'
 	implementation files('libs/kobis-opcl-rest-v1.0.jar')
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-
+	implementation 'com.google.android.gms:play-services-location:17.0.0'
 }
 
 tasks.named('bootBuildImage') {
