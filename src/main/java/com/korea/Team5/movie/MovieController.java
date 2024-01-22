@@ -5,14 +5,11 @@ import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import com.korea.Team5.kmapi.KmapiService;
-
 import com.korea.Team5.movie.entity.Genre;
 import com.korea.Team5.movie.entity.GenreMovieInfo;
 import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.entity.MovieInfo;
-
 import lombok.RequiredArgsConstructor;
-import org.ietf.jgss.GSSName;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,9 +23,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -124,10 +119,7 @@ public class MovieController {
         return "redirect:/movie/list";
     }
 
-    @GetMapping("/check")
-    public String checkDataBase() {
-        return "movie";
-    }
+
 
 
     @GetMapping("/addDetail")
@@ -169,6 +161,16 @@ public class MovieController {
     }
 
 
+
+    @GetMapping("/search")
+    public String moviesearch(Model model,@RequestParam String enterMovie){
+
+        List<MovieInfo> searchMovieList = this.movieService.getMovieInfoNm(enterMovie);
+        model.addAttribute("searchMovieList",searchMovieList);
+
+
+        return "mainList";
+    }
 }
 
 

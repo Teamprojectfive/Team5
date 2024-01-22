@@ -171,4 +171,9 @@ public class AdminController {
 
       return "/ADMIN/admindetail_form";
   }
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/check")
+  public String checkDataBase() {
+    return "movie";
+  }
 }

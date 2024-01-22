@@ -67,22 +67,26 @@
                             <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
                             <div style="margin-top: 10px;">
                                 <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
-                                <!--                                -->
-                                <!--                                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"-->
-                                <!--                                       th:data-uri="@{|/movie/vote/${movie.id}|}"-->
-                                <!--                                       style="text-decoration: none; color: #007bff;">-->
-                                <!--                                        추천-->
-                                <!--                                        <span class="badge rounded-pill bg-success"-->
-                                <!--                                              th:text="${#lists.size(movie.voter)}"-->
-                                <!--                                              style="margin-left: 5px;"></span>-->
-                                <!--                                    </a>-->
-                                <!--                                -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+            <div class="list genre" th:each="searchMovie : ${searchMovieList}">
+                <h1 th:text="${searchMovie.id}"></h1>
+                <div class="list_item">
+                    <div class="additional-info">
+                        <div style="padding-top: 10px; text-align: center;font-weight: bold;font-size: 25px;"
+                             th:text="${searchMovie.movieNm}"></div>
+                        <div class="sub_info">
+                            <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${searchMovie.openDt}"></span></p>
+                            <div style="margin-top: 10px;">
+                                <a th:href="@{|/movie/detail/${searchMovie.id}|}">상세보기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </section>
     <button class="left" onclick="movePage(-1)"><i class="fa-solid fa-chevron-left"></i></button>

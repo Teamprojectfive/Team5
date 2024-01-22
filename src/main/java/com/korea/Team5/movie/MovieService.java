@@ -108,6 +108,12 @@ public class MovieService {
         }
     }
 
+    public List<MovieInfo> getMovieInfoNm(String movieNm){
+        String movieclear =  movieNm.trim();
+        List<MovieInfo> movieInfoList = this.movieInfoRepository.findByMovieNmContaining(movieclear);
+
+        return movieInfoList;
+    }
 
     public List<Genre> genreList() {
         List<Genre> genres = this.genreRepository.findAll();

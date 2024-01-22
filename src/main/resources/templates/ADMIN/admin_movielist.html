@@ -10,15 +10,15 @@
             <label for="text">등록된 영화가 없습니다.</label>
         </div>
         <h2>영화 목록</h2>
+        <a href="/admin/check">
         <input type="submit" value="새로운 영화 등록하기">
+        </a>
         <div th:if="${adminmoviespaging}">
             <ul>
                 <li th:each="movie : ${adminmoviespaging.content}">
                     <!-- 멤버의 정보를 출력 -->
-                    <p th:text="${movie.name}"></p>
-                    <p th:text="${movie.content}"></p>
-                    <p th:text="${movie.genre}"></p>
-                    <p th:text="${movie.age}"></p>
+                    <p th:text="${movie.movieNm}"></p>
+                    <img th:src="${movie.movieInfo.posters}">
                     <!-- 추가로 출력할 정보가 있다면 추가 -->
                     <!-- <p th:text="${member.someOtherField}"></p> -->
                     <form th:action="@{/admin/adminmoviedelete}" method="post">
@@ -27,9 +27,6 @@
                             <input type="submit" value="삭제" onclick="return confirmWithdraw();">
                         </div>
                     </form>
-                    <div>
-                        <input type="submit" value="수정">
-                    </div>
                 </li>
             </ul>
             <!-- 페이징처리 시작 -->
