@@ -1,0 +1,90 @@
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
+<div layout:fragment="content">
+    <head>
+        <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+    <h2>
+        공 지 사 항
+    </h2>
+    <div>
+        <label for="text">전체글보기</label>
+        <form th:action="@{/admin/notice/create}" method="get">
+            <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
+                <input type="submit" value="공지사항 작성">
+            </div>
+        </form>
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}" class="error-text"></p>
+        </div>
+        <div class="container">
+            <div>
+                <label for="text">제목</label>
+                <label for="text">작성자</label>
+                <label for="text">작성일시</label>
+            </div>
+            <ul th:each="notice : ${noticeList}" class="horizontal-list">
+                <li>
+                    <div th:id="'noticeDetails-' + ${notice.Id}" class="notice-details">
+                        <p class="card-text" th:text="${notice.Id}"></p>
+                        <label for="text"
+                               style="border:solid 1px black; border-radius:10px; padding:5px; font-size:15px">공지</label>
+                        <form th:action="@{/notice/detail}" method="get">
+                            <input type="hidden" name="noticeId" th:value="${notice.Id}">
+                            <a th:href="@{/notice/detail(noticeId=${notice.id})}">
+                                <h5 class="card-title" th:text="${notice.subject}"></h5>
+                            </a>
+                        </form>
+                        <p class="card-text" th:text="${notice.member.loginId}"></p>
+                        <p class="card-text"
+                           th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </body>
+    <!--    <script>-->
+    <!--        function toggleElements(noticeId) {-->
+    <!--            console.log('Entering toggleElements function...');-->
+
+    <!--            var editForm = document.getElementById('editForm-' + noticeId);-->
+    <!--            var noticeDetails = document.getElementById('noticeDetails-' + noticeId);-->
+    <!--           var editButton = document.getElementById('editButton-' + noticeId);-->
+    <!--            if (editForm && noticeDetails) {-->
+    <!--                // 현재 공지사항의 수정 폼 토글-->
+    <!--                if (editForm.style.display === 'none' || editForm.style.display === '') {-->
+    <!--                    closeAllEditForms(); // 다른 모든 수정 폼 닫기-->
+    <!--                    editForm.style.display = 'block';-->
+    <!--                    noticeDetails.style.display = 'none'; // 현재 공지사항의 noticeDetails 숨기기-->
+    <!--                    editButton.style.display = 'none'; // 버튼을 숨김-->
+    <!--                } else {-->
+    <!--                    editForm.style.display = 'none';-->
+    <!--                   noticeDetails.style.display = 'block';-->
+    <!--                    editButton.style.display = 'block';-->
+    <!--                }-->
+    <!--            } else {-->
+    <!--                console.error('Edit form or notice details not found for noticeId:', noticeId);-->
+    <!--            }-->
+    <!--        }-->
+
+    <!--        function closeAllEditForms() {-->
+    <!--            // close all edit forms and show all noticeDetails-->
+    <!--            var editForms = document.querySelectorAll('[id^="editForm-"]');-->
+    <!--            var noticeDetailsList = document.querySelectorAll('[id^="noticeDetails-"]');-->
+    <!--            var editButton = document.querySelectorAll('[id^="editButton-"]');-->
+    <!--            editForms.forEach(function (editForm) {-->
+    <!--                editForm.style.display = 'none';-->
+    <!--            });-->
+    <!--             editButton.forEach(function (editButton) {-->
+    <!--                editButton.style.display = 'block';-->
+    <!--            });-->
+    <!--            noticeDetailsList.forEach(function (noticeDetails) {-->
+    <!--                noticeDetails.style.display = 'block'; // 모든 noticeDetails 폼 열기-->
+    <!--            });-->
+    <!--        }-->
+    <!--    </script>-->
+</div>
+</html>

@@ -13,9 +13,11 @@
                placeholder="Example input placeholder">
     </div>
     <form th:action="@{/theater/navermap}" method="get">
+
         <div class="mb-3">
             <label for="formGroupExampleInput2" class="form-label">주소</label>
-            <input type="text" class="form-control"  name="address" th:value="${theaterName.address}" id="formGroupExampleInput2"
+            <input type="text" class="form-control" name="address" th:value="${theaterName.address}"
+                   id="formGroupExampleInput2"
                    placeholder="Another input placeholder">
             <input type="submit" value="지도 길찾기">
         </div>
@@ -29,10 +31,22 @@
         <label for="formGroupExampleInput2" class="form-label">극장 홈페이지</label>
         <input type="text" class="form-control" th:value="${theaterName.homepage}" id="formGroupExampleInput4"
                placeholder="Another input placeholder">
+        <div th:if="${theaterName.name.contains('메가박스')}">
+            <a href="https://www.megabox.co.kr/booking"><input type="text">영화 예매하러가기
+            </a>
+        </div>
+        <div th:if="${theaterName.name.contains('CGV')}">
+            <a href="http://www.cgv.co.kr/ticket/"><input type="text">영화 예매하러가기
+            </a>
+        </div>
+        <div th:if="${theaterName.name.contains('롯데시네마')}">
+            <a href="https://www.lottecinema.co.kr/NLCHS/Ticketing"><input type="text">영화 예매하러가기
+            </a>
+        </div>
     </div>
     <div class="mb-3">
         <label for="formGroupExampleInput" class="form-label">2D 상영관</label>
-        <input type="text" class="form-control"th:value="${theaterName.twoDnum + ' 관'}"  id="formGroupExampleInput5"
+        <input type="text" class="form-control" th:value="${theaterName.twoDnum + ' 관'}" id="formGroupExampleInput5"
                placeholder="Example input placeholder">
     </div>
     <div class="mb-3">

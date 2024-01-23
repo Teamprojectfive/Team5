@@ -11,9 +11,9 @@
     </div>
     <div class="theater_warp">
         <div class="select">
-            <a href="/theater/information">극장</a>
+            <a href="/theater/smallRegion">극장</a>
             <label for="text">-></label>
-            <a href="/theater/information">전체극장</a>
+            <a href="/theater/smallRegion">전체극장</a>
         </div>
         <div class="theater_cont">
             <div class="theater_title">
@@ -32,19 +32,7 @@
                         <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}"
                            th:text="${smallregion}"></a>
                     </li>
-                    <li th:each="bigregion : ${bigList}">
-                        <a href="/theater/information" th:text="${bigregion}"></a>
-                    </li>
-                    <li th:each="smallregion : ${smallList}">
-                        <a href="#" th:text="${smallregion}"></a>
-                    </li>
                 </ul>
-            </div>
-            <div th:each="smallRegion : ${smallRegionList}">
-                <div>
-                    <a class="nav-link" href="/theater/detail?bigRegion=${bigRegion}&smallRegion=${smallRegion}"
-                       th:text="${smallRegion}"></a>
-                </div>
             </div>
         </div>
     </div>
