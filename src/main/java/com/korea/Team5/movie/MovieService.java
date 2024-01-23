@@ -92,6 +92,7 @@ public class MovieService {
         return this.movieRepository.findAll(pageable);
     }
 
+
     public Movie getMovie(Integer id) {
         Optional<Movie> movie = this.movieRepository.findById(id);
         if (movie.isPresent()) {
@@ -322,7 +323,7 @@ public class MovieService {
 
 
 
-    }
+}
 
 
 
