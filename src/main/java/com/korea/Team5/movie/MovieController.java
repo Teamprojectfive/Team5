@@ -12,6 +12,7 @@ import com.korea.Team5.movie.entity.MovieInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -118,7 +119,9 @@ public class MovieController {
         MovieInfo movie = this.movieService.getMovieInfo(id);
         Member member = this.memberService.getMember(principal.getName());
         this.movieService.vote(movie, member);
-        return String.format("redirect:/member/mypage");
+
+        return String.format("redirect:/movie/list");
+
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -127,7 +130,15 @@ public class MovieController {
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Member member = this.memberService.getMember(principal.getName());
         this.movieService.vote(movieInfo, member);
-        return String.format("redirect:/member/mypage");
+
+        return String.format("redirect:/movie/mainList");
+    }
+
+
+    @GetMapping("/check")
+    public String checkDataBase() {
+        return "movie";
+
     }
 
 

@@ -4,7 +4,6 @@
     <!--    메인 포스터&설명 start-->
     <div th:each="movie : ${movieInfo}">
         <div class="detail_container">
-            <!--        <img class="detail_img" th:src="${movie.image}" alt="">-->
             <div th:each="movie : ${movieInfo}" class="movie_content">
                 <section class="post_cont">
                     <div class="main_img">
@@ -36,6 +35,7 @@
                         </div>
                     </div>
                 </section>
+
             </div>
         </div>
     </div>
@@ -79,7 +79,9 @@
                 <ul class="cast_list">
                     <li class="cast_card">
                         <div class="cast_item" th:each="actor : ${movie.actors}">
+
                             <div th:text="${actor.peopleNm}" style="font-weight: bold;"></div>
+
                         </div>
                     </li>
                 </ul>
