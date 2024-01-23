@@ -8,14 +8,14 @@
                  -ms-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(255,255,255);
                  -o-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(255,255,255);
                  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 3px 12px rgba(255,255,255);
-                 background-image: url('https://cdn.pixabay.com/photo/2014/10/16/09/15/lens-490806_640.jpg'); background-size: cover; background-position: center; height: 75vh;">
+                 background-image: url('https://cdn.pixabay.com/photo/2014/10/16/09/15/lens-490806_640.jpg'); background-size: cover; background-position: center; height: 80vh;">
         <div class="my-3" style="color:white; text-align:center; ">
             <div style="padding-top: 20px;">
                 <h2>회원가입</h2>
             </div>
         </div>
         <form th:action="@{/member/signup}" th:object="${memberCreateForm}" method="post"
-              style="color:white; width:46%; margin-left: auto; margin-right: auto; margin-top: 55px;">
+              style="color:white; width:46%; margin-left: auto; margin-right: auto; ">
             <div th:replace="~{form_errors :: formErrorsFragment}"></div>
             <div class="mb-3">
                 <label for="loginId" class="form-label"><strong>아이디</strong></label>

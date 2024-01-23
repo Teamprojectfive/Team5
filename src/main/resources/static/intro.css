@@ -18,8 +18,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    top: 10%;
-    left: -10%;
+    top: 25%;
+    left: -10%
 }
 .img-container {
   position: relative;

@@ -16,15 +16,7 @@ public class TheaterController {
 
   private final TheaterService theaterService;
 
-  @GetMapping("/information")
-  public String information(Model model,String bigRegion,String smallRegion){
-    // getExcelRegion 메서드를 사용하여 엑셀 데이터를 가져옴
-    List<String> bigRegionlList = theaterService.getBigRegion();
-    // 엑셀 데이터를 모델에 추가
-    model.addAttribute("bigRegionlList", bigRegionlList);
 
-    return "/Theater/theater_form";
-  }
 
 
 //  @GetMapping("/bigregion")
@@ -65,7 +57,10 @@ public class TheaterController {
   }
 
   @GetMapping("/smallRegion")
-  public String smallRegion(Model model, @RequestParam String targetBigRegion){
+  public String smallRegion(Model model, @RequestParam(required = false) String targetBigRegion){
+    if(targetBigRegion == null || targetBigRegion.isEmpty()) {
+      targetBigRegion = "서울시";
+    }
     List<String> smallList = this.theaterService.getTargetSmallRegion(targetBigRegion);
     List<String> bigList = this.theaterService.getBigRegion();
     model.addAttribute("smallList",smallList);

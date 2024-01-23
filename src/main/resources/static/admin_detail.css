@@ -1,0 +1,171 @@
+.member_search_cont{
+    text-align:center;
+}
+
+.search_cont{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search_cont .search{
+  width: 500px;
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
+}
+
+.member_btn_cont{
+
+  text-align: center;
+  cursor: pointer;
+}
+
+.member_btn_cont input{
+     background: bottom;
+     font-size: 20px;
+     border-radius: 5em;
+}
+
+.btn_o{
+    border-radius: 1em;
+    border: solid 2px pink;
+    background: pink !important;
+    font-weight: bold;
+    transition: transform 0.5s ease;
+}
+
+.btn_o:hover{
+    background:rgb(255,204,220) !important;
+}
+input{
+transition:0.7s;
+}
+input:hover{
+    background:white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+canvas {
+    padding:0;
+    margin:0;
+}
+div.btnbg {
+    position:fixed;
+    left:0;
+    top:0;
+}
+
+
+:root {
+  --bg: #3C465C;
+  --primary: #78FFCD;
+  --solid: pink;
+  --btn-w: 10em;
+  --dot-w: calc(var(--btn-w)*.2);
+  --tr-X: calc(var(--btn-w) - var(--dot-w));
+}
+* {box-sizing: border-box;}
+*:before, *:after {box-sizing: border-box;}
+
+
+
+.btn {
+  position: relative;
+  margin: 0 auto;
+  width: var(--btn-w);
+  color: black;
+  border: .15em solid pink;
+  border-radius: 5em;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1em;
+  cursor: pointer;
+}
+.dot {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: var(--dot-w);
+  height: 100%;
+  border-radius: 100%;
+  transition: all 300ms ease;
+  display: none;
+}
+.dot:after {
+  content: '';
+  position: absolute;
+  left: calc(50% - .4em);
+  top: -.4em;
+  height: .8em;
+  width: .8em;
+  background: var(--primary);
+  border-radius: 1em;
+  border: .25em solid black;
+  box-shadow: 0 0 .7em var(--solid),
+        0 0 2em var(--primary);
+}
+.btn:hover .dot,
+.btn:focus .dot {
+  animation: atom 2s infinite linear;
+  display: block;
+}
+@keyframes atom {
+  0% {transform: translateX(0) rotate(0);}
+  30%{transform: translateX(var(--tr-X)) rotate(0);}
+  50% {transform: translateX(var(--tr-X)) rotate(180deg);}
+  80% {transform: translateX(0) rotate(180deg);}
+  100% {transform: translateX(0) rotate(360deg);}
+}

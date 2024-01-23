@@ -7,9 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="subpage_cont">
+<div class="subpage_cont" style="height:35%;">
     <h2>닉네임 수정</h2>
-    <form th:action="@{/member/mypage/nickName}" method="post" style="padding-top: 15%; text-align: center;">
+    <form th:action="@{/member/mypage/nickName}" method="post" style="padding-top: 15%; text-align: center; ">
         <!-- 에러 메세지 표시 -->
         <div th:if="${errorMessage}" class="error-message">
             <p th:text="${errorMessage}" class="error-text"></p>

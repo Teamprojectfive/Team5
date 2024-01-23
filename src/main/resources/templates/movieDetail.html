@@ -1,45 +1,41 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px" lang="">
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
     <div th:each="movie : ${movieInfo}">
         <div class="detail_container">
-
-            <div>
-                <div class="movie_content">
-                    <h1 th:text="${movie.movieNm}"></h1>
-                    <img th:src="${movie.posters}" alt="">
+            <!--        <img class="detail_img" th:src="${movie.image}" alt="">-->
+            <div th:each="movie : ${movieInfo}" class="movie_content">
+                <section class="post_cont">
+                    <div class="main_img">
+                        <img th:src="${movie.posters}" alt="">
+                        <button class="custom-btn btn-4"><span>예매</span></button>
+                    </div>
+                    <div th:each="movieList : ${movie.movieList}" class="attendance_cont">
+                        <i class="fa-regular fa-user" style="font-size:100px;color:white;"></i>&nbsp;
+                        <p class="detail_cont_sub">누적관객수</p>&nbsp;
+                        <p th:text="${movieList.audiAcc}"></p>
+                    </div>
                     <div class="detail_content">
+                        <h1 th:text="${movie.movieNm}"></h1>
                         <div class="detail_cont">
                             <p class="detail_cont_sub">개봉일</p>
-                            <p th:text="${movie.openDt}"></p>
-                        </div>
-                        <div th:each="movieList : ${movie.movieList}">
-                            <p class="detail_cont_sub">누적관객수</p>
-                            <p th:text="${movieList.audiAcc}"></p>
+                            <p class="detail_cont_subb" th:text="${movie.openDt}"></p>
                         </div>
                         <div th:each="genre : ${movie.genres}" class="detail_cont">
                             <p class="detail_cont_sub">장르</p>
-                            <p th:text="${genre.genreNm}"></p>
+                            <p class="detail_cont_subb" th:text="${genre.genreNm}"></p>
                         </div>
                         <div th:each="nation : ${movie.nations}" class="detail_cont">
                             <p class="detail_cont_sub">국가</p>
-                            <p th:text="${nation.nationNm}"></p>
+                            <p class="detail_cont_subb" th:text="${nation.nationNm}"></p>
                         </div>
                         <div th:each="audit : ${movie.audits}" class="detail_cont">
                             <p class="detail_cont_sub">등급</p>
-                            <p th:text="${audit.watchGradeNm}"></p>
+                            <p class="detail_cont_subb" th:text="${audit.watchGradeNm}"></p>
                         </div>
-
-                        <!--                <div class="detail_cont">-->
-                        <!--                    <p class="detail_cont_sub">영화 설명</p>-->
-                        <!--                    <p th:text="${movie.content}"></p>-->
-                        <!--                </div>-->
-                        <!--                <div class="detail_cont">-->
-                        <!--                    <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
-                        <!--                </div>-->
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </div>
@@ -54,11 +50,6 @@
                     </a>
                 </li>
                 <li role="presentation" class="">
-                    <a href="" class="link_tabmenu" onclick="showContainer('castProduction'); return false;">
-                        <span class="txt_tabmenu">출연/제작</span>
-                    </a>
-                </li>
-                <li role="presentation" class="">
                     <a href="" class="link_tabmenu" onclick="showContainer('ratings'); return false;">
                         <span class="txt_tabmenu">평점</span>
                     </a>
@@ -70,396 +61,194 @@
                 <div class="detail_info_container">
                     <div class="detail_info">
                         <div class="info_desc">
-                            <div>
-                                <!--                                줄거리 start -->
-                                <p class="info_cont">
-                                <div th:each="plot : ${movie.plot}">
-                                    <p>설명</p>
-                                    <p th:text="${plot.plotText}"></p>
-                                </div>
-                                </p>
-                                <div class="info_btn">
-                                    <button class="show_btn">더보기 <i class="fa-solid fa-angle-down"></i></button>
-                                    <button class="close_btn"><i class="fa-solid fa-chevron-up"></i>접기</button>
-                                    <!--                                줄거리 end-->
-                                </div>
+                            <div th:each="plot : ${movie.plot}">
+                                <p>설명</p>
+                                <p th:text="${plot.plotText}"></p>
+                            </div>
+                            <div class="info_btn">
+                                <button class="show_btn">더보기 <i class="fa-solid fa-angle-down"></i></button>
+                                <button class="close_btn"><i class="fa-solid fa-chevron-up"></i>접기</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--        주요정보 end-->
-            <!--     주요정보에 보여질 출연진 start-->
             <div class="cast_info_container">
                 <h5 class="cast_info_title">출연진</h5>
                 <button class="cast-btn">더보기</button>
                 <ul class="cast_list">
-                    <li class="cast_card" style="margin-left:0px;">
-                        <div class="cast_item">
-                            <div th:each="vod : ${movie.vods}">
-                                <iframe width="560" height="315" th:src="${vod.vodUrl}" frameborder="0"
-                                        allowfullscreen></iframe>
-                            </div>
-
-
-                            <div class="cast_ex">
-                                <strong class="cast_name">
-                                </strong>
-
-                                <span class="cast_role">
-
-                            </span>
-                            </div>
-                        </div>
-                    </li>
                     <li class="cast_card">
                         <div class="cast_item" th:each="actor : ${movie.actors}">
-                            <div th:text="${actor.peopleNm}">
-                            </div>
+                            <div th:text="${actor.peopleNm}" style="font-weight: bold;"></div>
                         </div>
-
-                        <div class="cast_ex">
-                            <strong class="cast_name" style="text-align: center;">
-
-
-                            </strong>
-                            <span class="cast_role">
-
-                            </span>
-                        </div>
+                    </li>
+                </ul>
             </div>
-            </li>
-            <li class="cast_card">
-                <div class="cast_item">
-
-                    <div class="cast_ex">
-
-
-                    </div>
+            <div class="video_cont">
+                <h5 class="video_cont_title">영상</h5>
+                <div th:each="vod : ${movie.vods}">
+                    <iframe width="1000" height="700" th:src="${vod.vodUrl}" frameborder="0"
+                            allowfullscreen></iframe>
                 </div>
-            </li>
-            <li class="cast_card">
-                <div class="cast_item">
-
-                    <div class="cast_ex">
-
-
-                    </div>
-                </div>
-            </li>
-            <li class="cast_card">
-                <div class="cast_item">
-
-                    <div class="cast_ex">
-
-
-                    </div>
-                </div>
-            </li>
-            <li class="cast_card">
-                <div class="cast_item">
-
-                    <div class="cast_ex">
-
-
-                    </div>
-                </div>
-            </li>
-            <li class="cast_card">
-                <div class="cast_item">
-
-                    <div class="cast_ex">
-
-
-                    </div>
-                </div>
-            </li>
-            </ul>
+            </div>
         </div>
-</div>
-<!--        주요정보 출연진 end-->
-
-<!--        전체 출연진-->
-<div id="castProduction_container" class="explanation_container" style="display: none;">
-    <!--            감독 start-->
-    <div class="main_cast_cont">
-        <h2>감독</h2>
-        <ul>
-            <li class="member_item">
-                <img src="https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcQMdenIBiYdm-g5fqCqS3_cNXUK_uhP2MbOgH9uW7ecjtwX16GchTouWk9FMJWq5bTv"
-                     alt="">
-                <span>제임스 카메론</span>
-            </li>
-        </ul>
-    </div>
-    <!--            감독 end-->
-
-    <!--            주연 start-->
-    <div class="main_cast_cont">
-        <h2>주연</h2>
-        <ul>
-            <li class="member_item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Arnold_Schwarzenegger_by_Gage_Skidmore_4.jpg/251px-Arnold_Schwarzenegger_by_Gage_Skidmore_4.jpg"
-                     alt="">
-                <span>아널드 슈워제네거</span>
-            </li>
-        </ul>
-    </div>
-    <!--        주연 end-->
-
-    <!--            출연-->
-    <div class="main_cast_cont">
-        <h2>출연</h2>
-        <ul>
-            <li class="member_item">
-                <img src="https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSHwQOzqktvF7VYZmlsy_K1i-ddOew6iA4ImoKd1P_Te7pJDQLmKqUzkTt1hGQEzQ29"
-                     alt="">
-                <span>조 모턴</span>
-            </li>
-        </ul>
-    </div>
-    <!--        출연 end-->
-
-    <!--            제작진 start-->
-    <div class="main_cast_cont">
-        <h2>제작진</h2>
-        <dl>
-            <dt>제작</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>각본</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>촬영</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>조명</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>음악</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>편집</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>미술</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>의상/분장</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>특수효과</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-        <dl>
-            <dt>무술감독</dt>
-            <a href=""> 게일 앤 허드</a>
-        </dl>
-    </div>
-    <!--            제작진 end-->
-    <div class="main_cast_cont">
-        <h2>영화사</h2>
-        <dl>
-            <dt>제작</dt>
-            <a href=""></a>
-        </dl>
-        <dl>
-            <dt>배급</dt>
-            <a href=""></a>
-        </dl>
-        <dl>
-            <dt>배급</dt>
-            <a href=""></a>
-        </dl>
-        <dl>
-            <dt>제공</dt>
-            <a href=""></a>
-        </dl>
-        <dl>
-            <dt>제공</dt>
-            <a href=""></a>
-        </dl>
-    </div>
-</div>
-<!--        전체 출연진 end-->
-
-<!--        리뷰 start-->
-<div id="ratings_container" class="explanation_container" style="display: none;">
-    <div class="registration_cont">
-
-        <div class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
-        >리뷰등록
-        </div>
-
-
-    </div>
-    <!--            <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
-    <div class="container my-3">
-        <div class="row">
-            <div class="col-md-8" style="width: 100%;">
-                <div th:each="review : ${paging}" class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${review.subject}"></h5>
-                        <p class="card-text" th:text="${review.content}"></p>
-
-                        <!-- 별점 -->
-                        <div class="star-rating" th:if="${review.starRating != null}"
-                             th:attr="data-rating=${review.starRating}">
-                            <svg height="25" width="23" class="star" style="color:gold;"
-                                 th:each="star : ${#numbers.sequence(1, 5)}">
-                                <!-- 별점 별그리는데 사용한 태그입니다. 수정해도좋습니다. 다만 thfh데이터가져오는부분은 수정하면안됩니다.-->
-                                <polygon th:if="${star} &lt;= ${review.starRating}"
-                                         points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2"
-                                         fill="gold"/>
-                            </svg>
-                        </div>
-                        <div class="correction_cont">
-                            <!-- 추천 버튼 -->
-                            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-                               th:data-uri="@{|/review/vote/${review.id}|}" th:data-recommended="${doNotVote}"
-                               style="text-decoration: none; color: #007bff;">
-                                추천
-                                <span class="badge rounded-pill bg-success"
-                                      th:text="${#lists.size(review.voter)}"
-                                      style="margin-left: 5px;"></span>
-                            </a>
-                            <div class="correction">
-                                <!-- 수정 및 삭제 링크 -->
-                                <div th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
-                                    <a class="Sing_up btn btn-sm btn-info" role="button"
-                                       th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
-                                       th:href="@{|/review/modify/${review.id}|}">리뷰 수정</a>
-                                    <a class="Sing_up btn btn-sm btn-danger" role="button"
-                                       th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
-                                       th:href="@{|/review/delete/${review.id}|}"
-                                       onclick="return confirmDelete();">리뷰
-                                        삭제</a>
-
+        <!--        리뷰 start-->
+        <div id="ratings_container" class="explanation_container" style="display: none;">
+            <div class="registration_cont">
+                <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
+                   th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
+            </div>
+            <!--            <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
+            <div class="container my-3">
+                <div class="row">
+                    <div class="col-md-8" style="width: 100%;">
+                        <div th:each="review : ${paging}" class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${review.subject}"></h5>
+                                <p class="card-text" th:text="${review.content}"></p>
+                            </div>
+                            <!-- 별점 -->
+                            <div class="star-rating" th:if="${review.starRating != null}"
+                                 th:attr="data-rating=${review.starRating}">
+                                <svg height="25" width="23" class="star" style="color:gold;"
+                                     th:each="star : ${#numbers.sequence(1, 5)}">
+                                    <polygon th:if="${star} &lt;= ${review.starRating}"
+                                             points="12 2 15.09 8.5 22 9.26 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.26 8.91 8.5 12 2"
+                                             fill="gold"/>
+                                </svg>
+                            </div>
+                            <div class="correction_cont">
+                                <!-- 추천 버튼 -->
+                                <a href="javascript:void(0);"
+                                   class="recommend btn btn-sm btn-outline-secondary"
+                                   th:data-uri="@{|/review/vote/${review.id}|}"
+                                   th:data-recommended="${doNotVote}"
+                                   style="text-decoration: none; color: #007bff;">
+                                    추천
+                                    <span class="badge rounded-pill bg-success"
+                                          th:text="${#lists.size(review.voter)}"
+                                          style="margin-left: 5px;"></span>
+                                </a>
+                                <div class="correction">
+                                    <!-- 수정 및 삭제 링크 -->
+                                    <div th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
+                                        <a class="Sing_up btn btn-sm btn-info" role="button"
+                                           th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
+                                           th:href="@{|/review/modify/${review.id}|}">리뷰 수정</a>
+                                        <a class="Sing_up btn btn-sm btn-danger" role="button"
+                                           th:if="${review.member != null and #authentication.getPrincipal().username == review.member.loginId}"
+                                           th:href="@{|/review/delete/${review.id}|}"
+                                           onclick="return confirmDelete();">리뷰 삭제</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div th:if="${!paging.isEmpty()}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${paging.number-1}|}">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                        th:classappend="${page == paging.number} ? 'active'"
+                        class="page-item">
+                        <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div th:if="${!paging.isEmpty()}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link"
-                   th:href="@{|?page=${paging.number-1}|}">
-                    <span>이전</span>
-                </a>
-            </li>
-            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                th:classappend="${page == paging.number} ? 'active'"
-                class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                    <span>다음</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+    </section>
+    <!--        리뷰 end-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var showButton = document.querySelector('.show_btn');
+            var closeButton = document.querySelector('.close_btn');
+            var infoContent = document.querySelector('.info_cont');
 
+            // "더보기" 버튼 클릭 시
+            showButton.addEventListener('click', function () {
+                infoContent.style.overflow = 'visible';
+                infoContent.style.display = 'block';
+                showButton.style.display = 'none';
+                closeButton.style.display = 'inline-block';
+            });
 
-<!--        리뷰 end-->
-</section>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var showButton = document.querySelector('.show_btn');
-        var closeButton = document.querySelector('.close_btn');
-        var infoContent = document.querySelector('.info_cont');
-
-        // "더보기" 버튼 클릭 시
-        showButton.addEventListener('click', function () {
-            infoContent.style.overflow = 'visible';
-            infoContent.style.display = 'block';
-            showButton.style.display = 'none';
-            closeButton.style.display = 'inline-block';
+            // "접기" 버튼 클릭 시
+            closeButton.addEventListener('click', function () {
+                infoContent.style.overflow = 'hidden';
+                infoContent.style.display = '-webkit-box';
+                showButton.style.display = 'inline-block';
+                closeButton.style.display = 'none';
+            });
         });
+    </script>
 
-        // "접기" 버튼 클릭 시
-        closeButton.addEventListener('click', function () {
-            infoContent.style.overflow = 'hidden';
-            infoContent.style.display = '-webkit-box';
-            showButton.style.display = 'inline-block';
-            closeButton.style.display = 'none';
-        });
-    });
-</script>
+    <script>
+        function showContainer(containerId) {
+            // 모든 컨테이너를 숨김
+            var containers = document.getElementsByClassName('explanation_container');
+            for (var i = 0; i < containers.length; i++) {
+                containers[i].style.display = 'none';
+            }
 
-<script>
-    function showContainer(containerId) {
-        // 모든 컨테이너를 숨김
-        var containers = document.getElementsByClassName('explanation_container');
-        for (var i = 0; i < containers.length; i++) {
-            containers[i].style.display = 'none';
+            // 선택한 컨테이너만 보여줌
+            var selectedContainer = document.getElementById(containerId + '_container');
+            if (selectedContainer) {
+                selectedContainer.style.display = 'flex';
+            }
         }
+    </script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+       var isLoggedIn = /*[[${#authentication.getPrincipal()}]]*/ false;
+       /*]]>*/
+       console.log(isLoggedIn);
+       const recommend_elements = document.getElementsByClassName("recommend");
 
-        // 선택한 컨테이너만 보여줌
-        var selectedContainer = document.getElementById(containerId + '_container');
-        if (selectedContainer) {
-            selectedContainer.style.display = 'flex';
-        }
-    }
-</script>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-   var isLoggedIn = /*[[${#authentication.getPrincipal()}]]*/ false;
-   /*]]>*/
-   console.log(isLoggedIn);
-   const recommend_elements = document.getElementsByClassName("recommend");
+        /*element는 배열 elements의 각 요소임
+        Array.from(recommend_elements)는 recommend_element를 배열로 반환시킨거임*/
 
-    /*element는 배열 elements의 각 요소임
-    Array.from(recommend_elements)는 recommend_element를 배열로 반환시킨거임*/
+       Array.from(recommend_elements).forEach(function(element) {
+           element.addEventListener('click', function() {
+                if (isLoggedIn === 'anonymousUser') {
+                   if(confirm('로그인이 필요한 기능입니다.')) {
+                         location.href = "/member/login";
+                    }
+                }else {
+                const isRecommended = element.dataset.recommended === "true";
+                console.log(isRecommended);
+                const confirmMessage = isRecommended ? "추천을 취소하시겠습니까?" : "정말로 추천하시겠습니까?";
 
-   Array.from(recommend_elements).forEach(function(element) {
-       element.addEventListener('click', function() {
-            if (isLoggedIn === 'anonymousUser') {
-               if(confirm('로그인이 필요한 기능입니다.')) {
-                     location.href = "/member/login";
-                }
-            }else {
-            const isRecommended = element.dataset.recommended === "true";
-            console.log(isRecommended);
-            const confirmMessage = isRecommended ? "추천을 취소하시겠습니까?" : "정말로 추천하시겠습니까?";
+                console.log("isRecommended:", isRecommended);
+                console.log("confirmMessage:", confirmMessage);
 
-            console.log("isRecommended:", isRecommended);
-            console.log("confirmMessage:", confirmMessage);
+                       if (confirm(confirmMessage)) {
+                        // Toggle recommended status
+                        element.dataset.recommended = (element.dataset.recommended === "true") ? "false" : "true";
 
-                   if (confirm(confirmMessage)) {
-                    // Toggle recommended status
-                    element.dataset.recommended = (element.dataset.recommended === "true") ? "false" : "true";
-
-                    location.href = element.dataset.uri;
-                }
-             }
+                        location.href = element.dataset.uri;
+                    }
+                 }
+           });
        });
-   });
-</script>
-<script>
-    function confirmDelete() {
-        // 확인 메시지 표시
-        var isConfirmed = confirm("리뷰를 삭제하시겠습니까?");
+    </script>
+    <script>
+        function confirmDelete() {
+            // 확인 메시지 표시
+            var isConfirmed = confirm("리뷰를 삭제하시겠습니까?");
 
-        // 사용자가 "확인"을 선택한 경우에만 삭제 진행
-        return isConfirmed;
-    }
-</script>
+            // 사용자가 "확인"을 선택한 경우에만 삭제 진행
+            return isConfirmed;
+        }
+    </script>
 </div>
-
-
 </html>
-

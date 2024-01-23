@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Controller
@@ -38,6 +40,10 @@ public class MainController {
     model.addAttribute("paging", paging);
     session.removeAttribute("verificationCode");
     session.removeAttribute("phoneverificationCode");
+    // getExcelRegion 메서드를 사용하여 엑셀 데이터를 가져옴
+    List<String> bigRegionlList = theaterService.getBigRegion();
+
+
 
     return "main";
   }
