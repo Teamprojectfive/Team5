@@ -93,9 +93,36 @@ ul{
     display: flex;
 }
 
-.m_p{
-    color:red;.
-   10
+.search-container {
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+}
+
+    .search-input {
+      display: none;
+      padding: 10px;
+      background: border-box;
+      color:white;
+      outline: none;
+      width: 0;
+      opacity: 0;
+      transition: width 0.5s ease, opacity 0.5s ease;
+    }
+
+.search-button {
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: margin 0.3s ease;
+}
+
+.search-container:hover .search-input {
+    width: 170px;
+}
 
 
 

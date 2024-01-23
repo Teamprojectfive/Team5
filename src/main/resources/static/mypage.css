@@ -1,4 +1,9 @@
-
+body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #000022, #080E2F, #000022);
+    z-index: -2;
+}
 
 .sub_nav{
     display: flex;
@@ -94,12 +99,7 @@ button:hover {
   background: white;
 }
 
-body {
-    margin: 0;
-    overflow: hidden;
-    background: linear-gradient(to bottom, #000022, #080E2F, #000022);
-    z-index: -2;
-}
+
 
  /* 별빛 효과 */
 .star {
@@ -514,3 +514,6 @@ body {
     background:gray;
     font-weight: bold;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+

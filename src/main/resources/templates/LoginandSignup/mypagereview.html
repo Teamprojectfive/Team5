@@ -8,7 +8,7 @@
     <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
 </head>
-<body style="height:100vh;">
+<body >
 <div >
     <a href="/main" style="font-size: 50px;position: absolute;left: 5%; top: 4%;">
         <i class="fa-solid fa-video"
@@ -17,7 +17,7 @@
     </a>
     <h2 class="review_title">내가 작성한 리뷰 </h2>
 </div>
-<div th:if="${paging.isEmpty()}" style="text-align: center;">
+<div th:if="${paging.isEmpty()}" style="width:1920px;text-align: center;">
     <label for="text">작성한 리뷰가 없습니다.</label>
 </div>
 <section class="review-box">

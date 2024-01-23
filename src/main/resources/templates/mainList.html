@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/mainlist.css">
 </head>
 <body>
 <div layout:fragment="content">
     <section class="list_cont">
-
         <div class="suggestion_cont">
             <h1><strong>추천 10</strong></h1>
-
-
-
-
             <div class="img-container">
                 <div class="box">
                     <img src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/WNk1mr9x_Cd_2itp6pUM7-lXMJg/AAAABa-FG8F84U35af8D-37rKK452hXyODVudHpyY4phtofByOLYryJb0y0m6_wbsxzciJ_FzSVX4ybOAOjyPMEwC7LEj2_kDeDF48r6.webp?r=b4d"
@@ -41,18 +42,18 @@
                          alt=""/>
                 </div>
             </div>
+        </div>
     </section>
 
 
     <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="genreDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             장르
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu" id="genreDropdown">
             <li th:each="genre : ${genres}">
-                <a th:href="@{|/movie/mainList?genreId=${genre.id}|}" th:text="${genre.genreNm}"></a>
+                <a th:href="@{|/movie/mainList?genreId=${genre.id}|}" th:text="${genre.genreNm}" onclick="selectGenre(this)"></a>
             </li>
-
         </ul>
     </div>
     <section class="list_box_wrap" id="listContainer">
@@ -87,6 +88,30 @@
     </section>
     <button class="left" onclick="movePage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
     <button class="right" onclick="movePage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    <script>
+        $(document).ready(function() {
+          // 페이지 로드 시 localStorage에 저장된 genre 정보를 확인
+          var storedGenre = localStorage.getItem('selectedGenre');
+
+          // 저장된 정보가 있으면 해당 정보를 버튼에 적용
+          if (storedGenre) {
+            storedGenre = JSON.parse(storedGenre);
+            $('#genreDropdownButton').html(storedGenre.name);
+          }
+
+          // Dropdown에서 항목을 클릭했을 때 이벤트 처리
+          $('#genreDropdown a').on('click', function(){
+            var selectedGenre = $(this).text(); // 선택한 장르 텍스트
+            var selectedGenreId = $(this).data('genre-id'); // 선택한 장르 ID
+
+            // 선택한 장르 정보를 버튼에 적용
+            $('#genreDropdownButton').html(selectedGenre);
+
+            // 선택한 장르 정보를 localStorage에 저장
+            localStorage.setItem('selectedGenre', JSON.stringify({ id: selectedGenreId, name: selectedGenre }));
+          });
+        });
+    </script>
 
     <script>
         let currentSlide = 0;
