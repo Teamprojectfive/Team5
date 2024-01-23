@@ -32,6 +32,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeHttpRequests ->
                     authorizeHttpRequests
                             .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/notice/create").hasRole("ADMIN")
                             .requestMatchers("/**").permitAll()
                             .anyRequest().authenticated()
             )

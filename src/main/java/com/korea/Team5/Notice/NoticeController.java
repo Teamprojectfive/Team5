@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -33,6 +34,17 @@ public class NoticeController {
       // DataNotFoundException이 발생한 경우
       // 클라이언트에게 메시지를 전달하거나, 다른 처리를 수행할 수 있습니다.
       model.addAttribute("errorMessage", "공지사항이 없습니다."); // 적절한 메시지로 수정
+      return "/Notice/notice_form";
+    }
+  }
+  @GetMapping("/detail")
+  public String detail(Model model, @RequestParam Integer noticeId){
+    try {
+      Notice notice = this.noticeService.getNotice(noticeId);
+      model.addAttribute("notice" , notice);
+      return "/Notice/notice_detail";
+    }catch (DataNotFoundException e){
+      model.addAttribute("error", "공지사항이 없습니다.");
       return "/Notice/notice_form";
     }
   }
@@ -59,5 +71,6 @@ public class NoticeController {
 
     return "redirect:/notice/list";
   }
+
 }
 
