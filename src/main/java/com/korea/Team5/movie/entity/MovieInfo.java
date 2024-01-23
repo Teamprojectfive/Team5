@@ -5,7 +5,7 @@ package com.korea.Team5.movie.entity;
 
 import com.korea.Team5.USER.Member;
 
-import com.korea.Team5.board.Board;
+
 import com.korea.Team5.kmapi.entity.Plot;
 
 import com.korea.Team5.kmapi.entity.Vod;

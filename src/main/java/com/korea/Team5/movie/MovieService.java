@@ -118,6 +118,12 @@ public class MovieService {
         }
     }
 
+    public List<MovieInfo> getMovieInfoNm(String movieNm){
+        String movieclear =  movieNm.trim();
+        List<MovieInfo> movieInfoList = this.movieInfoRepository.findByMovieNmContaining(movieclear);
+
+        return movieInfoList;
+    }
 
     public List<Genre> genreList() {
         List<Genre> genres = this.genreRepository.findAll();
@@ -192,7 +198,7 @@ public class MovieService {
             List<Movie> movieList = new ArrayList<>();
 
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 10; i++) {
                 String url = apiUrl + "?key=" + apiKey + "&targetDt=" + targetDate.format(formatter);
                 System.out.println(url);
                 ResponseEntity<WeeklyBoxOfficeList> responseEntity = restTemplate.getForEntity(url, WeeklyBoxOfficeList.class);
@@ -226,7 +232,7 @@ public class MovieService {
 
                 int i = 0;
                 for (Movie movie : movieList) {
-                    if (i == 30) {
+                    if (i == 80) {
                         break;
                     }
 

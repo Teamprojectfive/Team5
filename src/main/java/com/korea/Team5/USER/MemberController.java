@@ -213,7 +213,6 @@ public class MemberController {
       // 예를 들어, 오류 페이지로 리다이렉트하거나 메시지를 보여줄 수 있습니다.
       return "redirect:/member/mypagereview"; // 혹은 다른 처리를 수행할 수 있습니다.
     }
-
   }
   @PreAuthorize("isAuthenticated()")
   @PostMapping("/mypagereviewdelete")
@@ -670,4 +669,10 @@ public class MemberController {
     return "/LoginandSignup/passwordreset";
   }
   // 패스워드찾기 휴대폰으로 인증 메서드 끝
+
+  @GetMapping("/my_movie")
+  public String mypagemoive(){
+    return "/LoginandSignup/mypage_moive.html";
+  }
 }
+

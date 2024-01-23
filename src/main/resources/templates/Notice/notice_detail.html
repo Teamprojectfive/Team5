@@ -1,0 +1,121 @@
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
+<div layout:fragment="content">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+        <title>Title</title>
+    </head>
+    <body>
+    <h2>공지사항</h2>
+    <div th:id="'noticeDetails-' + ${notice.Id}" class="notice-details">
+        <h2 th:text="${notice.subject}"></h2>
+        <p th:text="${notice.content}"></p>
+        <p class="card-text" th:text="${notice.member.loginId}"></p>
+        <p class="card-text"
+           th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+        <form th:action="@{/admin/notice/delete}" method="post">
+            <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
+                <input type="hidden" name="noticeId" th:value="${notice.Id}">
+                <input type="submit" value="공지사항 삭제" onclick="confirmDelete(event)">
+            </div>
+        </form>
+    </div>
+    <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
+        <!-- 수정 버튼 -->
+        <button th:onclick="toggleElements([[${notice.Id}]])" th:id="'editButton-' + ${notice.Id}">공지사항
+            수정
+        </button>
+    </div>
+    <form th:action="@{/admin/notice/modify}" method="post">
+        <div th:id="'editForm-' + ${notice.Id}" style="display:none;">
+            <div>
+                <input type="hidden" name="noticeId" th:value="${notice.Id}">
+                <label for="newSubject"><strong>공지사항 제목</strong>:</label>
+                <input type="text" name="newsubject" th:value="${notice.subject}" required/>
+                <label for="newcontent"><strong>공지사항 내용</strong>:</label>
+                <input type="text" name="newcontent" th:value="${notice.content}">
+                <input type="submit" value="수정하기">
+                <input type="button" value="취소하기" th:id="'cancelButton-' + ${notice.Id}" th:onclick="toggleForms([[${notice.Id}]]);">
+            </div>
+        </div>
+    </form>
+    </body>
+    <script>
+        function confirmDelete(event) {
+            var isConfirmed = confirm("정말로 삭제하시겠습니까?");
+            if (!isConfirmed) {
+                event.preventDefault();
+            }
+        }
+    </script>
+    <script>
+        function toggleForms(noticeId) {
+                console.log('함수실행확인')
+              var editForm = document.getElementById('editForm-' + noticeId);
+              var noticeDetails = document.getElementById('noticeDetails-' + noticeId);
+              var cancelButton = document.getElementById('cancelButton-' + noticeId);
+              var editButton = document.getElementById('editButton-' + noticeId);
+
+              console.log('editForm:', editForm);
+            console.log('noticeDetails:', noticeDetails);
+            console.log('cancelButton:', cancelButton);
+
+            console.log('editForm.style.display:', editForm.style.display);
+
+              if (editForm && noticeDetails && cancelButton) {
+                  if (editForm.style.display === 'block' || editForm.style.display === '') {
+                      // editForm이 열려있으면 숨기기
+                      editForm.style.display = 'none';
+                      // noticeDetails가 닫혀있으면 열기
+                      noticeDetails.style.display = 'block';
+                      editButton.style.display = 'block';
+                  } else {
+                      // editForm이 닫혀있으면 열기
+                      editForm.style.display = 'block';
+                      // noticeDetails가 열려있으면 숨기기
+                      noticeDetails.style.display = 'none';
+                      editButton.style.display = 'none';
+                  }
+              }
+          }
+          function toggleElements(noticeId) {
+              console.log('Entering toggleElements function...');
+
+              var editForm = document.getElementById('editForm-' + noticeId);
+              var noticeDetails = document.getElementById('noticeDetails-' + noticeId);
+             var editButton = document.getElementById('editButton-' + noticeId);
+
+              if (editForm && noticeDetails) {
+                  // 현재 공지사항의 수정 폼 토글
+                  if (editForm.style.display === 'none' || editForm.style.display === '') {
+                      closeAllEditForms(); // 다른 모든 수정 폼 닫기
+                      editForm.style.display = 'block';
+                      noticeDetails.style.display = 'none'; // 현재 공지사항의 noticeDetails 숨기기
+                      editButton.style.display = 'none'; // 버튼을 숨김
+                  } else {
+                      editForm.style.display = 'none';
+                     noticeDetails.style.display = 'block';
+                      editButton.style.display = 'block';
+                  }
+              } else {
+                  console.error('Edit form or notice details not found for noticeId:', noticeId);
+              }
+          }
+          function closeAllEditForms() {
+              // close all edit forms and show all noticeDetails
+              var editForms = document.querySelectorAll('[id^="editForm-"]');
+              var noticeDetailsList = document.querySelectorAll('[id^="noticeDetails-"]');
+              var editButton = document.querySelectorAll('[id^="editButton-"]');
+              editForms.forEach(function (editForm) {
+                  editForm.style.display = 'none';
+              });
+               editButton.forEach(function (editButton) {
+                  editButton.style.display = 'block';
+              });
+              noticeDetailsList.forEach(function (noticeDetails) {
+                  noticeDetails.style.display = 'block'; // 모든 noticeDetails 폼 열기
+              });
+          }
+    </script>
+</div>
+</html>

@@ -1,5 +1,5 @@
 package com.korea.Team5;
-import com.korea.Team5.USER.SocialOAuth2UserService;
+
 import com.korea.Team5.USER.SocialOAuth2UserService;
 import com.korea.Team5.movie.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,13 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-            .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                    .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+            .authorizeHttpRequests(authorizeHttpRequests ->
+                    authorizeHttpRequests
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/notice/create").hasRole("ADMIN")
+                            .requestMatchers("/**").permitAll()
+                            .anyRequest().authenticated()
+            )
             .csrf((csrf) -> csrf
                     .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
             .headers((headers) -> headers
