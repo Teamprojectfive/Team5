@@ -1,0 +1,65 @@
+<!-- boardList.html -->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #boardContainer {
+            margin-top: 20px;
+        }
+
+        #boardContainer ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .boardItem {
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .boardItem img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="boardContainer">
+    <h2>게시판</h2>
+    <ul>
+        <li th:each="board : ${boardList}" class="boardItem">
+            <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
+            <h3 th:text="'제목: ' + ${board.title}"></h3>
+            <p th:text="'설명: ' + ${board.content}"></p>
+            <a th:href="@{|/board/listdetail?boardId=${board.id}|}">
+            <input type="submit" value="활동하기">
+            </a>
+        </li>
+    </ul>
+</div>
+<a href="/board/create">영화 선택</a>
+</body>
+</html>

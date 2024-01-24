@@ -1,5 +1,8 @@
 <!DOCTYPE html >
 <html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="">
+<head>
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+</head>
 <body >
 <nav th:fragment="navbarFragment" style="z-index:99;position:relative;">
     <div class="login_container">
@@ -20,7 +23,7 @@
         <div class="dropdown dropdown-hover">
             <div tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px; font-weight:bold;">영화</div>
             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
-                <li><a href="/movie/list">Top100</a></li>
+                <li><a href="/movie/list">박스오피스</a></li>
                 <li><a href="/movie/mainList">장르</a></li>
             </ul>
         </div>
@@ -28,13 +31,31 @@
             <a href="/movie/intro" tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px; font-weight:bold;">소개</a>
         </div>
         <div class="dropdown dropdown-hover">
-            <div tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px;font-weight:bold;">극장</div>
+            <a href="/theater/smallRegion" tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px;font-weight:bold;">극장</a>
+        </div>
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1"  style="background: white; font-size:20px; font-weight:bold;">공지</div>
             <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
-                <li><a href="/theater/information">지역</a></li>
-                <li><a href="#">위치</a></li>
+                <li><a href="/notice/list">공지사항</a></li>
+                <li><a href="/board/movie">자유게시판</a></li>
             </ul>
         </div>
+        <div class="search-container">
+            <button class="search-button" onclick="toggleSearch()">
+                <i class="fa-solid fa-magnifying-glass" style="font-size: 35px;color:white;"></i>
+            </button>
+            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+        </div>
     </div>
+    <script>
+        function toggleSearch() {
+          var searchInput = document.querySelector('.search-input');
+          searchInput.style.display = 'block';
+          searchInput.style.width = (searchInput.style.width === '0px' || searchInput.style.width === '') ? '170px' : '0';
+          searchInput.style.opacity = (searchInput.style.width === '170px') ? '1' : '0';
+        }
+    </script>
 </nav>
+
 </body>
 </html>

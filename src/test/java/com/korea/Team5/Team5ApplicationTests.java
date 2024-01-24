@@ -4,11 +4,15 @@ import com.korea.Team5.movie.repository.MovieRepository;
 import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.repository.MovieRepository;
 import com.korea.Team5.theater.*;
+import com.korea.Team5.movie.entity.Movie;
+import com.korea.Team5.movie.repository.MovieRepository;
+import com.korea.Team5.movie.repository.MovieRepository;
+import com.korea.Team5.movie.entity.Movie;
+import com.korea.Team5.movie.repository.MovieRepository;
+import com.korea.Team5.theater.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-
 //<<<<<<< HEAD
 ////<<<<<<< HEAD
 //////package com.korea.Team5;

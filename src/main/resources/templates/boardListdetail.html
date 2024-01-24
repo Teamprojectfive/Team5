@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+</head>
+<body>
+        <h2>리스트</h2>
+        <div>
+            <label for="text">자유게시판</label>
+            <input type="hidden" th:value="${board.id}">
+            <input type="text" th:value="${board.title}">
+            <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
+        </div>
+        <form th:action="@{/Comment/create}" method="get">
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2"  name="entercomment" th:value="${entercomment}" >댓글을 남겨보세요.</label>
+            <input type="text" value="댓글 작성하기">
+        </div>
+        </form>
+</body>
+</html>
