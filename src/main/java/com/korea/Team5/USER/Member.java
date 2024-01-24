@@ -1,7 +1,10 @@
 package com.korea.Team5.USER;
-
 import com.korea.Team5.Comment.Comment;
 import com.korea.Team5.Review.Review;
+import com.korea.Team5.board.Board;
+import com.korea.Team5.board.article.Article;
+import com.korea.Team5.movie.entity.Movie;
+
 import com.korea.Team5.movie.entity.MovieInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -41,6 +44,9 @@ public class Member {
   @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<Comment> commentList;
 
+  @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+  private List<Board> boardList;
+
   // 소셜 로그인 정보
   private String socialProvider;  // Google, Kakao, Naver 등
 
@@ -49,4 +55,7 @@ public class Member {
   private List<Review> reviewList;
 
   private String role;
+
+  @OneToMany(mappedBy = "member")
+  private List<Article> articleList;
 }

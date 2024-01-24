@@ -2,6 +2,7 @@ package com.korea.Team5.Comment;
 
 
 import com.korea.Team5.USER.Member;
+import com.korea.Team5.board.article.Article;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,7 @@ public class Comment {
   private LocalDateTime modifyDate;//수정일시
   @ManyToOne
   private Member member;
+
+  @ManyToOne
+  private Article article;
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+</head>
+<body>
+        <div>
+            <input type="text" th:value="${article.title}">
+            <input type="text" th:value="${article.content}">
+            <input type="text" th:value="${article.createDate}">
+        </div>
+        <form th:action="@{|/Comment/create/${id}|}" th:object="${commentcreateForm}" method="get">
+        <div class="form-floating">
+            <input type="hidden" th:value="${article.id}" name="id">
+            <textarea class="form-control" placeholder="댓글을 남겨보세요." id="floatingTextarea2" style="height: 100px" name="content" th:value="${content}"></textarea>
+            <input type="submit" value="댓글 작성하기">
+        </div>
+        </form>
+</body>
+</html>

@@ -1,9 +1,12 @@
 package com.korea.Team5.board;
 
+import com.korea.Team5.DataNotFoundException;
+import com.korea.Team5.USER.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,23 +20,26 @@ public class BoardService {
     }
 
     // 방 등록 메서드
-    public void registerRoom(String title, String content, String posterUrl) {
+    public void registerRoom(Member member,String title, String content, String posterUrl) {
 
         Board board = new Board();
         board.setTitle(title);
         board.setContent(content);
         board.setPosterUrl(posterUrl);
+        board.setMember(member);
 
 
 
         this.boardRepository.save(board);
     }
 
-    public Board getBoard(Integer id){
+    public Board getBoard(Integer boardId){
 
-        Board board = this.boardRepository.findAllById(id);
-
-        return board;
+        Optional<Board> board = this.boardRepository.findById(boardId);
+        if (board.isPresent()) {
+            return board.get();
+        } else {
+            throw new DataNotFoundException("board not found");
+        }
     }
-
 }

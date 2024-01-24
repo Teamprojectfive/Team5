@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Article List</title>
+    <style>
+        /* 스타일링은 여기에 추가하세요 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        .article {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .article h1 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .article div {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .create-link {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .create-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <label for="text">자유게시판</label>
+    <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
+</div>
+<!-- 게시글 목록 -->
+<div th:each="article, loop : ${articles}" class="article">
+    <a th:href="@{|/board/article/detail/${article.id}|}">
+    <h1 th:text="${article.title}"></h1>
+    </a>
+    <div th:text="${article.member.nickName}"></div>
+
+    <div th:text="${article.createDate}"></div>
+    <a th:href="@{|/board/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary"
+       sec:authorize="isAuthenticated()"
+       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.nickName}"
+       th:text="수정"></a>
+<!--    <a th:href="@{|/"></a>-->
+</div>
+
+<!-- 게시글 작성 링크 -->
+<a th:href="@{|/board/article/create/${board.id}|}" class="create-link">글 작성</a>
+<h2>리스트</h2>
+</body>
+</html>
