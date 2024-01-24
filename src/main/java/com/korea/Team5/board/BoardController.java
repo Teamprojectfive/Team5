@@ -1,5 +1,6 @@
 package com.korea.Team5.board;
 
+
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import com.korea.Team5.board.article.Article;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+
 import java.util.List;
 
 @Controller
@@ -31,8 +33,10 @@ public class BoardController {
 
     private final MovieService movieService;
     private final BoardService boardService;
+
     private final ArticleService articleService;
     private final MemberService memberService;
+
 
     @GetMapping("/movie")
     public String list(Model model, @RequestParam(name = "posterUrl", required = false) String posterUrl) {
@@ -50,7 +54,9 @@ public class BoardController {
     }
 
     @GetMapping("/create")
-    public String create(Model model) {
+
+    public String showCreateBoardPage(Model model) {
+
         List<MovieInfo> movieInfoList = this.movieService.infoList();
         model.addAttribute("movieInfoList", movieInfoList);
         return "boardCreate";
@@ -63,10 +69,13 @@ public class BoardController {
                                Model model) {
 
         model.addAttribute("selectedPosterUrl", selectPoster);
-        this.boardService.registerRoom(title, content, selectPoster);
+
+        this.boardService.registerRoom(title, content,selectPoster);
+
 
         return "redirect:/board/movie";
     }
+
 
     @GetMapping("/article/list")
     public String articleList(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
@@ -118,4 +127,5 @@ public class BoardController {
         return String.format("redirect:/board/article/list");
 
     }
+
 }
