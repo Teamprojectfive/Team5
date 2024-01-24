@@ -22,6 +22,9 @@ public class Notice {
 
   private LocalDateTime createDate;
 
+  private Integer views;
+
+
   @ManyToOne
   private Member member;
 

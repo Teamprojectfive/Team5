@@ -40,6 +40,7 @@
                         <p class="card-text" th:text="${notice.member.loginId}"></p>
                         <p class="card-text"
                            th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                        <p class="card-text" th:text="${notice.views}"></p>
                     </div>
                 </li>
             </ul>
