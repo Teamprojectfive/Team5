@@ -54,6 +54,9 @@
             <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
             <h3 th:text="'제목: ' + ${board.title}"></h3>
             <p th:text="'설명: ' + ${board.content}"></p>
+
+            <a href="/board/article/list">들어가기</a>
+
         </li>
     </ul>
 </div>
