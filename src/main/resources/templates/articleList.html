@@ -51,7 +51,7 @@
 <!-- 게시글 목록 -->
 <div th:each="article, loop : ${articles}" class="article">
     <a th:href="@{|/board/article/detail/${article.id}|}">
-    <h1 th:text="${article.title}"></h1>
+        <h1 th:text="${article.title}"></h1>
     </a>
     <div th:text="${article.member.nickName}"></div>
     <div th:text="${article.createDate}"></div>
@@ -63,7 +63,7 @@
        class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
        th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
        th:text="삭제"></a>
-<!--    <a th:href="@{|/"></a>-->
+    <!--    <a th:href="@{|/"></a>-->
 </div>
 <!-- 게시글 작성 링크 -->
 <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,9 +18,9 @@
 
         #posterContainer {
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
-            justify-content: flex-start; /* 이 부분을 수정 */
+            gap: 10px;
+            justify-content: center; /* 중앙 정렬로 수정 */
             margin-top: 20px;
         }
 
@@ -77,6 +78,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <div id="posterContainer" th:each="movie : ${movieInfoList}">
@@ -115,4 +117,5 @@
 </script>
 
 </body>
+
 </html>
