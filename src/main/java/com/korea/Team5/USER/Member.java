@@ -1,5 +1,7 @@
 package com.korea.Team5.USER;
 import com.korea.Team5.Review.Review;
+import com.korea.Team5.movie.entity.Movie;
+import com.korea.Team5.movie.entity.MovieInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +33,9 @@ public class Member {
   private String name;
 
   private LocalDateTime createDate;
+
+  @ManyToMany
+  private List<MovieInfo> voter;
 
 
   // 소셜 로그인 정보

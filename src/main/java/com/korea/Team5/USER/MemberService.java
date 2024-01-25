@@ -1,6 +1,8 @@
 package com.korea.Team5.USER;
 
 import com.korea.Team5.DataNotFoundException;
+import com.korea.Team5.movie.entity.Movie;
+import com.korea.Team5.movie.entity.MovieInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +63,14 @@ public class MemberService {
       throw new DataNotFoundException("member not found");
     }
   }
+
+  public List<MovieInfo> getWishList(String loginId){
+    Optional<Member> optionalMember = this.memberRepository.findByloginId(loginId);
+
+    return optionalMember.map(Member::getVoter).orElse(Collections.emptyList());
+  }
+
+
 
   @Transactional
   public void deleteMember(String memberId) {

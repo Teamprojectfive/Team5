@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/theater.css">
+    <link rel="stylesheet" href="./theater.css">
 </head>
 <body>
-<div layout:fragment="content"  style="position: relative; top: 15%;">
+<div layout:fragment="content" style="position: relative; top: 15%;">
     <div class="slide_cont">
+        <div id="fly-in">
+            <div><span>찾으시는</span>극장이있으신가요?</div>
+            <div>찾으시는<span>지역을 선택하시면 상세정보를 제공해드립니다!</span></div>
+            <div><span>위치,예매 등 정보가 있습니다</span></div>
+            <div><span>Let's go</span>Movie</div>
+        </div>
     </div>
     <div class="theater_warp">
         <div class="select">
-            <a href="/theater/information">극장</a>
+            <a href="/theater/smallRegion">극장</a>
             <label for="text">-></label>
-            <a href="/theater/information">전체극장</a>
+            <a href="/theater/smallRegion">전체극장</a>
         </div>
         <div class="theater_cont">
             <div class="theater_title">
@@ -32,19 +38,7 @@
                         <a th:href="@{|/theater/detail?targetBigRegion=${bigRegion}&targetSmallRegion=${smallregion}|}"
                            th:text="${smallregion}"></a>
                     </li>
-                    <li th:each="bigregion : ${bigList}">
-                        <a href="/theater/information" th:text="${bigregion}"></a>
-                    </li>
-                    <li th:each="smallregion : ${smallList}">
-                        <a href="#" th:text="${smallregion}"></a>
-                    </li>
                 </ul>
-            </div>
-            <div th:each="smallRegion : ${smallRegionList}">
-                <div>
-                    <a class="nav-link" href="/theater/detail?bigRegion=${bigRegion}&smallRegion=${smallRegion}"
-                       th:text="${smallRegion}"></a>
-                </div>
             </div>
         </div>
     </div>

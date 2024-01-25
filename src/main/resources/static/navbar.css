@@ -88,6 +88,14 @@ nav{
 .p-2{
     background: white;
 }
+ .m_p {
+    color: red;
+    text-shadow: 2px 2px 4px rgba(255,000,051);
+}
+
+.m_o, .m_v, .m_i, .m_e {
+    text-shadow: 2px 2px 4px rgba(251,251,251);
+}
 
 ul{
     display: flex;
@@ -122,34 +130,4 @@ ul{
 
 .search-container:hover .search-input {
     width: 170px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

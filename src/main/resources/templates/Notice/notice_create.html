@@ -1,0 +1,31 @@
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="background: #f2f2f2;">
+<div layout:fragment="content" style="height:100vh;">
+    <h2 style="margin-top: 20px;text-align: center;font-size: 40px;">
+        공지사항 등록
+    </h2>
+    <div style="margin-top: 20px;">
+        <form th:action="@{/notice/create}" method="post" th:object="${noticecreateForm}"
+              style="padding: 15px;height: 700px;border: solid 1px black;width: 65%; border-radius: 10px;margin-left:auto;margin-right:auto;">
+            <input type="hidden" name="adminLoginId" th:value="${adminLoginId}">
+            <div class="mb-3" style="width: 50%;">
+                <label for="subject" class="form-label" style="font-weight: bold;">제목</label>
+                <input type="text" name="subject" id="subject" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label" style="font-weight: bold;">내용</label>
+                <textarea name="content" id="content" class="form-control" rows="10" style="height: 450px;"></textarea>
+            </div>
+            <div style="text-align: end;">
+                <input type="submit" value="등록하기" class="btn btn-primary my-2" style="border: solid 2px black;color: black;font-weight: bold;font-size: 20px;background: aliceblue;">
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

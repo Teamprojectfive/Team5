@@ -2,6 +2,10 @@ package com.korea.Team5.movie.entity;
 
 
 
+
+import com.korea.Team5.USER.Member;
+
+
 import com.korea.Team5.kmapi.entity.Plot;
 
 import com.korea.Team5.kmapi.entity.Vod;
@@ -55,6 +59,9 @@ public class MovieInfo {
     @OneToMany(mappedBy = "movieInfo")
     private List<Staff> staffs;
 
+    @ManyToMany
+    private List<Member> voter;
+
 
 
     @OneToMany(mappedBy = "movieInfo")
@@ -70,6 +77,11 @@ public class MovieInfo {
 
     @OneToMany(mappedBy = "movieInfo")
     private List<Movie> movieList;
+
+
+
+
+
 
 
 }

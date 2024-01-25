@@ -5,16 +5,14 @@ import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import com.korea.Team5.kmapi.KmapiService;
-
 import com.korea.Team5.movie.entity.Genre;
 import com.korea.Team5.movie.entity.GenreMovieInfo;
 import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.entity.MovieInfo;
-
 import lombok.RequiredArgsConstructor;
-import org.ietf.jgss.GSSName;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +24,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -117,22 +113,36 @@ public class MovieController {
         return "movieDetail";
     }
 
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
-    public String movieVote(Principal principal, @PathVariable("id") Integer id) {
-        Movie movie = this.movieService.getMovie(id);
+    public String movieVote(Principal principal, @PathVariable("id") Integer id){
+        MovieInfo movie = this.movieService.getMovieInfo(id);
         Member member = this.memberService.getMember(principal.getName());
-
         this.movieService.vote(movie, member);
 
-        return "redirect:/movie/list";
+        return String.format("redirect:/movie/list");
+
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote2/{id}")
+    public String movieInfoVote(Principal principal, @PathVariable("id") Integer id){
+        MovieInfo movieInfo = this.movieService.getMovieInfo(id);
+        Member member = this.memberService.getMember(principal.getName());
+        this.movieService.vote(movieInfo, member);
+
+        return String.format("redirect:/movie/mainList");
+    }
+
 
     @GetMapping("/check")
     public String checkDataBase() {
         return "movie";
+
     }
+
+
+
 
 
 
@@ -175,6 +185,17 @@ public class MovieController {
     }
 
 
+
+
+    @GetMapping("/search")
+    public String moviesearch(Model model,@RequestParam String enterMovie){
+
+        List<MovieInfo> searchMovieList = this.movieService.getMovieInfoNm(enterMovie);
+        model.addAttribute("searchMovieList",searchMovieList);
+
+
+        return "mainList";
+    }
 
 }
 

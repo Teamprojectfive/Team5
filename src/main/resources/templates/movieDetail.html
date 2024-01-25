@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px" lang="">
+<body style="background: #f2f2f2;">
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
     <div th:each="movie : ${movieInfo}">
         <div class="detail_container">
-            <!--        <img class="detail_img" th:src="${movie.image}" alt="">-->
             <div th:each="movie : ${movieInfo}" class="movie_content">
                 <section class="post_cont">
                     <div class="main_img">
@@ -36,6 +36,7 @@
                         </div>
                     </div>
                 </section>
+
             </div>
         </div>
     </div>
@@ -65,10 +66,10 @@
                                 <p>설명</p>
                                 <p th:text="${plot.plotText}"></p>
                             </div>
-<!--                            <div class="info_btn">-->
-<!--                                <button class="show_btn">더보기 <i class="fa-solid fa-angle-down"></i></button>-->
-<!--                                <button class="close_btn"><i class="fa-solid fa-chevron-up"></i>접기</button>-->
-<!--                            </div>-->
+                            <!--                            <div class="info_btn">-->
+                            <!--                                <button class="show_btn">더보기 <i class="fa-solid fa-angle-down"></i></button>-->
+                            <!--                                <button class="close_btn"><i class="fa-solid fa-chevron-up"></i>접기</button>-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -79,7 +80,9 @@
                 <ul class="cast_list">
                     <li class="cast_card">
                         <div class="cast_item" th:each="actor : ${movie.actors}">
+
                             <div th:text="${actor.peopleNm}" style="font-weight: bold;"></div>
+
                         </div>
                     </li>
                 </ul>
@@ -251,4 +254,5 @@
         }
     </script>
 </div>
+</body>
 </html>
