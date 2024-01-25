@@ -12,7 +12,10 @@
             <label for="text">등록된 영화가 없습니다.</label>
         </div>
         <h2>영화 목록</h2>
+        <a href="/admin/check">
         <input type="submit" value="새로운 영화 등록하기">
+        </a>
+        </a>
         <div th:if="${adminmoviespaging}">
             <ul style="display: flex;align-items: flex-end;flex-wrap: wrap; justify-content: space-between;">
                 <li th:each="movie : ${adminmoviespaging.content}" style="    max-width: 20%;    list-style: none;">

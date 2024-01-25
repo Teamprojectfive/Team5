@@ -1,35 +1,32 @@
-package com.korea.Team5.Notice;
+package com.korea.Team5.Comment;
 
 
 import com.korea.Team5.USER.Member;
+import com.korea.Team5.board.article.Article;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
-public class Notice {
+@Entity
+public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer Id;
-
-  private String subject;
+  private Integer id;
 
   private String content;
 
+  private String voter;
+
   private LocalDateTime createDate;
 
-
-  private Integer views;
-
-
-
+  private LocalDateTime modifyDate;//수정일시
   @ManyToOne
   private Member member;
 
-  private LocalDateTime modifyDate;//수정일시
-
+  @ManyToOne
+  private Article article;
 }

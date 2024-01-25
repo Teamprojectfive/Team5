@@ -35,11 +35,21 @@ public class NoticeService {
   }
   //공지사항 하나만 가져오는 메서드
   public Notice getNotice(Integer id) {
-    Optional<Notice> notice = this.noticeRepository.findById(id);
-    if (notice.isPresent()) {
-      return notice.get();
+    Optional<Notice> optionalNotice = noticeRepository.findById(id);
+    if (optionalNotice.isPresent()) {
+      Notice notice = optionalNotice.get();
+
+      Integer currentViews = notice.getViews();
+      if (currentViews == null) {
+        currentViews = 0;
+      }
+      currentViews++;
+      notice.setViews(currentViews);
+      noticeRepository.save(notice); // 조회수가 증가한 업데이트된 공지사항을 저장
+
+      return notice;
     } else {
-      throw new DataNotFoundException("review not found");
+      throw new DataNotFoundException("Notice not found");
     }
   }
 
