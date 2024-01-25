@@ -59,10 +59,24 @@
        sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
        th:text="수정">
     </a>
+    <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?boardId=${board.id}|}"
+       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+       th:text="삭제"></a>
 <!--    <a th:href="@{|/"></a>-->
 </div>
 <!-- 게시글 작성 링크 -->
 <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
 <h2>리스트</h2>
+<script type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+</script>
 </body>
 </html>

@@ -30,6 +30,6 @@ public class Article {
     @ManyToOne
     private Board board;
 
-    @OneToMany(mappedBy = "article" ,cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "article")
     private List<Comment> commentList;
 }

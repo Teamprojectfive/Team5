@@ -155,5 +155,20 @@ public class BoardController {
 
     }
 
+    @GetMapping("/article/delete/{id}")
+    @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+    public String articleDelete(Principal principal,@PathVariable("id") Integer id ,@RequestParam String boardId){
+
+        Article article = this.articleService.getArticle(id);
+        if(!article.getMember().getLoginId().equals(principal.getName())){
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"삭제권환이 없습니다.");
+        }
+
+        this.articleService.delete(article);
+
+        return "redirect:/board/article/list/" + boardId;
+    }
+
 
 }

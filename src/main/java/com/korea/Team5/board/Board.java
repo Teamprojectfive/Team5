@@ -25,7 +25,7 @@ public class Board {
     @ManyToOne
     private Member member;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board")
     private List<Article> articleList;
 
 }
