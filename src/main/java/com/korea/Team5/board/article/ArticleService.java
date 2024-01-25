@@ -2,7 +2,9 @@ package com.korea.Team5.board.article;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.USER.Member;
-import com.korea.Team5.movie.entity.Movie;
+
+import com.korea.Team5.board.Board;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,20 +23,31 @@ public class ArticleService {
 
 
 
-    public void create(String title, String content, Member member){
+
+    public void create(String title, String content, Member member, Board board){
+
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
         article.setCreateDate(LocalDateTime.now());
+
+        article.setBoard(board);
+
         article.setMember(member);
+
+
+
         this.articleRepository.save(article);
     }
     public List<Article> list(){
         return this.articleRepository.findAll();
     }
-    public Page<Article> getList(int page){
+
+
+    public Page<Article> getListByBoard(int page, Integer id){
         Pageable pageable = PageRequest.of(page, 10);
-        return this.articleRepository.findAll(pageable);
+        return this.articleRepository.findByBoardId(id, pageable);
+
     }
 
     public void modify(Article article, String title, String content){
@@ -52,4 +65,6 @@ public class ArticleService {
             throw new DataNotFoundException("article not found");
         }
     }
+
 }
+

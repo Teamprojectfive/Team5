@@ -7,9 +7,13 @@
 <body>
 <div>안녕하세요</div>
 
-<form th:object="${articleForm}" method="post">
+<form  th:object="${articleForm}" method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+    <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+        <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+    </div>
+
     <div>
         <label for="title">제목</label>
         <input type="text" th:field="*{title}" name="title" id="title">

@@ -1,5 +1,3 @@
-<!-- boardList.html -->
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,11 +17,19 @@
 
         #boardContainer {
             margin-top: 20px;
+            width: 80%; /* 더 넓은 영역을 차지하도록 조절 */
+        }
+
+        #boardContainer h2 {
+            text-align: center;
         }
 
         #boardContainer ul {
             list-style-type: none;
             padding: 0;
+            display: flex;
+            flex-wrap: wrap; /* 요소가 넘칠 경우 다음 줄로 넘어갈 수 있도록 설정 */
+            justify-content: space-around; /* 요소를 가로로 고르게 분배 */
         }
 
         .boardItem {
@@ -32,7 +38,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 400px; /* 요소의 최대 너비 설정 */
             width: 100%;
             text-align: center;
         }
@@ -42,6 +48,17 @@
             height: auto;
             display: block;
             margin-bottom: 10px;
+        }
+
+        .boardItem a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        .movieSelectionLink {
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -53,15 +70,17 @@
         <li th:each="board : ${boardList}" class="boardItem">
             <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
             <h3 th:text="'제목: ' + ${board.title}"></h3>
-            <p th:text="'설명: ' + ${board.content}"></p>
 
-            <a href="/board/article/list">들어가기</a>
+            <p th:text="'방주인: ' + ${board.member.nickName}"></p>
+            <a th:href="@{|/board/article/list/${board.id}|}">들어가기</a>
 
         </li>
     </ul>
 </div>
 
-<a href="/board/create">영화 선택</a>
+<div class="movieSelectionLink">
+    <a th:href="@{/board/create}">방만들기</a>
+</div>
 
 </body>
 </html>

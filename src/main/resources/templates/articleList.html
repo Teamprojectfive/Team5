@@ -41,13 +41,42 @@
         .create-link:hover {
             background-color: #45a049;
         }
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
     </style>
 </head>
 <body>
-
+<div>
+    <label for="text">자유게시판</label>
+    <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
+</div>
 <!-- 게시글 목록 -->
-<div th:each="article, loop : ${articles}" class="article">
-    <h1 th:text="${article.title}"></h1>
+<div th:each="article, loop : ${articles.content}" class="article">
+    <a th:href="@{|/board/article/detail/${article.id}|}">
+        <h1 th:text="${article.title}"></h1>
+    </a>
+
     <div th:text="${article.member.nickName}"></div>
     <div th:text="${article.createDate}"></div>
     <a th:href="@{|/board/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary"
@@ -56,8 +85,18 @@
        th:text="수정"></a>
 </div>
 
+
+<!-- 페이징 링크 -->
+<div class="pagination">
+    <a th:if="${articles.hasPrevious()}" th:href="@{|/board/article/list/${board.id}?page=${articles.previousPageable().pageNumber}|}">&laquo; 이전</a>
+    <a th:each="pageNumber : ${#numbers.sequence(0, articles.totalPages-1)}"
+       th:class="${pageNumber == articles.number ? 'active' : ''}"
+       th:href="@{|/board/article/list/${board.id}?page=${pageNumber}|}">[[${pageNumber + 1}]]</a>
+    <a th:if="${articles.hasNext()}" th:href="@{|/board/article/list/${board.id}?page=${articles.nextPageable().pageNumber}|}">다음 &raquo;</a>
+</div>
 <!-- 게시글 작성 링크 -->
-<a href="/board/article/create" class="create-link">글 작성</a>
+<a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
+<h2>리스트</h2>
 
 </body>
 </html>
