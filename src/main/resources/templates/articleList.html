@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Article List</title>
+    <link rel="stylesheet" href="/Board/articeLIst.css">
+</head>
+<body>
+<section>
+    <div>
+        <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="300"/>
+    </div>
+    <label for="text">자유게시판</label>
+    <div th:each="article, loop : ${articles.content}" class="article">
+        <div class="article_box">
+            <a th:href="@{|/board/article/detail/${article.id}|}">
+                <label for="text">제목:</label>
+                <h1 th:text="${article.title}" style="margin:0;"></h1>
+            </a>
+            <div th:text="${article.member.nickName}"></div>
+            <div th:text="${article.createDate}"></div>
+            <a th:href="@{|/board/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary"
+               sec:authorize="isAuthenticated()"
+               th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.nickName}"
+               th:text="수정"></a>
+        </div>
+    </div>
+    <div class="pagination">
+        <a th:if="${articles.hasPrevious()}"
+           th:href="@{|/board/article/list/${board.id}?page=${articles.previousPageable().pageNumber}|}">&laquo; 이전</a>
+        <a th:each="pageNumber : ${#numbers.sequence(0, articles.totalPages-1)}"
+           th:class="${pageNumber == articles.number ? 'active' : ''}"
+           th:href="@{|/board/article/list/${board.id}?page=${pageNumber}|}">[[${pageNumber + 1}]]</a>
+        <a th:if="${articles.hasNext()}"
+           th:href="@{|/board/article/list/${board.id}?page=${articles.nextPageable().pageNumber}|}">다음 &raquo;</a>
+    </div>
+    <!-- 게시글 작성 링크 -->
+    <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
+</section>
+<!-- 페이징 링크 -->
+</body>
+</html>

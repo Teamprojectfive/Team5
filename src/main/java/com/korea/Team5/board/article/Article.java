@@ -1,48 +1,32 @@
-package com.korea.Team5.board;
-
+package com.korea.Team5.board.article;
 import com.korea.Team5.USER.Member;
-import com.korea.Team5.board.article.Article;
-import com.korea.Team5.movie.entity.MovieInfo;
+import com.korea.Team5.board.Board;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
-@Getter
 @Setter
-public class Board {
+@Getter
+public class Article {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
-
     private String content;
 
-    private String posterUrl;
+    private LocalDateTime createDate;
 
     @ManyToOne
     private Member member;
 
-
-
-
-    @OneToMany(mappedBy = "board")
-    private List<Article> articleList;
-
-
+    @ManyToOne
+    private Board board;
 
 
 }
-
-
-
-
-
-
-
-
-
-
