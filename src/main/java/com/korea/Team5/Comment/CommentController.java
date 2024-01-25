@@ -42,6 +42,6 @@ public class CommentController {
     model.addAttribute("member",member);
 
 
-    return String.format("redirect:/article/detail/%s", articleId);
+    return String.format("redirect:/board/article/detail/%s", articleId);
   }
 }
