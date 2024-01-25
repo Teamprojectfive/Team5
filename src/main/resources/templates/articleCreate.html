@@ -13,6 +13,7 @@
     <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
         <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
     </div>
+
     <div>
         <label for="title">제목</label>
         <input type="text" th:field="*{title}" name="title" id="title">
@@ -21,6 +22,7 @@
         <label for="content">설명</label>
         <input type="text" th:field="*{content}" name="content" id="content">
     </div>
+
     <input type="submit" value="저장">
 </form>
 

@@ -8,16 +8,22 @@ import com.korea.Team5.board.article.ArticleForm;
 import com.korea.Team5.board.article.ArticleService;
 import com.korea.Team5.movie.MovieService;
 import com.korea.Team5.movie.entity.MovieInfo;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+
+import java.security.Principal;
+
 
 import java.security.Principal;
 import java.util.List;
@@ -31,6 +37,9 @@ public class BoardController {
     private final BoardService boardService;
     private final MemberService memberService;
     private final ArticleService articleService;
+
+
+
 
 
     @GetMapping("/movie")
@@ -50,6 +59,7 @@ public class BoardController {
     }
 
     @GetMapping("/create")
+
     public String showCreateBoardPage(Model model) {
 
         List<MovieInfo> movieInfoList = this.movieService.infoList();
@@ -66,20 +76,16 @@ public class BoardController {
         Member member = this.memberService.getMember(principal.getName());
         model.addAttribute("selectedPosterUrl", selectPoster);
 
+
         this.boardService.registerRoom(member,title, content,selectPoster);
+
+
 
 
         return "redirect:/board/movie";
     }
 
 
-//    @GetMapping("/listdetail")
-//    public String listdetail(Model model,@RequestParam Integer boardId){
-//        Board board = this.boardService.getBoard(boardId);
-//        model.addAttribute("board",board);
-//
-//        return "boardListdetail";
-//    }
 
 
     @GetMapping("/article/detail/{id}")
@@ -95,25 +101,31 @@ public class BoardController {
         Page<Article> articlePage = this.articleService.getListByBoard(page, id);
         Board board = this.boardService.getBoard(id);
         model.addAttribute("board",board);
+
         model.addAttribute("articles", articlePage);
         return "articleList";
     }
 
     @GetMapping("/article/create")
+
     @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
     public String articlecreate(ArticleForm articleForm,@RequestParam Integer boardId,Model model) {
         Board board = this.boardService.getBoard(boardId);
         model.addAttribute("board",board);
+
         return "articleCreate";
     }
 
     @PostMapping("/article/create")
+
     @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
     public String articleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal,@RequestParam Integer boardId) {
+
         if (bindingResult.hasErrors()) {
             return "articleCreate";
         }
         Member member = memberService.getMember(principal.getName());
+
         Board board = boardService.getBoard(boardId);
         this.articleService.create(articleForm.getTitle(), articleForm.getContent(), member,board);
 
@@ -122,6 +134,7 @@ public class BoardController {
 
     @GetMapping("/article/modify/{id}")
     @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+
     public String articleModify(ArticleForm articleForm, @PathVariable("id") Integer id, Principal principal) {
         Article article = this.articleService.getArticle(id);
         if (!article.getMember().getNickName().equals(principal.getName())) {
@@ -134,6 +147,7 @@ public class BoardController {
 
     @PostMapping("/article/modify/{id}")
     @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+
     public String articleModify(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors()) {
             return "articleCreate";
@@ -148,4 +162,8 @@ public class BoardController {
     }
 
 
+
 }
+
+
+

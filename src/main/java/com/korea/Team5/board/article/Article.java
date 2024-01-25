@@ -1,7 +1,7 @@
 package com.korea.Team5.board.article;
-
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.board.Board;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,8 +27,6 @@ public class Article {
 
     @ManyToOne
     private Board board;
-
-
 
 
 }
