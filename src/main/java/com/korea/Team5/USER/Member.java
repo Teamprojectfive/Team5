@@ -51,8 +51,7 @@ public class Member {
 
   private String role;
 
-  @OneToMany(mappedBy = "member")
-  private List<Board> boardList;
+
 
   @OneToMany(mappedBy = "member")
   private List<Article> articleList;

@@ -69,10 +69,10 @@
 <body>
 <div>
     <label for="text">자유게시판</label>
-    <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
+    <img th:src="${movieInfo.posters}" alt="Selected Movie Poster" width="100"/>
 </div>
 <!-- 게시글 목록 -->
-<div th:each="article, loop : ${articles.content}" class="article">
+<div th:each="article : ${articles}" class="article">
     <a th:href="@{|/board/article/detail/${article.id}|}">
         <h1 th:text="${article.title}"></h1>
     </a>
@@ -87,15 +87,42 @@
 
 
 <!-- 페이징 링크 -->
+<!--/*
 <div class="pagination">
     <a th:if="${articles.hasPrevious()}" th:href="@{|/board/article/list/${board.id}?page=${articles.previousPageable().pageNumber}|}">&laquo; 이전</a>
     <a th:each="pageNumber : ${#numbers.sequence(0, articles.totalPages-1)}"
        th:class="${pageNumber == articles.number ? 'active' : ''}"
        th:href="@{|/board/article/list/${board.id}?page=${pageNumber}|}">[[${pageNumber + 1}]]</a>
-    <a th:if="${articles.hasNext()}" th:href="@{|/board/article/list/${board.id}?page=${articles.nextPageable().pageNumber}|}">다음 &raquo;</a>
+    <a th:if="${articles.hasNext()}" th:href="@{|/board/article/list/${movieInfo.id}?page=${articles.nextPageable().pageNumber}|}">다음 &raquo;</a>
 </div>
+
+*/-->
+
+<div th:if="${!articles.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!articles.hasPrevious} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{|?page=${articles.number-1}|}">
+                <span>이전</span>
+            </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, articles.totalPages-1)}"
+            th:classappend="${page == articles.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!articles.hasNext} ? 'disabled'">
+            <a class="page-link" th:href="@{|?page=${articles.number+1}|}">
+                <span>다음</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- 페이징처리 끝 -->
 <!-- 게시글 작성 링크 -->
-<a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
+<div th:each="movie : ${movieInfo}">
+    <a th:href="@{|/board/article/create?id=${movie.id}|}" class="create-link">글 작성</a>
+</div>
 <h2>리스트</h2>
 
 </body>

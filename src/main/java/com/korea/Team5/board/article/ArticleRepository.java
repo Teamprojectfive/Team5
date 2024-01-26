@@ -8,6 +8,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     Page<Article> findAll(Pageable pageable);
 
 
-    Page<Article> findByBoardId(Integer id, Pageable pageable);
 
+
+    Page<Article> findByMovieInfoId(Integer id, Pageable pageable);
 }
