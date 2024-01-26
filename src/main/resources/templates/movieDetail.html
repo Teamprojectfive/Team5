@@ -97,8 +97,8 @@
         <!--        리뷰 start-->
         <div id="ratings_container" class="explanation_container" style="display: none;">
             <div class="registration_cont">
-                <a class="Sing_up" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
-                   th:href="@{|/review/create/${movie.id}|}">리뷰등록</a>
+                <a class="Sing_up" role="button"
+                   th:onclick="checkLoginAndRedirect([[${movie.id}]])">리뷰등록</a>
             </div>
             <!--            <h5 th:text="|${#lists.size(movie.reviewList)}개의 리뷰가 있습니다.|"></h5>-->
             <div class="container my-3">
@@ -170,6 +170,24 @@
         </div>
     </section>
     <!--        리뷰 end-->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function checkLoginAndRedirect(movieId) {
+            $.ajax({
+                url: "/check-login-status", // 로그인 상태 확인을 담당하는 컨트롤러 엔드포인트
+                method: "GET",
+                success: function(response) {
+                    if (response.loggedIn) {
+                       window.location.href = "/review/create/" + movieId;
+                    } else {
+                        // 로그인되지 않은 경우 알림 메시지 표시
+                        alert("로그인이 필요합니다.");
+                        window.location.href = "/member/login"; // 로그인 페이지로 리다이렉트
+                    }
+                }
+            });
+        }
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var showButton = document.querySelector('.show_btn');
@@ -252,5 +270,5 @@
             return isConfirmed;
         }
     </script>
-</div>
+1</div>
 </html>

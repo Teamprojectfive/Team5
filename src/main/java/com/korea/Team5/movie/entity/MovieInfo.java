@@ -6,8 +6,9 @@ package com.korea.Team5.movie.entity;
 import com.korea.Team5.USER.Member;
 
 
-import com.korea.Team5.board.Board;
+
 import com.korea.Team5.board.article.Article;
+
 import com.korea.Team5.kmapi.entity.Plot;
 
 import com.korea.Team5.kmapi.entity.Vod;
@@ -82,6 +83,8 @@ public class MovieInfo {
 
     @OneToMany(mappedBy = "movieInfo")
     private List<Article> articleList;
+
+
 
 
 

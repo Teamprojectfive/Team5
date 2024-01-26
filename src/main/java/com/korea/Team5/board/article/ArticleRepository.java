@@ -10,5 +10,7 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
 
 
+
     Page<Article> findByMovieInfoId(Integer id, Pageable pageable);
+
 }

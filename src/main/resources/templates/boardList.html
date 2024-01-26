@@ -4,47 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-    <style>
-        /* 스타일링은 여기에 추가하세요 */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
 
-        .movieItem {
-            margin-top: 20px;
-            width: 80%; /* 더 넓은 영역을 차지하도록 조절 */
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px; /* 요소의 최대 너비 설정 */
-            text-align: center;
-        }
-
-        .movieItem img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
-
-        .movieItem h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .detail_cont_subb {
-            font-size: 14px;
-            color: #777;
-        }
-    </style>
 </head>
 <body>
+
 
 <div th:each="movie : ${movieInfoList}" class="movieItem">
         <img th:src="${movie.posters}" alt="">
@@ -56,6 +19,12 @@
     <a th:href="@{|/board/article/list/${movie.id}|}">들어가기</a>
 
 </div>
+
+
+<div class="movieSelectionLink">
+    <a th:href="@{/board/create}">방만들기</a>
+</div>
+
 
 </body>
 </html>

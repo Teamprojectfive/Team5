@@ -3,9 +3,11 @@ package com.korea.Team5.board.article;
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.USER.Member;
 
+
 import com.korea.Team5.board.Board;
 
 import com.korea.Team5.movie.entity.MovieInfo;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
-
-
-
+  private final ArticleRepository articleRepository;
 
     public void create(String title, String content, Member member, MovieInfo movieInfo){
 
@@ -40,25 +39,38 @@ public class ArticleService {
     }
 
     public Page<Article> getListByMovieInfo(Integer id, int page){
-        Pageable pageable = PageRequest.of(page,10);
-        return this.articleRepository.findByMovieInfoId(id, pageable);
-    }
+          Pageable pageable = PageRequest.of(page, 10);
+          return this.articleRepository.findByMovieInfoId(id, pageable);
+      }
 
-    public void modify(Article article, String title, String content){
-        article.setTitle(title);
-        article.setContent(content);
-        this.articleRepository.save(article);
-    }
+  public void modify(Article article, String title, String content) {
+    article.setTitle(title);
+    article.setContent(content);
+    this.articleRepository.save(article);
+  }
+
+  public void delete(Article article) {
+
+    this.articleRepository.delete(article);
+
+  }
 
 
-    public Article getArticle(Integer id) {
-        Optional<Article> article = this.articleRepository.findById(id);
-        if (article.isPresent()) {
-            return article.get();
-        } else {
-            throw new DataNotFoundException("article not found");
-        }
+  public Article getArticle(Integer id) {
+    Optional<Article> article = this.articleRepository.findById(id);
+    if (article.isPresent()) {
+      return article.get();
+    } else {
+      throw new DataNotFoundException("article not found");
+
     }
+  }
+
+
+
+
+
+
 
 }
 

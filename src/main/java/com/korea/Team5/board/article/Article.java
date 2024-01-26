@@ -1,13 +1,18 @@
 package com.korea.Team5.board.article;
+
 import com.korea.Team5.USER.Member;
-import com.korea.Team5.board.Board;
+
 
 import com.korea.Team5.movie.entity.MovieInfo;
+
+import com.korea.Team5.Comment.Comment;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Setter
@@ -28,6 +33,9 @@ public class Article {
 
     @ManyToOne
     private MovieInfo movieInfo;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> commentList;
 
 
 }

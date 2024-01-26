@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -17,6 +16,9 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+//    @OneToMany(mappedBy = "board")
+//    private List<Article> articleList;
 
 
 }
