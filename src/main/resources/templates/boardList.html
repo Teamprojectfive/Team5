@@ -4,83 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
 
-        #boardContainer {
-            margin-top: 20px;
-            width: 80%; /* 더 넓은 영역을 차지하도록 조절 */
-        }
-
-        #boardContainer h2 {
-            text-align: center;
-        }
-
-        #boardContainer ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap; /* 요소가 넘칠 경우 다음 줄로 넘어갈 수 있도록 설정 */
-            justify-content: space-around; /* 요소를 가로로 고르게 분배 */
-        }
-
-        .boardItem {
-            margin-bottom: 20px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px; /* 요소의 최대 너비 설정 */
-            width: 100%;
-            text-align: center;
-        }
-
-        .boardItem img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .boardItem a {
-            text-decoration: none;
-            color: #007BFF;
-            font-weight: bold;
-        }
-
-        .movieSelectionLink {
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
 
-<div id="boardContainer">
-    <h2>게시판</h2>
-    <ul>
-        <li th:each="board : ${boardList}" class="boardItem">
-            <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
-            <h3 th:text="'제목: ' + ${board.title}"></h3>
 
-<!--            <p th:text="'방주인 : ' + ${board.member.nickName}"></p>-->
-            <a th:href="@{|/board/article/list/${board.id}|}">들어가기</a>
+<div th:each="movie : ${movieInfoList}" class="movieItem">
+        <img th:src="${movie.posters}" alt="">
+    <h2 th:text="${movie.movieNm}"></h2>
+    <div class="detail_cont" th:each="genre : ${movie.genreMovieInfos}">
+        <p class="detail_cont_subb" th:text="${genre.genre.genreNm}"></p>
 
-        </li>
-    </ul>
+    </div>
+    <a th:href="@{|/board/article/list/${movie.id}|}">들어가기</a>
+
 </div>
+
 
 <div class="movieSelectionLink">
     <a th:href="@{/board/create}">방만들기</a>
 </div>
+
 
 </body>
 </html>

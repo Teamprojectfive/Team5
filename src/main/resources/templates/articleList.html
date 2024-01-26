@@ -41,33 +41,81 @@
         .create-link:hover {
             background-color: #45a049;
         }
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
     </style>
 </head>
 <body>
 <div>
     <label for="text">자유게시판</label>
-    <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
+    <img th:src="${movieInfo.posters}" alt="Selected Movie Poster" width="100"/>
 </div>
 <!-- 게시글 목록 -->
-<div th:each="article, loop : ${articles}" class="article">
-    <a th:href="@{|/board/article/detail/${article.id}|}">
-        <h1 th:text="${article.title}"></h1>
-    </a>
-    <div th:text="${article.member.nickName}"></div>
-    <div th:text="${article.createDate}"></div>
-    <a th:href="@{|/board/article/modify/${article.id}?boardId=${board.id}|}" class="btn btn-sm btn-outline-secondary"
-       sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-       th:text="수정">
-    </a>
-    <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?boardId=${board.id}|}"
-       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-       th:text="삭제"></a>
-    <!--    <a th:href="@{|/"></a>-->
+<!--<div th:each="article : ${articles}" class="article">-->
+<!--    <a th:href="@{|/board/article/detail/${article.id}|}">-->
+<!--        <h1 th:text="${article.title}"></h1>-->
+<!--    </a>-->
+<!--    <div th:text="${article.member.nickName}"></div>-->
+<!--    <div th:text="${article.createDate}"></div>-->
+<!--    <a th:href="@{|/board/article/modify/${article.id}?boardId=${board.id}|}" class="btn btn-sm btn-outline-secondary"-->
+<!--       sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"-->
+<!--       th:text="수정">-->
+<!--    </a>-->
+<!--    <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?boardId=${board.id}|}"-->
+<!--       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"-->
+<!--       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"-->
+<!--       th:text="삭제"></a>-->
+
+<!--</div>-->
+<div th:if="${!articles.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!articles.hasPrevious} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{|?page=${articles.number-1}|}">
+                <span>이전</span>
+            </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, articles.totalPages-1)}"
+            th:classappend="${page == articles.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!articles.hasNext} ? 'disabled'">
+            <a class="page-link" th:href="@{|?page=${articles.number+1}|}">
+                <span>다음</span>
+            </a>
+        </li>
+    </ul>
 </div>
+<!-- 페이징처리 끝 -->
 <!-- 게시글 작성 링크 -->
-<a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
+<div th:each="movie : ${movieInfo}">
+    <a th:href="@{|/board/article/create?id=${movie.id}|}" class="create-link">글 작성</a>
+</div>
 <h2>리스트</h2>
+
+
 <script type='text/javascript'>
     const delete_elements = document.getElementsByClassName("delete");
     Array.from(delete_elements).forEach(function(element) {
@@ -78,5 +126,6 @@
         });
     });
 </script>
+
 </body>
 </html>
