@@ -1,0 +1,84 @@
+package com.korea.Team5.Comment.Commentreply;
+
+import com.korea.Team5.Comment.Comment;
+import com.korea.Team5.Comment.CommentService;
+import com.korea.Team5.USER.Member;
+import com.korea.Team5.USER.MemberService;
+import com.korea.Team5.board.article.Article;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.security.Principal;
+
+@RequiredArgsConstructor
+@Controller
+@RequestMapping("/reply")
+public class CommentReplyController {
+
+  private final CommentReplyService commentReplyService;
+  private final CommentService commentService;
+  private final MemberService memberService;
+
+  @GetMapping("/list")
+  @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+  public String list() {
+
+
+    return "articleDetail";
+  }
+
+  @PostMapping("/create/{id}")
+  @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+  public String create(@Valid CommentReplyForm commentReplyForm, BindingResult bindingResult, Model model, @PathVariable("id") Integer commentId, Principal principal) {
+    Member member = this.memberService.getMember(principal.getName());
+    Comment comment = this.commentService.getComment(commentId);
+       Article article = comment.getArticle();
+        Integer articleId = article.getId();
+    if(bindingResult.hasErrors()){
+      model.addAttribute("article",article);
+      return "articleDetail";
+    }
+      this.commentReplyService.create(member,commentReplyForm.getContent() ,comment);
+
+
+    return String.format("redirect:/board/article/detail/%s", articleId);
+  }
+
+  @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+  @GetMapping("/delete/{id}")
+  public String delete(Principal principal, @PathVariable("id") Integer id, @RequestParam Integer articleId){
+
+    CommentReply commentReply = this.commentReplyService.getreply(id);
+    if(!commentReply.getMember().getLoginId().equals(principal.getName())){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+    }
+    this.commentReplyService.delete(commentReply);
+    return "redirect:/board/article/detail/" + articleId;
+  }
+
+  @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+  @GetMapping("/modify/{id}")
+  private String modify(@PathVariable("id") Integer replyId, @RequestParam String newreply, @RequestParam Integer articleId, Principal principal,Model model){
+
+    CommentReply commentReply = this.commentReplyService.getreply(replyId);
+    // 여기서 직접 모델에 에러 메시지를 추가할 수 있음
+    if (newreply == null || newreply.trim().isEmpty()) {
+      model.addAttribute("error", "댓글은 비어있을 수 없습니다.");
+      return "articleDetail";
+    }
+    if (!commentReply.getMember().getLoginId().equals(principal.getName())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+    }
+
+    this.commentReplyService.modify(commentReply,newreply);
+
+    return "redirect:/board/article/detail/" + articleId;
+  }
+}

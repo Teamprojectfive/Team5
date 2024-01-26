@@ -98,7 +98,7 @@ public class BoardController {
 
   @GetMapping("/article/list/{id}")
   public String articleList(Model model, @RequestParam(value = "page", defaultValue = "0") int page,@PathVariable("id") Integer id) {
-    Page<Article> articlePage = this.articleService.getListByBoard(page, id);
+    Page<Article> articlePage = this.articleService.getListByBoard(page);
     Board board = this.boardService.getBoard(id);
     model.addAttribute("board",board);
     model.addAttribute("articles", articlePage);

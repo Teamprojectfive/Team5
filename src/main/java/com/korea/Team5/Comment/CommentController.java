@@ -65,7 +65,7 @@ public class CommentController {
                        BindingResult bindingResult){
     Comment comment = this.commentService.getComment(id);
     if (bindingResult.hasErrors()) {
-      return "/Review/reviewModify_form";
+      return "articleDetail";
     }
     if (!comment.getMember().getLoginId().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");

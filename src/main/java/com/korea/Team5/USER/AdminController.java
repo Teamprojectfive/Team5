@@ -132,7 +132,7 @@ public class AdminController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/adminsignlist")
-  public String adminsignlist(Model model, @RequestParam String member, @RequestParam(defaultValue = "true") boolean toggleVisible, @RequestParam(value = "page", defaultValue = "0") int page) {
+  public String adminsignlist(Model model, @RequestParam(defaultValue = "true") boolean toggleVisible, @RequestParam(value = "page", defaultValue = "0") int page) {
     // getAllMembers 메서드를 사용하여 모든 멤버를 가져옴
     Page<Member> signpaging = this.memberService.getAllMembers(page);
     // Model에 페이징 정보 추가

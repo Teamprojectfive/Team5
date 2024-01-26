@@ -1,7 +1,6 @@
 package com.korea.Team5.board.article;
+
 import com.korea.Team5.Comment.Comment;
-import com.korea.Team5.USER.Member;
-import com.korea.Team5.board.Board;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.board.Board;
 import jakarta.persistence.*;
@@ -15,7 +14,6 @@ import java.util.List;
 @Setter
 @Getter
 public class Article {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -33,5 +31,6 @@ public class Article {
 
     @OneToMany(mappedBy = "article")
     private List<Comment> commentList;
+
 
 }

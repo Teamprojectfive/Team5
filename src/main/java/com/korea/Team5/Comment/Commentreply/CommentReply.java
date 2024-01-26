@@ -1,20 +1,17 @@
-package com.korea.Team5.Comment;
+package com.korea.Team5.Comment.Commentreply;
 
-
-import com.korea.Team5.Comment.Commentreply.CommentReply;
+import com.korea.Team5.Comment.Comment;
 import com.korea.Team5.USER.Member;
-import com.korea.Team5.board.article.Article;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+@Entity
 @Getter
 @Setter
-@Entity
-public class Comment {
+public class CommentReply {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -26,12 +23,10 @@ public class Comment {
   private LocalDateTime createDate;
 
   private LocalDateTime modifyDate;//수정일시
+
   @ManyToOne
   private Member member;
 
   @ManyToOne
-  private Article article;
-
-  @OneToMany(mappedBy = "comment")
-  private List<CommentReply> commentReplyList;
+  private Comment comment;
 }
