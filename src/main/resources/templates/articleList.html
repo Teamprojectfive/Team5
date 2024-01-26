@@ -1,42 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout_without_header}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th=""
+      style="width:1920px">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article List</title>
     <link rel="stylesheet" href="/Board/articeLIst.css">
 </head>
-<body>
-<section>
-    <div>
-        <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="300"/>
-    </div>
-    <label for="text">자유게시판</label>
-    <div th:each="article, loop : ${articles.content}" class="article">
-        <div class="article_box">
-            <a th:href="@{|/board/article/detail/${article.id}|}">
-                <label for="text">제목:</label>
-                <h1 th:text="${article.title}" style="margin:0;"></h1>
-            </a>
-            <div th:text="${article.member.nickName}"></div>
-            <div th:text="${article.createDate}"></div>
-            <a th:href="@{|/board/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary"
-               sec:authorize="isAuthenticated()"
-               th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.nickName}"
-               th:text="수정"></a>
+<body style="background: #f2f2f2; width: 100%; max-width: 1900px;">
+<div layout:fragment="content">
+    <section>
+        <div class="article_title">
+            <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="230"/>
+            <h1>자유게시판</h1>
         </div>
-    </div>
-    <div class="pagination">
-        <a th:if="${articles.hasPrevious()}"
-           th:href="@{|/board/article/list/${board.id}?page=${articles.previousPageable().pageNumber}|}">&laquo; 이전</a>
-        <a th:each="pageNumber : ${#numbers.sequence(0, articles.totalPages-1)}"
-           th:class="${pageNumber == articles.number ? 'active' : ''}"
-           th:href="@{|/board/article/list/${board.id}?page=${pageNumber}|}">[[${pageNumber + 1}]]</a>
-        <a th:if="${articles.hasNext()}"
-           th:href="@{|/board/article/list/${board.id}?page=${articles.nextPageable().pageNumber}|}">다음 &raquo;</a>
-    </div>
+        <!-- 게시글 목록 -->
+        <table class="article">
+            <thead>
+            <tr>
+                <th>닉네임</th>
+                <th>제목</th>
+                <th>게시일</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:each="article, loop : ${articles}" >
+                <tr>
+                    <td>
+                        <a th:href="@{|/board/article/detail/${article.id}|}">
+                            <div th:text="${article.member.nickName}"></div>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{|/board/article/detail/${article.id}|}">
+                            <h1 th:text="${article.title}"></h1>
+                        </a>
+                    </td>
+                    <td>
+                        <div th:text="${article.createDate}"></div>
+                    </td>
+                    <td style="display: flex; flex-direction: row-reverse;margin: 5px;">
+                        <a th:href="@{|/board/article/modify/${article.id}?boardId=${board.id}|}"
+                           class="btn btn-sm btn-outline-secondary"
+                           sec:authorize="isAuthenticated()"
+                           th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+                           th:text="수정" style="width: 20%;">
+                        </a>&nbsp;
+                        <a href="javascript:void(0);"
+                           th:data-uri="@{|/board/article/delete/${article.id}?boardId=${board.id}|}"
+                           class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                           th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+                           th:text="삭제" style="width: 20%;"></a>
+                    </td>
+                </tr>
+            </div>
+            </tbody>
+        </table>
+
+        <!--    <a th:href="@{|/"></a>-->
+        <div class="pagination">
+            <a th:if="${articles.hasPrevious()}"
+               th:href="@{|/board/article/list/${board.id}?page=${articles.previousPageable().pageNumber}|}">&laquo;
+                이전</a>
+            <a th:each="pageNumber : ${#numbers.sequence(0, articles.totalPages-1)}"
+               th:class="${pageNumber == articles.number ? 'active' : ''}"
+               th:href="@{|/board/article/list/${board.id}?page=${pageNumber}|}" style="background-color: gainsboro; color:black;">[[${pageNumber + 1}]]</a>
+            <a th:if="${articles.hasNext()}"
+               th:href="@{|/board/article/list/${board.id}?p    age=${articles.nextPageable().pageNumber}|}">다음 &raquo;</a>
+        </div>
+        <!-- 게시글 작성 링크 -->
+        <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
+    </section>
+    <!-- 페이징 링크 -->
+
     <!-- 게시글 작성 링크 -->
-    <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
-</section>
-<!-- 페이징 링크 -->
+
+
+    <script type='text/javascript'>
+        const delete_elements = document.getElementsByClassName("delete");
+        Array.from(delete_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+    </script>
+</div>
 </body>
 </html>

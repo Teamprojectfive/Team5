@@ -85,10 +85,10 @@
     <!-- 검색컨테이너 -->
     <section class="frame">
         <form th:action="@{/movie/search}" method="get">
-        <div class="serch_container">
-            <input class="search" type="text" name="enterMovie" th:value="${entermovie}" placeholder="검색할 영화를입력하세요.">&nbsp;
-            <button class="button button-first" data-type="square"> 검색</button>
-        </div>
+            <div class="serch_container">
+                <input class="search" type="text" name="enterMovie" th:value="${entermovie}" placeholder="검색할 영화를입력하세요.">&nbsp;
+                <button class="button button-first" data-type="square"> 검색</button>
+            </div>
         </form>
     </section>
     <!-- 검색컨테이너 여기까지 -->

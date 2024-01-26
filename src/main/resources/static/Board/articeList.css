@@ -4,16 +4,27 @@ body {
     margin: 20px;
 }
 
+.article_title{
+    display: flex;
+    font-size: 50px;
+    font-weight: bold;
+    align-items: center;
+}
+
+.article_title > h1{
+    position: relative;
+    left: 24%;
+}
 section{
     width:70%;
     margin-left:auto;
     margin-right:auto;
 }
 
-.article {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
+.article{
+    margin-top:30px;
+    width:100%;
+    text-align:center;
 }
 
 .article h1 {
@@ -24,16 +35,15 @@ section{
     font-size: 14px;
     color: #777;
 }
-.article a{
-    margin:0;
-    display:flex;
-    text-decoration: none;
-    color: black;
-    font-size:18px;
+
+.article > thead {
+    border-top: solid 1px;
+    background: aliceblue;
 }
 
-.article_box{
-    display:flex;
+tbody tr{
+    border-bottom:solid 1px gray;
+    height: 45px;
 }
 
 .create-link {

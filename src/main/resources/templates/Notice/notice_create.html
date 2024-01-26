@@ -5,13 +5,13 @@
     <title>Title</title>
 </head>
 <body style="background: #f2f2f2;">
-<div layout:fragment="content" style="height:100vh;">
+<div layout:fragment="content" >
     <h2 style="margin-top: 20px;text-align: center;font-size: 40px;">
         공지사항 등록
     </h2>
     <div style="margin-top: 20px;">
         <form th:action="@{/notice/create}" method="post" th:object="${noticecreateForm}"
-              style="padding: 15px;height: 700px;border: solid 1px black;width: 65%; border-radius: 10px;margin-left:auto;margin-right:auto;">
+              style="padding: 15px;height: 700px;border: solid 1px gainsboro;;width: 65%; border-radius: 10px;margin-left:auto;margin-right:auto;">
             <input type="hidden" name="adminLoginId" th:value="${adminLoginId}">
             <div class="mb-3" style="width: 50%;">
                 <label for="subject" class="form-label" style="font-weight: bold;">제목</label>

@@ -23,13 +23,12 @@
             </div>
             <div>
                 <label for="text">가입일시</label>
-                <input type="text" th:value="${member.createDate}">
+                <input type="text" th:value="${#temporals.format(member.createDate, 'yyyy-MM-dd HH:mm:ss')}">
             </div>
             <div>
                 <label for="text">휴대폰번호</label>
                 <input type="text" th:value="${member.phone}">
             </div>
-
         </div>
     </div>
 </div>

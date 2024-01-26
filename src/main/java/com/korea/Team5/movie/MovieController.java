@@ -67,7 +67,7 @@ public class MovieController {
         List movieList = new ArrayList<>();
         if(genreId != null){
             List<GenreMovieInfo> genreMovieInfoList = this.movieService.getMoviesByGenreId(genreId);
-             movieList = this.movieService.genreMovieInfoToMovieInfo(genreMovieInfoList);
+            movieList = this.movieService.genreMovieInfoToMovieInfo(genreMovieInfoList);
         } else {
             movieList = this.movieService.infoList();
         }
@@ -198,9 +198,3 @@ public class MovieController {
     }
 
 }
-
-
-
-
-
-

@@ -33,8 +33,6 @@ public class Board {
     private List<Article> articleList;
 
 
-
-
 }
 
 
