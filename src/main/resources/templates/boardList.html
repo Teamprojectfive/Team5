@@ -71,7 +71,7 @@
             <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
             <h3 th:text="'제목: ' + ${board.title}"></h3>
 
-<!--            <p th:text="'방주인 : ' + ${board.member.nickName}"></p>-->
+            <!--            <p th:text="'방주인 : ' + ${board.member.nickName}"></p>-->
             <a th:href="@{|/board/article/list/${board.id}|}">들어가기</a>
 
         </li>

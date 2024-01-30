@@ -53,20 +53,20 @@
                        th:if="${reply.member != null and #authentication.getPrincipal().getUsername() == reply.member.loginId}"
                        th:text="삭제">
                     </a>
-                        <!--답글 수정  시작 !!-->
+                    <!--답글 수정  시작 !!-->
                     <div th:if="${reply.member != null and #authentication.getPrincipal().getUsername() == reply.member.loginId}"
                          sec:authorize="isAuthenticated()">
                         <input type="button" value="수정" th:onclick="toggleReplyDivVisibility([[${reply.id}]])"
                                th:id="'replyModifyButton-' + ${reply.id}" class="replyModifyClass">
                     </div>
                     <form th:action="@{|/reply/modify/${reply.id}|}" th:object="${commentReplyForm}" method="get">
-                    <div th:id="'replyModifyForm-' + ${reply.id}" style="display: none;" class="allReplyModifyForm">
-                        <input type="hidden" name="articleId" th:value="${article.id}">
-                        <textarea class="form-control" id="floatingTextarea5" style="height: 100px" name="content"
-                                  th:text="${reply.content}"></textarea>
-                        <input type="submit" value="답글 수정하기">
-                        <input type="button" value="취소" th:onclick="cancelReply([[${reply.id}]])" th:id="'cancelButton-' + ${reply.id}">
-                    </div>
+                        <div th:id="'replyModifyForm-' + ${reply.id}" style="display: none;" class="allReplyModifyForm">
+                            <input type="hidden" name="articleId" th:value="${article.id}">
+                            <textarea class="form-control" id="floatingTextarea5" style="height: 100px" name="content"
+                                      th:text="${reply.content}"></textarea>
+                            <input type="submit" value="답글 수정하기">
+                            <input type="button" value="취소" th:onclick="cancelReply([[${reply.id}]])" th:id="'cancelButton-' + ${reply.id}">
+                        </div>
                     </form>
                     <!--답글 수정  끝 !!-->
                 </li>

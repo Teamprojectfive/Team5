@@ -5,6 +5,8 @@ import com.korea.Team5.USER.Member;
 
 import com.korea.Team5.USER.MemberRepository;
 
+import com.korea.Team5.board.Board;
+import com.korea.Team5.board.BoardRepository;
 import com.korea.Team5.kmapi.repository.PlotRepository;
 import com.korea.Team5.movie.entity.*;
 import com.korea.Team5.movie.repository.*;
@@ -43,7 +45,7 @@ public class MovieService {
     private final DirectorRepository directorRepository;
     private final PlotRepository plotRepository;
     private final GenreMovieInfoRepository genreMovieInfoRepository;
-
+    private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
 
@@ -56,10 +58,9 @@ public class MovieService {
 
     @Autowired
 
-
-    public MovieService(RestTemplate restTemplate, MovieRepository movieRepository, MovieInfoRepository movieInfoRepository, @Value("${movie.api.url2}") String apiUrl, @Value("${movie.api.key}") String apiKey, @Value("${movie.api.detail.url}") String apiUrl2, GenreRepository genreRepository, Actor1Repository actor1Repository, AuditRepository auditRepository, CompanyRepository companyRepository, NationRepository nationRepository, StaffRepository staffRepository, DirectorRepository directorRepository, PlotRepository plotRepository, GenreMovieInfoRepository genreMovieInfoRepository, MemberRepository memberRepository) {
+    public MovieService(RestTemplate restTemplate, MovieRepository movieRepository, MovieInfoRepository movieInfoRepository, @Value("${movie.api.url2}") String apiUrl, @Value("${movie.api.key}") String apiKey, @Value("${movie.api.detail.url}") String apiUrl2, GenreRepository genreRepository, Actor1Repository actor1Repository, AuditRepository auditRepository, CompanyRepository companyRepository, NationRepository nationRepository, StaffRepository staffRepository, DirectorRepository directorRepository, PlotRepository plotRepository, GenreMovieInfoRepository genreMovieInfoRepository, MemberRepository memberRepository,BoardRepository boardRepository) {
         this.memberRepository = memberRepository;
-
+        this.boardRepository = boardRepository;
         this.genreMovieInfoRepository = genreMovieInfoRepository;
         this.plotRepository = plotRepository;
         this.directorRepository = directorRepository;
@@ -196,6 +197,7 @@ public class MovieService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
             LocalDate targetDate = LocalDate.parse(targetDt, formatter);
             List<Movie> movieList = new ArrayList<>();
+            Set<String> displayedMovieSet = new HashSet<>();
 
 
             for (int i = 0; i < 10; i++) {
@@ -205,19 +207,13 @@ public class MovieService {
                 List<Movie> movies = responseEntity.getBody().getBoxOfficeResult().getWeeklyBoxOfficeList();
 
                 for (Movie movie : movies) {
-
                     int audiAcc = Integer.parseInt(movie.getAudiAcc());
                     movie.setAudiAcc(String.valueOf(audiAcc));
                     this.movieRepository.save(movie);
-
-
                 }
                 movieList.addAll(movies);
-
                 // currentDate를 1주씩 감소
                 targetDate = targetDate.minusWeeks(1);
-
-
             }
             return movieList;
 
@@ -227,17 +223,20 @@ public class MovieService {
         @Transactional
         public MovieInfo getMovieDetail () {
             List<Movie> movieList = this.movieRepository.findAll();
+            List<MovieInfo> movieInfoList = this.movieInfoRepository.findAll();
 
             try {
 
                 int i = 0;
                 for (Movie movie : movieList) {
-                    if (i == 80) {
+                    if (i == 30) {
                         break;
                     }
 
 
                     String movieCd = movie.getMovieCd();
+
+
 
                     String url = apiUrl2 + "?key=" + apiKey + "&movieCd=" + movieCd;
                     ResponseEntity<MovieInfoResult> responseEntity = restTemplate.getForEntity(url, MovieInfoResult.class);
@@ -248,11 +247,16 @@ public class MovieService {
                         if (movieInfoWrap != null) {
                             MovieInfo movieInfo = movieInfoWrap.getMovieInfo();
                             MovieInfo targetMovieInfo = movieInfoRepository.findByMovieCd(movieCd);
+
+
                             if (targetMovieInfo == null) {
                                 targetMovieInfo = this.movieInfoRepository.save(movieInfo);
                             }
+
+
                             movie.setMovieInfo(targetMovieInfo);
                             this.movieRepository.save(movie);
+
 
                             List<GenreDto> genres = movieInfo.getGenres();
                             for (GenreDto genre : genres) {
@@ -276,9 +280,13 @@ public class MovieService {
                             }
                             List<Nation> nations = movieInfo.getNations();
                             for (Nation nation : nations) {
-                                nation.setMovieInfo(targetMovieInfo);
-                                this.nationRepository.save(nation);
+                                Nation existingNation = nationRepository.findByNationNmAndMovieInfo(nation.getNationNm(), targetMovieInfo);
+                                if (existingNation == null) {
+                                    nation.setMovieInfo(targetMovieInfo);
+                                    this.nationRepository.save(nation);
+                                }
                             }
+
                             List<Director> directors = movieInfo.getDirectors();
                             for (Director director : directors) {
                                 director.setMovieInfo(targetMovieInfo);
@@ -286,11 +294,19 @@ public class MovieService {
                             }
                             List<Audit> audits = movieInfo.getAudits();
                             for (Audit audit : audits) {
-                                audit.setMovieInfo(targetMovieInfo);
-                                this.auditRepository.save(audit);
+                                Audit existingAudit = this.auditRepository.findByWatchGradeNmAndMovieInfo(audit.getWatchGradeNm(), targetMovieInfo);
+                                if (existingAudit == null) {
+                                    audit.setMovieInfo(targetMovieInfo);
+                                    this.auditRepository.save(audit);
+                                }
                             }
                             List<Actor1> actor1s = movieInfo.getActors();
                             for (Actor1 actor1 : actor1s) {
+                                Actor1 existingActor = this.actor1Repository.findByPeopleNmAndMovieInfo(actor1.getPeopleNm(), targetMovieInfo);
+                                if (existingActor == null) {
+                                    actor1.setMovieInfo(targetMovieInfo);
+                                    this.actor1Repository.save(actor1);
+                                }
                                 actor1.setMovieInfo(targetMovieInfo);
                                 this.actor1Repository.save(actor1);
                             }
@@ -299,8 +315,6 @@ public class MovieService {
                                 company.setMovieInfo(targetMovieInfo);
                                 this.companyRepository.save(company);
                             }
-
-
                         } else {
                             throw new RuntimeException("API 응답 중 MovieInfoWrap이 null입니다.");
                         }

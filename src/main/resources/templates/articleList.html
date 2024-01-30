@@ -45,64 +45,64 @@
 </head>
 <body>
 <div layout:fragment="content">
-<div>
-    <label for="text">자유게시판</label>
-    <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
-</div>
-<!-- 게시글 목록 -->
-<div th:each="article, loop : ${articles}" class="article">
-    <td th:text="${articles.getTotalElements - (articles.number * articles.size) - loop.index}"></td>
-    <a th:href="@{|/board/article/detail/${article.id}|}">
-        <h1 th:text="${article.title}"></h1>
-    </a>
-    <div th:text="${article.member.nickName}"></div>
-    <div th:text="${article.createDate}"></div>
-    <a th:href="@{|/board/article/modify/${article.id}?boardId=${board.id}|}" class="btn btn-sm btn-outline-secondary"
-       sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-       th:text="수정">
-    </a>
-    <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?boardId=${board.id}|}"
-       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-       th:text="삭제"></a>
-    <!--    <a th:href="@{|/"></a>-->
-</div>
-<!-- 페이징처리 시작 -->
-<div th:if="${!articles.isEmpty()}">
-    <ul class="pagination justify-content-center">
-        <li class="page-item" th:classappend="${!articles.hasPrevious} ? 'disabled'">
-            <a class="page-link"
-               th:href="@{|?page=${articles.number-1}|}">
-                <span>이전</span>
-            </a>
-        </li>
-        <li th:each="page: ${#numbers.sequence(0, articles.totalPages-1)}"
-            th:if="${page >= articles.number-5 and page <= articles.number+5}"
-            th:classappend="${page == articles.number} ? 'active'"
-            class="page-item">
-            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-        </li>
-        <li class="page-item" th:classappend="${!articles.hasNext} ? 'disabled'">
-            <a class="page-link" th:href="@{|?page=${articles.number+1}|}">
-                <span>다음</span>
-            </a>
-        </li>
-    </ul>
-</div>
-<!-- 페이징처리 끝 -->
-<!-- 게시글 작성 링크 -->
-<a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
-<h2>리스트</h2>
-<script type='text/javascript'>
-    const delete_elements = document.getElementsByClassName("delete");
-    Array.from(delete_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            if(confirm("정말로 삭제하시겠습니까?")) {
-                location.href = this.dataset.uri;
-            };
+    <div>
+        <label for="text">자유게시판</label>
+        <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
+    </div>
+    <!-- 게시글 목록 -->
+    <div th:each="article, loop : ${articles}" class="article">
+        <td th:text="${articles.getTotalElements - (articles.number * articles.size) - loop.index}"></td>
+        <a th:href="@{|/board/article/detail/${article.id}|}">
+            <h1 th:text="${article.title}"></h1>
+        </a>
+        <div th:text="${article.member.nickName}"></div>
+        <div th:text="${article.createDate}"></div>
+        <a th:href="@{|/board/article/modify/${article.id}?boardId=${board.id}|}" class="btn btn-sm btn-outline-secondary"
+           sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+           th:text="수정">
+        </a>
+        <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?boardId=${board.id}|}"
+           class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+           th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+           th:text="삭제"></a>
+        <!--    <a th:href="@{|/"></a>-->
+    </div>
+    <!-- 페이징처리 시작 -->
+    <div th:if="${!articles.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!articles.hasPrevious} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|?page=${articles.number-1}|}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(0, articles.totalPages-1)}"
+                th:if="${page >= articles.number-5 and page <= articles.number+5}"
+                th:classappend="${page == articles.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${!articles.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${articles.number+1}|}">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 페이징처리 끝 -->
+    <!-- 게시글 작성 링크 -->
+    <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
+    <h2>리스트</h2>
+    <script type='text/javascript'>
+        const delete_elements = document.getElementsByClassName("delete");
+        Array.from(delete_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
         });
-    });
-</script>
+    </script>
 </div>
 </body>
 </html>
