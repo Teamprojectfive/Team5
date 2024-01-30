@@ -1,90 +1,56 @@
-
-<!-- boardList.html -->
 <!DOCTYPE html>
-<html lang="ko">
+<html layout:decorate="~{layout_without_header}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th=""
+      style="width:1900px">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
 
-        #boardContainer {
-            margin-top: 20px;
-            width: 80%; /* 더 넓은 영역을 차지하도록 조절 */
-        }
-
-        #boardContainer h2 {
-            text-align: center;
-        }
-
-        #boardContainer ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap; /* 요소가 넘칠 경우 다음 줄로 넘어갈 수 있도록 설정 */
-            justify-content: space-around; /* 요소를 가로로 고르게 분배 */
-        }
-
-        .boardItem {
-            margin-bottom: 20px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px; /* 요소의 최대 너비 설정 */
-            width: 100%;
-            text-align: center;
-        }
-
-        .boardItem img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .boardItem a {
-            text-decoration: none;
-            color: #007BFF;
-            font-weight: bold;
-        }
-
-        .movieSelectionLink {
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
 </head>
-<body>
-<div id="boardContainer">
-    <h2>게시판</h2>
-    <ul>
-        <li th:each="board : ${boardList}" class="boardItem">
-            <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
-            <h3 th:text="'제목: ' + ${board.title}"></h3>
+<body style="background: #f2f2f2;">
+<div layout:fragment="content">
+    <div  style="display:flex; justify-content: space-between; padding: 20px; margin-bottom: 20px; margin-top:20px;">
+        <div th:each="genre : ${genreList}" class="genreItem"     >
+            <button onclick="filterMoviesByGenre(this.innerText)" class="recommend btn btn-sm btn-outline-secondary" style="color:black; font-weight:bold;background: aliceblue;"><span th:text="${genre.genreNm}"></span></button>
+        </div>
+    </div>
+    <section class="movie_room_cont" style="display:flex; flex-wrap:wrap; justify-content: center; width:100%;">
+        <div th:each="movie : ${movieInfoList}" class="movieItem"
+             style="border:solid 3px black; border-radius:5px; padding:10px; width:13%; text-align:center;margin: 10px">
+            <img th:src="${movie.posters}" alt="" style="width:222px; height:305px;">
+            <div style="height: 16vh; display: flex;flex-direction: column;justify-content: space-between;">
+                <h2 th:text="${movie.movieNm}" style="font-weight: bold; font-size: 18px"></h2>
+                <div class="detail_cont" th:each="genre : ${movie.genreMovieInfos}">
+                    <label>장르:</label>
+                    <p class="detail_cont_subb" th:text="${genre.genre.genreNm}" style="color:black;"></p>
+                </div>
+                <a th:href="@{|/board/article/list/${movie.id}?page=0|}" class="recommend btn btn-sm btn-outline-secondary"
+                   style="width: 100%;">들어가기</a>
+            </div>
+        </div>
+    </section>
+    <script>
+        function filterMoviesByGenre(genre) {
+            var movieItems = document.querySelectorAll('.movieItem');
 
+            movieItems.forEach(function(item) {
+                var genres = item.querySelectorAll('.detail_cont_subb');
+                var found = false;
 
-<!--            <p th:text="'방주인: ' + ${board.member.nickName}"></p>-->
+                genres.forEach(function(genreElem) {
+                    if (genreElem.textContent.trim() === genre) {
+                        found = true;
+                    }
+                });
 
-            <a th:href="@{|/board/article/list/${board.id}|}">들어가기</a>
-
-        </li>
-    </ul>
-</div>
-
-
-
-<div class="movieSelectionLink">
-    <a th:href="@{/board/create}">방만들기</a>
+                if (found) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </div>
 </body>
 </html>

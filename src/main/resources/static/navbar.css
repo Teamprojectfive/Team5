@@ -25,6 +25,7 @@ nav{
 }
 
 .movie_name a{
+    text-decoration: none;
     color: white;
 }
 

@@ -21,7 +21,7 @@
                 <li th:each="movie : ${adminmoviespaging.content}" style="    max-width: 20%;    list-style: none;">
                     <!-- 멤버의 정보를 출력 -->
                     <p th:text="${movie.movieNm}" style="font-weight: bold;"></p>
-                    <img th:src="${movie.movieInfo.posters}">
+                    <img th:src="${movie.posters}" style="width:213px; height:305px;">
                     <!-- 추가로 출력할 정보가 있다면 추가 -->
                     <!-- <p th:text="${member.someOtherField}"></p> -->
                     <form th:action="@{/admin/adminmoviedelete}" method="post" style="display:flex; justify-content: center;">

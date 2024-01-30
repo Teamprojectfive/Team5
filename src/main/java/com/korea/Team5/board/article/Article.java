@@ -1,9 +1,12 @@
 package com.korea.Team5.board.article;
+
+import com.korea.Team5.USER.Member;
+
+
+import com.korea.Team5.movie.entity.MovieInfo;
+
 import com.korea.Team5.Comment.Comment;
-import com.korea.Team5.USER.Member;
-import com.korea.Team5.board.Board;
-import com.korea.Team5.USER.Member;
-import com.korea.Team5.board.Board;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,9 +32,10 @@ public class Article {
     private Member member;
 
     @ManyToOne
-    private Board board;
+    private MovieInfo movieInfo;
 
     @OneToMany(mappedBy = "article")
     private List<Comment> commentList;
+
 
 }

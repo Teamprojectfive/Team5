@@ -59,15 +59,14 @@
     <section class="list_box_wrap" id="listContainer">
         <section class="list_box">
             <div class="list genre" th:each="movie : ${movieList}">
-                <h1 th:text="${movie.id}"></h1>
                 <div class="list_item">
                     <div class="additional-info">
                         <div style="padding-top: 10px; text-align: center;font-weight: bold;font-size: 25px;"
                              th:text="${movie.movieNm}"></div>
                         <div class="sub_info">
                             <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
-                            <div style="margin-top: 10px;">
-                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                            <div style="margin-top: 10px;    text-align: center;">
+                                <a th:href="@{|/movie/detail/${movie.id}|}" class="btn btn-sm btn-outline-secondary">상세보기</a>
                                 <!--                                -->
                                 <!--                                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"-->
                                 <!--                                       th:data-uri="@{|/movie/vote/${movie.id}|}"-->
@@ -83,11 +82,8 @@
                     </div>
                 </div>
             </div>
-
         </section>
     </section>
-    <button class="left" onclick="movePage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-    <button class="right" onclick="movePage(1)"><i class="fa-solid fa-chevron-right"></i></button>
     <script>
         $(document).ready(function() {
           // 페이지 로드 시 localStorage에 저장된 genre 정보를 확인
@@ -112,7 +108,6 @@
           });
         });
     </script>
-
     <script>
         let currentSlide = 0;
         const totalSlides = document.querySelectorAll('.list_box').length;
