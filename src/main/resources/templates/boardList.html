@@ -96,9 +96,10 @@
             <div class="detail_cont" th:each="genre : ${movie.genreMovieInfos}">
                 <p class="detail_cont_subb" th:text="${genre.genre.genreNm}"></p>
             </div>
-            <a th:href="@{|/board/article/list/${movie.id}?page=0|}">들어가기</a>
+            <a th:href="@{|/board/article/list/${movie.id}|}">들어가기</a>
         </span>
     </div>
+
 </div>
 
 <script>

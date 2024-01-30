@@ -183,7 +183,7 @@ public class MovieController {
     public String moviesearch(Model model,@RequestParam String enterMovie){
 
         List<MovieInfo> searchMovieList = this.movieService.getMovieInfoNm(enterMovie);
-        model.addAttribute("searchMovieList",searchMovieList);
+        model.addAttribute("movieList",searchMovieList);
 
 
         return "top100";

@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 @Getter
 public class Article {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -36,6 +35,7 @@ public class Article {
 
     @OneToMany(mappedBy = "article")
     private List<Comment> commentList;
+
 
 
 }

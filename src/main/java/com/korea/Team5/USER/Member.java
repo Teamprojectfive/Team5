@@ -1,6 +1,7 @@
 package com.korea.Team5.USER;
 
 import com.korea.Team5.Comment.Comment;
+import com.korea.Team5.Comment.Commentreply.CommentReply;
 import com.korea.Team5.Review.Review;
 
 
@@ -46,12 +47,10 @@ public class Member {
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<Comment> commentList;
-
-
+  @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+  private List<CommentReply> commentReplyList;
   // 소셜 로그인 정보
   private String socialProvider;  // Google, Kakao, Naver 등
-
-
   @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<Review> reviewList;
 
@@ -62,4 +61,6 @@ public class Member {
 
   @OneToMany(mappedBy = "member")
   private List<Article> articleList;
+
+
 }

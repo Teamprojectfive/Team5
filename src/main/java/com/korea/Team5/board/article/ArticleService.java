@@ -2,21 +2,19 @@ package com.korea.Team5.board.article;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.USER.Member;
-
-
-import com.korea.Team5.board.Board;
-
 import com.korea.Team5.movie.entity.MovieInfo;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +36,9 @@ public class ArticleService {
         return this.articleRepository.findAll();
     }
 
+
     public Page<Article> getListByMovieInfo(Integer id, int page){
-          Pageable pageable = PageRequest.of(page, 3);
+          Pageable pageable = PageRequest.of(page, 10);
           return this.articleRepository.findByMovieInfoId(id, pageable);
       }
 
@@ -50,7 +49,6 @@ public class ArticleService {
   }
 
   public void delete(Article article) {
-
     this.articleRepository.delete(article);
 
   }
@@ -65,11 +63,6 @@ public class ArticleService {
 
     }
   }
-
-
-
-
-
 
 
 }

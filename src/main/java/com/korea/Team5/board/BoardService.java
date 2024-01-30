@@ -17,19 +17,8 @@ public class BoardService {
   private final BoardRepository boardRepository;
 
 
-  public List<Board> boardList() {
-    return this.boardRepository.findAll();
-  }
 
-  public Board getBoard(Integer boardId) {
 
-    Optional<Board> board = this.boardRepository.findById(boardId);
-    if (board.isPresent()) {
-      return board.get();
-    } else {
-      throw new DataNotFoundException("board not found");
 
-    }
-  }
 
 }

@@ -224,16 +224,19 @@ public class MovieService {
         public MovieInfo getMovieDetail () {
             List<Movie> movieList = this.movieRepository.findAll();
             List<MovieInfo> movieInfoList = this.movieInfoRepository.findAll();
+
             try {
 
                 int i = 0;
                 for (Movie movie : movieList) {
-                    if (i == 50) {
+                    if (i == 30) {
                         break;
                     }
 
 
                     String movieCd = movie.getMovieCd();
+
+
 
                     String url = apiUrl2 + "?key=" + apiKey + "&movieCd=" + movieCd;
                     ResponseEntity<MovieInfoResult> responseEntity = restTemplate.getForEntity(url, MovieInfoResult.class);

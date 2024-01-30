@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
 <head>
     <meta charset="UTF-8">
     <title>Article List</title>
@@ -67,19 +67,21 @@
     </style>
 </head>
 <body>
+<div layout:fragment="content">
 <div>
     <label for="text">자유게시판</label>
-    <img th:src="${movieInfo.posters}" alt="Selected Movie Poster" width="100"/>
+        <img th:src="${movieInfo.posters}" alt="Selected Movie Poster" width="100"/>
 </div>
- 게시글 목록
-<div th:each="article : ${articles}" class="article">
+<div th:each="article, loop : ${articles}" class="article">
     <a th:href="@{|/board/article/detail/${article.id}|}">
         <h1 th:text="${article.title}"></h1>
     </a>
     <div th:text="${article.member.nickName}"></div>
     <div th:text="${article.createDate}"></div>
-    <a th:href="@{|/board/article/modify/${article.id}?movieInfoId=${movieInfo.id}|}" class="btn btn-sm btn-outline-secondary"
-       sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+    <a th:href="@{|/board/article/modify/${article.id}?movieInfoId=${movieInfo.id}|}"
+       class="btn btn-sm btn-outline-secondary"
+       sec:authorize="isAuthenticated()"
+       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
        th:text="수정">
     </a>
     <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?movieInfoId=${movieInfo.id}|}"
@@ -114,9 +116,6 @@
 <div th:each="movie : ${movieInfo}">
     <a th:href="@{|/board/article/create?id=${movie.id}|}" class="create-link">글 작성</a>
 </div>
-<h2>리스트</h2>
-
-
 <script type='text/javascript'>
     const delete_elements = document.getElementsByClassName("delete");
     Array.from(delete_elements).forEach(function(element) {
@@ -128,5 +127,6 @@
     });
 </script>
 
+</div>
 </body>
 </html>

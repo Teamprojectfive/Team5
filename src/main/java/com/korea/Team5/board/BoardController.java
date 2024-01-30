@@ -45,19 +45,22 @@ public class BoardController {
     }
 
 
+
     @GetMapping("/article/list/{id}")
-    public String articleList(Model model, @PathVariable("id") Integer id, int page) {
+    public String articleList(Model model, @PathVariable("id") Integer id,  @RequestParam(value="page", defaultValue="0") int page) {
         Page<Article> articleList = this.articleService.getListByMovieInfo(id, page);
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("articles", articleList);
         return "articleList";
+
     }
 
     @GetMapping("/article/create")
     @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
     public String articlecreate(ArticleForm articleForm, @RequestParam Integer id, Model model) {
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
+        model.addAttribute("movieInfo", movieInfo);
 
         return "articleCreate";
     }
@@ -109,7 +112,7 @@ public class BoardController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이없습니다.");
     }
     this.articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
-    return String.format("redirect:/board/article/list/" + movieInfoId);
+    return String.format("redirect:/board/article/list/%s" + movieInfoId);
 
   }
 
@@ -125,7 +128,7 @@ public class BoardController {
 
     this.articleService.delete(article);
 
-    return "redirect:/board/article/list/" + movieInfoId;
+    return "redirect:/board/article/list/%s" + movieInfoId;
   }
 
 

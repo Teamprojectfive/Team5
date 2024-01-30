@@ -22,6 +22,10 @@ public interface MovieInfoRepository extends JpaRepository<MovieInfo, Integer> {
 
 
 
+
+
+    MovieInfo findByMovieNm(String movieNm);
+
     MovieInfo findByMovieCd(String movieCd);
 
 
