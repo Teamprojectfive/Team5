@@ -105,8 +105,15 @@
                     <div class="col-md-8" style="width: 100%;">
                         <div th:each="review : ${paging}" class="card mb-3">
                             <div class="card-body">
-                                <h5 class="card-title" th:text="${review.subject}"></h5>
+                                <div class="card-container" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                                    <p class="card-text" th:text="${review.member.loginId}"></p>
+                                </div>
+                                <div th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                                    <p class="card-text" th:text="${#strings.substring(review.member.loginId, 0, #strings.length(review.member.loginId) - 2) + '**'}">
+                                    </p>
+                                </div>
                                 <p class="card-text" th:text="${review.content}"></p>
+                                <p class="card-text" th:text="${review.createDate}"></p>
                             </div>
                             <!-- 별점 -->
                             <div class="star-rating" th:if="${review.starRating != null}"

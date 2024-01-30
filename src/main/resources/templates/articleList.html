@@ -41,92 +41,110 @@
         .create-link:hover {
             background-color: #45a049;
         }
-
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .pagination a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-
-        .pagination a.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .pagination a:hover:not(.active) {
-            background-color: #ddd;
-        }
     </style>
 </head>
 <body>
 <div layout:fragment="content">
-<div>
-    <label for="text">자유게시판</label>
+    <div>
+        <label for="text">자유게시판</label>
         <img th:src="${movieInfo.posters}" alt="Selected Movie Poster" width="100"/>
-</div>
-<div th:each="article, loop : ${articles}" class="article">
-    <a th:href="@{|/board/article/detail/${article.id}|}">
-        <h1 th:text="${article.title}"></h1>
+    </div>
+    <!-- 게시글 목록 -->
+    <div th:each="article, loop : ${articles}" class="article">
+        <td th:text="${articles.getTotalElements - (articles.number * articles.size) - loop.index}"></td>
+        <a th:href="@{|/board/article/detail/${article.id}|}">
+            <h1 th:text="${article.title}"></h1>
+        </a>
+        <div th:text="${article.member.nickName}"></div>
+        <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
+        <div th:text="${article.views}"></div>
+        <span class="text-danger small ms-2"
+              th:if="${#lists.size(article.commentList) > 0}"
+              th:text="${#lists.size(article.commentList)}">
+                    </span>
+        <a th:href="@{|/board/article/modify/${article.id}?movieInfoId=${movieInfo.id}|}"
+           class="btn btn-sm btn-outline-secondary"
+           sec:authorize="isAuthenticated()"
+           th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+           th:text="수정">
+        </a>
+        <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?movieInfoId=${movieInfo.id}|}"
+           class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+           th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+           th:text="삭제"></a>
+    </div>
+    <div th:if="${!articles.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${articles.number == 0} ? 'disabled' : ''">
+                <a class="page-link"
+                   th:href="@{|?page=${articles.number-1}|}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(0, articles.totalPages-1)}"
+                th:if="${page >= articles.number-5 and page <= articles.number+5}"
+                th:classappend="${page == articles.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${!articles.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${articles.number+1}|}">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 페이징처리 끝 -->
+    <!-- 게시글 작성 링크 -->
+    <a th:href="@{|/board/article/create?id=${movieInfo.id}|}" class="create-link" onclick="checkLoginAndRedirect()">글 작성
+        <input type="hidden" th:value="${movieInfo.id}" name="movieId" th:id="articleScriptId">
     </a>
-    <div th:text="${article.member.nickName}"></div>
-    <div th:text="${article.createDate}"></div>
-    <a th:href="@{|/board/article/modify/${article.id}?movieInfoId=${movieInfo.id}|}"
-       class="btn btn-sm btn-outline-secondary"
-       sec:authorize="isAuthenticated()"
-       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-       th:text="수정">
-    </a>
-    <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?movieInfoId=${movieInfo.id}|}"
-       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-       th:text="삭제"></a>
-
-</div>
-<div th:if="${!articles.isEmpty()}">
-    <ul class="pagination justify-content-center">
-        <li class="page-item" th:classappend="${articles.number == 0} ? 'disabled' : ''">
-            <a class="page-link"
-               th:href="@{|?page=${articles.number-1}|}">
-                <span>이전</span>
-            </a>
-        </li>
-        <li th:each="page: ${#numbers.sequence(0, articles.totalPages-1)}"
-            th:if="${page >= articles.number-5 and page <= articles.number+5}"
-            th:classappend="${page == articles.number} ? 'active'"
-            class="page-item">
-            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-        </li>
-        <li class="page-item" th:classappend="${!articles.hasNext} ? 'disabled'">
-            <a class="page-link" th:href="@{|?page=${articles.number+1}|}">
-                <span>다음</span>
-            </a>
-        </li>
-    </ul>
-</div>
-<!-- 페이징처리 끝 -->
-<!-- 게시글 작성 링크 -->
-<div th:each="movie : ${movieInfo}">
-    <a th:href="@{|/board/article/create?id=${movie.id}|}" class="create-link">글 작성</a>
-</div>
-<script type='text/javascript'>
-    const delete_elements = document.getElementsByClassName("delete");
-    Array.from(delete_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            if(confirm("정말로 삭제하시겠습니까?")) {
-                location.href = this.dataset.uri;
-            };
+    <h2>리스트</h2>
+    <script type='text/javascript'>
+        const delete_elements = document.getElementsByClassName("delete");
+        Array.from(delete_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
         });
-    });
-</script>
-
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function checkLoginAndRedirect(movieInfoId) {
+            // 'id' 변수는 해당 값을 사용하도록 대체해야 합니다.
+            var id = document.getElementById("articleScriptId").value;
+            // 로그인 상태 확인 후 폼 제출 함수 호출
+            checkLoginAndSubmit(id);
+        }
+        function checkLoginAndSubmit(id) {
+            $.ajax({
+                url: "/check-login-status",
+                method: "GET",
+                success: function(response) {
+                    if (response.loggedIn) {
+                        // 로그인된 경우, AJAX를 사용하여 댓글 제출
+                        $.ajax({
+                            url: "/reply/create/" + id,
+                            method: "GET",
+                            data: { "content": content, "_csrf": "${_csrf.token}" },
+                            success: function(commentResponse) {
+                                // 필요한 경우 성공 처리를 처리합니다.
+                            },
+                            error: function() {
+                                // 필요한 경우 오류 처리를 처리합니다.
+                            }
+                        });
+                    } else {
+                        // 로그인되지 않은 경우, 알림 표시 후 로그인 페이지로 리다이렉트
+                        alert("로그인이 필요한 서비스입니다.");
+                        window.location.href = "/member/login";
+                    }
+                }
+            });
+        }
+    </script>
 </div>
 </body>
 </html>

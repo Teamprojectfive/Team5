@@ -203,7 +203,7 @@ public class MemberController {
 
     if (review != null) {
       // 리뷰를 수정합니다.
-      reviewService.modify(review, newSubject, newContent,newStarRating);
+      reviewService.modify(review, newSubject,newStarRating);
       // 수정이 완료되면 마이페이지 리뷰로 리다이렉트합니다.
       return "redirect:/member/mypagereview";
     } else {

@@ -17,8 +17,4 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @OneToMany(mappedBy = "board")
-//    private List<Article> articleList;
-
-
 }
