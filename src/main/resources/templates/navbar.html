@@ -23,8 +23,8 @@
         <div class="dropdown dropdown-hover">
             <div tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px; font-weight:bold;">영화</div>
             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
-                <li><a href="/movie/list">박스오피스</a></li>
-                <li><a href="/movie/mainList">장르</a></li>
+                <li><a href="/movie/boxOffice">박스오피스</a></li>
+                <li><a href="/movie/top100">top100</a></li>
             </ul>
         </div>
         <div class="dropdown dropdown-hover">
@@ -44,7 +44,9 @@
             <button class="search-button" onclick="toggleSearch()">
                 <i class="fa-solid fa-magnifying-glass" style="font-size: 35px;color:white;"></i>
             </button>
-            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+            <form th:action="@{/movie/search}" method="get">
+            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요">
+            </form>
         </div>
     </div>
     <script>

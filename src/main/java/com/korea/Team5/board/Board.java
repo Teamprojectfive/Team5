@@ -17,19 +17,8 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String title;
-
-    private String content;
-
-    private String posterUrl;
-
-    @ManyToOne
-    private Member member;
-
-
-
-    @OneToMany(mappedBy = "board")
-    private List<Article> articleList;
+//    @OneToMany(mappedBy = "board")
+//    private List<Article> articleList;
 
 
 }

@@ -36,7 +36,7 @@ public class MovieController {
     private final ReviewService reviewService;
 
 
-    @GetMapping("/list")
+    @GetMapping("/boxOffice")
     public String list(Model model) {
 
         List<Movie> movieList = this.movieService.list();
@@ -59,10 +59,10 @@ public class MovieController {
         model.addAttribute("movieSubList", movieSubListList);
 
 
-        return "movieList";
+        return "boxOffice";
     }
 
-    @GetMapping("/mainList")
+    @GetMapping("/top100")
     public String test(Model model, @RequestParam(required = false) Integer genreId) {
         List movieList = new ArrayList<>();
         if(genreId != null){
@@ -82,14 +82,7 @@ public class MovieController {
         model.addAttribute("genres", genres);
         model.addAttribute("movie", movie);
         model.addAttribute("movieSubList", movieSubListList);
-        return "mainList";
-    }
-
-    @GetMapping("/test1")
-    public String test1(Model model) {
-        List<Genre> genres = this.movieService.genreList();
-        model.addAttribute("genres", genres);
-        return "test1";
+        return "top100";
     }
 
 
@@ -103,7 +96,6 @@ public class MovieController {
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
 
-//        List<MovieInfoDto> movieInfoList = this.kmapiService.videoListSaveDataBase();8
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movies", movies);
         model.addAttribute("movie", movie);
@@ -120,7 +112,7 @@ public class MovieController {
         Member member = this.memberService.getMember(principal.getName());
         this.movieService.vote(movie, member);
 
-        return String.format("redirect:/movie/list");
+        return String.format("redirect:/member/mypage");
 
     }
 
@@ -131,7 +123,7 @@ public class MovieController {
         Member member = this.memberService.getMember(principal.getName());
         this.movieService.vote(movieInfo, member);
 
-        return String.format("redirect:/movie/mainList");
+        return String.format("redirect:/movie/top100List");
     }
 
 
@@ -191,10 +183,10 @@ public class MovieController {
     public String moviesearch(Model model,@RequestParam String enterMovie){
 
         List<MovieInfo> searchMovieList = this.movieService.getMovieInfoNm(enterMovie);
-        model.addAttribute("searchMovieList",searchMovieList);
+        model.addAttribute("movieList",searchMovieList);
 
 
-        return "mainList";
+        return "top100";
     }
 
 }

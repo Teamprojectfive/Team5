@@ -66,7 +66,6 @@ public class MemberService {
 
   public List<MovieInfo> getWishList(String loginId){
     Optional<Member> optionalMember = this.memberRepository.findByloginId(loginId);
-
     return optionalMember.map(Member::getVoter).orElse(Collections.emptyList());
   }
 
