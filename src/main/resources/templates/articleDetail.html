@@ -10,7 +10,7 @@
 <div>
     <input type="text" th:value="${article.title}" readonly>
     <input type="text" th:value="${article.content}" readonly>
-    <input type="text" th:value="${article.createDate}" readonly>
+    <input type="text" th:value="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
 </div>
 <h2>댓글</h2>
 <ul>
@@ -65,7 +65,8 @@
                             <textarea class="form-control" id="floatingTextarea5" style="height: 100px" name="content"
                                       th:text="${reply.content}"></textarea>
                             <input type="submit" value="답글 수정하기">
-                            <input type="button" value="취소" th:onclick="cancelReply([[${reply.id}]])" th:id="'cancelButton-' + ${reply.id}">
+                            <input type="button" value="취소" th:onclick="cancelReply([[${reply.id}]])"
+                                   th:id="'cancelButton-' + ${reply.id}">
                         </div>
                     </form>
                     <!--답글 수정  끝 !!-->

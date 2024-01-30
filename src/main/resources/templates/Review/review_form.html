@@ -14,7 +14,6 @@
 <!-- 리뷰 폼 -->
 <form class="input_cont" th:action="@{|/review/create/${id}|}" th:object="${reviewForm}" method="post">
     <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-    <input type="text" name="subject" id="subject" placeholder="Subject">
     <textarea name="content" id="content" placeholder="Content"></textarea>
     <!-- 별점 입력 -->
     <div class="star-rating">

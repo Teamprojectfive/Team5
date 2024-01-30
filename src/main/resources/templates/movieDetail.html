@@ -2,7 +2,7 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px" lang="">
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
-    <div th:each="movie : ${movieInfo}">
+    <div>
         <div class="detail_container">
             <div th:each="movie : ${movieInfo}" class="movie_content">
                 <section class="post_cont">
@@ -21,9 +21,9 @@
                             <p class="detail_cont_sub">개봉일</p>
                             <p class="detail_cont_subb" th:text="${movie.openDt}"></p>
                         </div>
-                        <div th:each="genre : ${movie.genres}" class="detail_cont">
+                        <div th:each="genre : ${movie.genreMovieInfos}" class="detail_cont">
                             <p class="detail_cont_sub">장르</p>
-                            <p class="detail_cont_subb" th:text="${genre.genreNm}"></p>
+                            <p class="detail_cont_subb" th:text="${genre.genre.genreNm}"></p>
                         </div>
                         <div th:each="nation : ${movie.nations}" class="detail_cont">
                             <p class="detail_cont_sub">국가</p>
@@ -35,7 +35,6 @@
                         </div>
                     </div>
                 </section>
-
             </div>
         </div>
     </div>
@@ -106,8 +105,15 @@
                     <div class="col-md-8" style="width: 100%;">
                         <div th:each="review : ${paging}" class="card mb-3">
                             <div class="card-body">
-                                <h5 class="card-title" th:text="${review.subject}"></h5>
+                                <div class="card-container" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                                    <p class="card-text" th:text="${review.member.loginId}"></p>
+                                </div>
+                                <div th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                                    <p class="card-text" th:text="${#strings.substring(review.member.loginId, 0, #strings.length(review.member.loginId) - 2) + '**'}">
+                                    </p>
+                                </div>
                                 <p class="card-text" th:text="${review.content}"></p>
+                                <p class="card-text" th:text="${review.createDate}"></p>
                             </div>
                             <!-- 별점 -->
                             <div class="star-rating" th:if="${review.starRating != null}"

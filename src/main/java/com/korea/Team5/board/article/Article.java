@@ -33,7 +33,7 @@ public class Article {
     @ManyToOne
     private MovieInfo movieInfo;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
 

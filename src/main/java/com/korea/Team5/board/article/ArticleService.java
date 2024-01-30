@@ -1,9 +1,8 @@
 package com.korea.Team5.board.article;
 
 import com.korea.Team5.DataNotFoundException;
-import com.korea.Team5.Notice.Notice;
 import com.korea.Team5.USER.Member;
-import com.korea.Team5.board.Board;
+import com.korea.Team5.movie.entity.MovieInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,39 +15,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
 
   private final ArticleRepository articleRepository;
 
-
-  public void create(String title, String content, Member member, Board board) {
+  public void create(String title, String content, Member member, MovieInfo movieInfo){
 
     Article article = new Article();
     article.setTitle(title);
     article.setContent(content);
     article.setCreateDate(LocalDateTime.now());
-    article.setBoard(board);
-
     article.setMember(member);
-
-
+    article.setMovieInfo(movieInfo);
     this.articleRepository.save(article);
   }
-
-
-  public List<Article> list() {
+  public List<Article> list(){
     return this.articleRepository.findAll();
   }
 
 
-  public Page<Article> getListByBoard(int page) {
-    List<Sort.Order> sorts = new ArrayList<>();
-    sorts.add(Sort.Order.desc("createDate"));
-    Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
-    return this.articleRepository.findAll(pageable);
-
+  public Page<Article> getListByMovieInfo(Integer id, int page){
+    Pageable pageable = PageRequest.of(page, 10);
+    return this.articleRepository.findByMovieInfoId(id, pageable);
   }
 
   public void modify(Article article, String title, String content) {
@@ -58,7 +49,6 @@ public class ArticleService {
   }
 
   public void delete(Article article) {
-
     this.articleRepository.delete(article);
 
   }
@@ -82,5 +72,6 @@ public class ArticleService {
       throw new DataNotFoundException("Article not found");
     }
   }
+
 
 }

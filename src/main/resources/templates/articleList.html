@@ -47,7 +47,7 @@
 <div layout:fragment="content">
     <div>
         <label for="text">자유게시판</label>
-        <img th:src="${board.posterUrl}" alt="Selected Movie Poster" width="100"/>
+        <img th:src="${movieInfo.posters}" alt="Selected Movie Poster" width="100"/>
     </div>
     <!-- 게시글 목록 -->
     <div th:each="article, loop : ${articles}" class="article">
@@ -58,20 +58,24 @@
         <div th:text="${article.member.nickName}"></div>
         <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
         <div th:text="${article.views}"></div>
-        <a th:href="@{|/board/article/modify/${article.id}?boardId=${board.id}|}" class="btn btn-sm btn-outline-secondary"
-           sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+        <span class="text-danger small ms-2"
+              th:if="${#lists.size(article.commentList) > 0}"
+              th:text="${#lists.size(article.commentList)}">
+                    </span>
+        <a th:href="@{|/board/article/modify/${article.id}?movieInfoId=${movieInfo.id}|}"
+           class="btn btn-sm btn-outline-secondary"
+           sec:authorize="isAuthenticated()"
+           th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
            th:text="수정">
         </a>
-        <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?boardId=${board.id}|}"
+        <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?movieInfoId=${movieInfo.id}|}"
            class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
            th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
            th:text="삭제"></a>
-        <!--    <a th:href="@{|/"></a>-->
     </div>
-    <!-- 페이징처리 시작 -->
     <div th:if="${!articles.isEmpty()}">
         <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!articles.hasPrevious} ? 'disabled'">
+            <li class="page-item" th:classappend="${articles.number == 0} ? 'disabled' : ''">
                 <a class="page-link"
                    th:href="@{|?page=${articles.number-1}|}">
                     <span>이전</span>
@@ -92,8 +96,8 @@
     </div>
     <!-- 페이징처리 끝 -->
     <!-- 게시글 작성 링크 -->
-    <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link" onclick="checkLoginAndRedirect()">글 작성
-        <input type="hidden" th:value="${board.id}" name="boardId" th:id="articleScriptId">
+    <a th:href="@{|/board/article/create?id=${movieInfo.id}|}" class="create-link" onclick="checkLoginAndRedirect()">글 작성
+        <input type="hidden" th:value="${movieInfo.id}" name="movieId" th:id="articleScriptId">
     </a>
     <h2>리스트</h2>
     <script type='text/javascript'>
@@ -108,7 +112,7 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-        function checkLoginAndRedirect(boardId) {
+        function checkLoginAndRedirect(movieInfoId) {
             // 'id' 변수는 해당 값을 사용하도록 대체해야 합니다.
             var id = document.getElementById("articleScriptId").value;
             // 로그인 상태 확인 후 폼 제출 함수 호출

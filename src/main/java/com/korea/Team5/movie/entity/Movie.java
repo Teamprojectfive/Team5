@@ -31,7 +31,6 @@ public class Movie {
 
 
     @ManyToMany
-
     private List<Member> voter;
 
 

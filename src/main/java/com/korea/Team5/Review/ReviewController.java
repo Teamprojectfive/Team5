@@ -64,7 +64,7 @@ public class ReviewController {
 //      model.addAttribute("member", member);
       return "/Review/review_form";
     }
-    this.reviewService.create(movie, reviewForm.getSubject(), reviewForm.getContent(), reviewForm.getStarRating(),
+    this.reviewService.create(movie,reviewForm.getContent(), reviewForm.getStarRating(),
             member);
     model.addAttribute("member",member);
 
@@ -104,7 +104,6 @@ public class ReviewController {
     if (!review.getMember().getLoginId().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
     }
-    reviewForm.setSubject(review.getSubject());
     reviewForm.setContent(review.getContent());
     reviewForm.setStarRating(review.getStarRating());
 
@@ -124,7 +123,7 @@ public class ReviewController {
     if (!review.getMember().getLoginId().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
     }
-    this.reviewService.modify(review, reviewForm.getSubject(), reviewForm.getContent(),reviewForm.getStarRating());
+    this.reviewService.modify(review,reviewForm.getContent(),reviewForm.getStarRating());
     return String.format("redirect:/movie/detail/%s", review.getMovie().getId());
   }
 
