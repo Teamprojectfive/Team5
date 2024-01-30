@@ -2,6 +2,7 @@ package com.korea.Team5;
 
 import com.korea.Team5.movie.MovieService;
 import com.korea.Team5.movie.entity.Movie;
+import com.korea.Team5.movie.entity.MovieInfo;
 import com.korea.Team5.theater.TheaterService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -39,16 +40,13 @@ public class MainController {
 
 
   @GetMapping("/main")
-  public String main(Model model, @RequestParam(value = "page", defaultValue = "0") int page, HttpSession session) {
-    Page<Movie> paging = this.movieService.mainList(page);
-    model.addAttribute("paging", paging);
+  public String main(Model model, HttpSession session) {
+    List<MovieInfo> movieInfoList = this.movieService.infoList();
+    model.addAttribute("movieInfoList", movieInfoList);
     session.removeAttribute("verificationCode");
     session.removeAttribute("phoneverificationCode");
     // getExcelRegion 메서드를 사용하여 엑셀 데이터를 가져옴
     List<String> bigRegionlList = theaterService.getBigRegion();
-
-
-
 
     return "main";
   }

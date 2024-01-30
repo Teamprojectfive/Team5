@@ -8,6 +8,7 @@ import com.korea.Team5.board.article.ArticleForm;
 import com.korea.Team5.board.article.ArticleService;
 import com.korea.Team5.kmapi.dto.MovieInfoDto;
 import com.korea.Team5.movie.MovieService;
+import com.korea.Team5.movie.entity.Genre;
 import com.korea.Team5.movie.entity.MovieInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,8 @@ public class BoardController {
     @GetMapping("/movie")
     public String list(Model model) {
         List<MovieInfo> movieInfoList = this.movieService.infoList();
+        List<Genre> genreList = this.movieService.genreList();
+        model.addAttribute("genreList", genreList);
         model.addAttribute("movieInfoList", movieInfoList);
         return "boardList";
     }
@@ -55,7 +58,6 @@ public class BoardController {
     @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
     public String articlecreate(ArticleForm articleForm, @RequestParam Integer id, Model model) {
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
-
 
         return "articleCreate";
     }
@@ -84,13 +86,13 @@ public class BoardController {
 
   @GetMapping("/article/modify/{id}")
   @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
-  public String articleModify(ArticleForm articleForm, @PathVariable("id") Integer id, Principal principal,Model model,@RequestParam Integer boardId) {
+  public String articleModify(ArticleForm articleForm, @PathVariable("id") Integer id, Principal principal,Model model,@RequestParam Integer movieInfoId) {
     Article article = this.articleService.getArticle(id);
     if (!article.getMember().getLoginId().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이없습니다.");
     }
-    Board board = this.boardService.getBoard(boardId);
-    model.addAttribute("board",board);
+    MovieInfo movieInfo = this.movieService.getMovieInfo(movieInfoId);
+    model.addAttribute("movieInfo", movieInfo);
     articleForm.setTitle(article.getTitle());
     articleForm.setContent(article.getContent());
     return "articleCreate";
@@ -98,7 +100,7 @@ public class BoardController {
 
   @PostMapping("/article/modify/{id}")
   @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
-  public String articleModify(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id,@RequestParam Integer boardId) {
+  public String articleModify(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id,@RequestParam Integer movieInfoId) {
     if (bindingResult.hasErrors()) {
       return "articleCreate";
     }
@@ -107,13 +109,13 @@ public class BoardController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이없습니다.");
     }
     this.articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
-    return String.format("redirect:/board/article/list/" + boardId);
+    return String.format("redirect:/board/article/list/" + movieInfoId);
 
   }
 
   @GetMapping("/article/delete/{id}")
   @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
-  public String articleDelete(Principal principal,@PathVariable("id") Integer id ,@RequestParam String boardId){
+  public String articleDelete(Principal principal,@PathVariable("id") Integer id ,@RequestParam String movieInfoId){
 
     Article article = this.articleService.getArticle(id);
     if(!article.getMember().getLoginId().equals(principal.getName())){
@@ -123,7 +125,7 @@ public class BoardController {
 
     this.articleService.delete(article);
 
-    return "redirect:/board/article/list/" + boardId;
+    return "redirect:/board/article/list/" + movieInfoId;
   }
 
 

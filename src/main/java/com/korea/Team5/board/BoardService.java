@@ -32,14 +32,4 @@ public class BoardService {
     }
   }
 
-
-    // 방 등록 메서드
-    public void registerRoom()
-     {
-        Board board = new Board();
-        this.boardRepository.save(board);
-    }
-
-
-
 }

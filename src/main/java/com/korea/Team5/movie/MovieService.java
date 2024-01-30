@@ -88,9 +88,9 @@ public class MovieService {
     }
 
 
-    public Page<Movie> mainList(int page) {
+    public Page<MovieInfo> mainList(int page) {
         Pageable pageable = PageRequest.of(page, 4);
-        return this.movieRepository.findAll(pageable);
+        return this.movieInfoRepository.findAll(pageable);
     }
 
 
@@ -200,7 +200,7 @@ public class MovieService {
             Set<String> displayedMovieSet = new HashSet<>();
 
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 20; i++) {
                 String url = apiUrl + "?key=" + apiKey + "&targetDt=" + targetDate.format(formatter);
                 System.out.println(url);
                 ResponseEntity<WeeklyBoxOfficeList> responseEntity = restTemplate.getForEntity(url, WeeklyBoxOfficeList.class);
@@ -224,23 +224,21 @@ public class MovieService {
         public MovieInfo getMovieDetail () {
             List<Movie> movieList = this.movieRepository.findAll();
             List<MovieInfo> movieInfoList = this.movieInfoRepository.findAll();
-
             try {
 
                 int i = 0;
                 for (Movie movie : movieList) {
-                    if (i == 30) {
+                    if (i == 50) {
                         break;
                     }
 
 
                     String movieCd = movie.getMovieCd();
 
-
-
                     String url = apiUrl2 + "?key=" + apiKey + "&movieCd=" + movieCd;
                     ResponseEntity<MovieInfoResult> responseEntity = restTemplate.getForEntity(url, MovieInfoResult.class);
                     MovieInfoResult movieInfoResult = responseEntity.getBody();
+
                     if (movieInfoResult != null) {
                         MovieInfoWrap movieInfoWrap = movieInfoResult.getMovieInfoResult();
 
@@ -307,8 +305,6 @@ public class MovieService {
                                     actor1.setMovieInfo(targetMovieInfo);
                                     this.actor1Repository.save(actor1);
                                 }
-                                actor1.setMovieInfo(targetMovieInfo);
-                                this.actor1Repository.save(actor1);
                             }
                             List<Company> companies = movieInfo.getCompanys();
                             for (Company company : companies) {
@@ -321,7 +317,6 @@ public class MovieService {
                     } else {
                         throw new RuntimeException("API 응답이 null입니다.");
                     }
-
 
                     i++;
                 }

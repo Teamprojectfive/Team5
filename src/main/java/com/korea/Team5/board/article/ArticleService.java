@@ -39,7 +39,7 @@ public class ArticleService {
     }
 
     public Page<Article> getListByMovieInfo(Integer id, int page){
-          Pageable pageable = PageRequest.of(page, 10);
+          Pageable pageable = PageRequest.of(page, 3);
           return this.articleRepository.findByMovieInfoId(id, pageable);
       }
 

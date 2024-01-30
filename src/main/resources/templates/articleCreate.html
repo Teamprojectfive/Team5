@@ -13,7 +13,6 @@
     <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
         <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
     </div>
-    <input type="hidden" name="boardId" th:value="${board.id}">
 
     <div>
         <label for="title">제목</label>
