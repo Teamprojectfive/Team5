@@ -12,7 +12,6 @@ import com.korea.Team5.movie.entity.MovieInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -191,7 +190,7 @@ public class MovieController {
     public String moviesearch(Model model,@RequestParam String enterMovie){
 
         List<MovieInfo> searchMovieList = this.movieService.getMovieInfoNm(enterMovie);
-        model.addAttribute("searchMovieList",searchMovieList);
+        model.addAttribute("movieList",searchMovieList);
 
 
         return "mainList";

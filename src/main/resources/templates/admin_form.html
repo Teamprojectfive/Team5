@@ -74,8 +74,8 @@
                                     <input type="text" th:value="${review.starRating}" class="form-control" readonly>
                                 </div>
                                 <div>
-                                    <label for="loginId" class="form-label">가입일시</label>
-                                    <input type="text" th:value="${review.createDate}" class="form-control" readonly>
+                                    <label for="loginId" class="form-label">작성일시</label>
+                                    <input type="text"  th:value="${#temporals.format(review.createDate, 'yyyy-MM-dd HH:mm:ss')}" class="form-control" readonly>
                                 </div>
                             </div>
                         </ul>

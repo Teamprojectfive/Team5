@@ -35,6 +35,7 @@ public class SecurityConfig {
                     authorizeHttpRequests
                             .requestMatchers("/review/create/**").authenticated()
                             .requestMatchers("/board/article/modify/**").authenticated()
+                            .requestMatchers("/board/create/**").authenticated()
                             .requestMatchers("/board/article/create/**").authenticated()
                             .requestMatchers("/admin/**").hasRole("ADMIN")
                             .requestMatchers("/notice/create").hasRole("ADMIN")

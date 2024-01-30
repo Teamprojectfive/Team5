@@ -44,7 +44,9 @@
             <button class="search-button" onclick="toggleSearch()">
                 <i class="fa-solid fa-magnifying-glass" style="font-size: 35px;color:white;"></i>
             </button>
-            <input type="text" class="search-input" placeholder="검색어를 입력하세요">
+            <form th:action="@{/movie/search}" method="get">
+            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="검색어를 입력하세요">
+            </form>
         </div>
     </div>
     <script>

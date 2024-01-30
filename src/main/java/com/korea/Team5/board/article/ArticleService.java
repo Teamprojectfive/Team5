@@ -1,6 +1,7 @@
 package com.korea.Team5.board.article;
 
 import com.korea.Team5.DataNotFoundException;
+import com.korea.Team5.Notice.Notice;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.board.Board;
 import lombok.RequiredArgsConstructor;
@@ -66,9 +67,19 @@ public class ArticleService {
   public Article getArticle(Integer id) {
     Optional<Article> article = this.articleRepository.findById(id);
     if (article.isPresent()) {
-      return article.get();
+      Article article1 = article.get();
+
+      Integer currentViews = article1.getViews();
+      if (currentViews == null) {
+        currentViews = 0;
+      }
+      currentViews++;
+      article1.setViews(currentViews);
+      articleRepository.save(article1); // 조회수가 증가한 업데이트된 공지사항을 저장
+
+      return article1;
     } else {
-      throw new DataNotFoundException("article not found");
+      throw new DataNotFoundException("Article not found");
     }
   }
 

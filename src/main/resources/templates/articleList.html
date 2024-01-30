@@ -56,7 +56,8 @@
             <h1 th:text="${article.title}"></h1>
         </a>
         <div th:text="${article.member.nickName}"></div>
-        <div th:text="${article.createDate}"></div>
+        <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
+        <div th:text="${article.views}"></div>
         <a th:href="@{|/board/article/modify/${article.id}?boardId=${board.id}|}" class="btn btn-sm btn-outline-secondary"
            sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
            th:text="수정">
@@ -91,7 +92,9 @@
     </div>
     <!-- 페이징처리 끝 -->
     <!-- 게시글 작성 링크 -->
-    <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link">글 작성</a>
+    <a th:href="@{|/board/article/create?boardId=${board.id}|}" class="create-link" onclick="checkLoginAndRedirect()">글 작성
+        <input type="hidden" th:value="${board.id}" name="boardId" th:id="articleScriptId">
+    </a>
     <h2>리스트</h2>
     <script type='text/javascript'>
         const delete_elements = document.getElementsByClassName("delete");
@@ -102,6 +105,41 @@
                 };
             });
         });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function checkLoginAndRedirect(boardId) {
+            // 'id' 변수는 해당 값을 사용하도록 대체해야 합니다.
+            var id = document.getElementById("articleScriptId").value;
+            // 로그인 상태 확인 후 폼 제출 함수 호출
+            checkLoginAndSubmit(id);
+        }
+        function checkLoginAndSubmit(id) {
+            $.ajax({
+                url: "/check-login-status",
+                method: "GET",
+                success: function(response) {
+                    if (response.loggedIn) {
+                        // 로그인된 경우, AJAX를 사용하여 댓글 제출
+                        $.ajax({
+                            url: "/reply/create/" + id,
+                            method: "GET",
+                            data: { "content": content, "_csrf": "${_csrf.token}" },
+                            success: function(commentResponse) {
+                                // 필요한 경우 성공 처리를 처리합니다.
+                            },
+                            error: function() {
+                                // 필요한 경우 오류 처리를 처리합니다.
+                            }
+                        });
+                    } else {
+                        // 로그인되지 않은 경우, 알림 표시 후 로그인 페이지로 리다이렉트
+                        alert("로그인이 필요한 서비스입니다.");
+                        window.location.href = "/member/login";
+                    }
+                }
+            });
+        }
     </script>
 </div>
 </body>

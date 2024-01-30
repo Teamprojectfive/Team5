@@ -2,10 +2,7 @@ package com.korea.Team5.movie;
 
 import com.korea.Team5.DataNotFoundException;
 import com.korea.Team5.USER.Member;
-
 import com.korea.Team5.USER.MemberRepository;
-
-import com.korea.Team5.board.Board;
 import com.korea.Team5.board.BoardRepository;
 import com.korea.Team5.kmapi.repository.PlotRepository;
 import com.korea.Team5.movie.entity.*;
@@ -24,8 +21,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -307,8 +302,7 @@ public class MovieService {
                                     actor1.setMovieInfo(targetMovieInfo);
                                     this.actor1Repository.save(actor1);
                                 }
-                                actor1.setMovieInfo(targetMovieInfo);
-                                this.actor1Repository.save(actor1);
+
                             }
                             List<Company> companies = movieInfo.getCompanys();
                             for (Company company : companies) {
