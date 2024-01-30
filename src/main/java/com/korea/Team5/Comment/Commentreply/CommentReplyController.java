@@ -65,20 +65,16 @@ public class CommentReplyController {
 
   @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
   @GetMapping("/modify/{id}")
-  private String modify(@PathVariable("id") Integer replyId, @RequestParam String newreply, @RequestParam Integer articleId, Principal principal,Model model){
+  public String modify(@PathVariable("id") Integer replyId, CommentReplyForm commentReplyForm, @RequestParam Integer articleId, Principal principal, BindingResult bindingResult){
 
-    CommentReply commentReply = this.commentReplyService.getreply(replyId);
-    // 여기서 직접 모델에 에러 메시지를 추가할 수 있음
-    if (newreply == null || newreply.trim().isEmpty()) {
-      model.addAttribute("error", "댓글은 비어있을 수 없습니다.");
+    if (bindingResult.hasErrors()) {
       return "articleDetail";
     }
+    CommentReply commentReply = this.commentReplyService.getreply(replyId);
     if (!commentReply.getMember().getLoginId().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
     }
-
-    this.commentReplyService.modify(commentReply,newreply);
-
-    return "redirect:/board/article/detail/" + articleId;
+    this.commentReplyService.modify(commentReply, commentReplyForm.getContent());
+    return String.format("redirect:/board/article/detail/%s", articleId);
   }
 }

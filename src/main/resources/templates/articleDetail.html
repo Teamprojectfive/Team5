@@ -20,8 +20,30 @@
             </span><br>
             <span th:text="${comment.content}"></span><br>
             <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
+            <a th:data-uri="@{|/Comment/delete/${comment.id}?articleId=${article.id}|}"
+               class="delete btn btn-sm btn-outline-secondary"
+               sec:authorize="isAuthenticated()"
+               th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.loginId}"
+               th:text="삭제">
+            </a>
+            <div th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.loginId}"
+                 sec:authorize="isAuthenticated()">
+                <input type="button" value="수정" th:onclick="toggleDivVisibility([[${comment.id}]])"
+                       th:id="'commentButton-' + ${comment.id}" class="commentModifyClass">
+            </div>
+            <form th:action="@{|/Comment/modify/${comment.id}|}" method="get">
+                <div th:id="'contentDiv-'+ ${comment.id}" style="display: none;" class="allComment">
+                    <input type="hidden" name="articleId" th:value="${article.id}">
+                    <textarea class="form-control" id="floatingTextarea" style="height: 100px" name="newcontent"
+                              th:text="${content}"></textarea>
+                    <input type="submit" value="댓글 수정하기">
+                    <input type="button" value="취소" th:onclick="hideDiv([[${comment.id}]])"
+                           th:id="'cancelButton-' + ${comment.id}">
+                </div>
+            </form>
             <ul>
                 <li th:each="reply : ${comment.commentReplyList}">
+                    <label for="text">여기 위에가 댓글 밑에 버튼은 답글의 수정삭제버튼</label>
                     <span th:text="${reply.member.loginId}"></span>
                     <span th:text="${reply.content}"></span>
                     <span th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
@@ -35,55 +57,36 @@
                     <div th:if="${reply.member != null and #authentication.getPrincipal().getUsername() == reply.member.loginId}"
                          sec:authorize="isAuthenticated()">
                         <input type="button" value="수정" th:onclick="toggleReplyDivVisibility([[${reply.id}]])"
-                               th:id="'replyModifyButton-' + ${reply.id}">
+                               th:id="'replyModifyButton-' + ${reply.id}" class="replyModifyClass">
                     </div>
-                    <form th:action="@{|/reply/modify/${reply.id}|}" method="get">
-                    <div th:id="'replyModifyForm-' + ${reply.id}" style="display: none;">
+                    <form th:action="@{|/reply/modify/${reply.id}|}" th:object="${commentReplyForm}" method="get">
+                    <div th:id="'replyModifyForm-' + ${reply.id}" style="display: none;" class="allReplyModifyForm">
                         <input type="hidden" name="articleId" th:value="${article.id}">
-                        <textarea class="form-control" id="floatingTextarea5" style="height: 100px" name="newreply"
+                        <textarea class="form-control" id="floatingTextarea5" style="height: 100px" name="content"
                                   th:text="${reply.content}"></textarea>
-                        <input type="submit" value="댓글 수정하기">
-                        <input type="button" value="취소" th:onclick="hideDiv([[${reply.id}]])"
-                               th:id="'modifycancelButton-' + ${reply.id}">
+                        <input type="submit" value="답글 수정하기">
+                        <input type="button" value="취소" th:onclick="cancelReply([[${reply.id}]])" th:id="'cancelButton-' + ${reply.id}">
                     </div>
                     </form>
                     <!--답글 수정  끝 !!-->
                 </li>
             </ul>
+            <!-- 답글 작성시작  -->
             <input type="button" value="답글쓰기" th:onclick="toggleReply([[${comment.id}]])"
                    th:id="'replyButton-' + ${comment.id}">
         </div>
-        <form th:action="@{|/reply/create/${comment.id}|}" th:object="${commentreplyForm}" method="post">
-            <div th:id="'replyForm-' + ${comment.id}" style="display: none;">
+        <form th:action="@{|/reply/create/${comment.id}|}" th:object="${commentReplyForm}" method="post">
+            <div th:id="'replyForm-' + ${comment.id}" style="display: none;" class="allReplyForm">
                 <textarea class="form-control" placeholder="답글을 남겨보세요." id="floatingTextarea3" style="height: 100px"
-                          name="reply" th:value="${reply}"></textarea>
+                          name="content" th:value="${content}"></textarea>
                 <input type="submit" value="답글 작성하기">
-                <input type="button" value="취소" th:onclick="cancelReply([[${comment.id}]])">
+                <input type="button" value="취소" th:onclick="createcancelReply([[${comment.id}]])">
             </div>
         </form>
-        <a th:data-uri="@{|/Comment/delete/${comment.id}?articleId=${article.id}|}"
-           class="delete btn btn-sm btn-outline-secondary"
-           sec:authorize="isAuthenticated()"
-           th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.loginId}"
-           th:text="삭제">
-        </a>
-        <div th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.loginId}"
-             sec:authorize="isAuthenticated()">
-            <input type="button" value="수정" th:onclick="toggleDivVisibility([[${comment.id}]])"
-                   th:id="'commentButton-' + ${comment.id}">
-        </div>
-        <form th:action="@{|/Comment/modify/${comment.id}|}" method="get">
-            <div th:id="'contentDiv-'+ ${comment.id}" style="display: none;">
-                <input type="hidden" name="articleId" th:value="${article.id}">
-                <textarea class="form-control" id="floatingTextarea" style="height: 100px" name="newcontent"
-                          th:text="${content}"></textarea>
-                <input type="submit" value="댓글 수정하기">
-                <input type="button" value="취소" th:onclick="hideDiv([[${comment.id}]])"
-                       th:id="'cancelButton-' + ${comment.id}">
-            </div>
-        </form>
+        <!-- 답글 작성종료  -->
     </li>
 </ul>
+<!--댓글작성시작-->
 <form th:action="@{|/Comment/create/${id}|}" th:object="${commentcreateForm}" method="get">
     <div class="form-floating">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
@@ -93,13 +96,49 @@
         <input type="submit" value="댓글 작성하기">
     </div>
 </form>
-
-
+<!--댓글 작성 종료-->
 <script th:inline="javascript">
-    /* JavaScript 함수 정의 */
+
+    let selectedReplyId = null;
+
     function toggleReply(commentId) {
+
         var replyForm = document.getElementById('replyForm-' + commentId);
+        var replyFormButton = document.getElementById('replyButton-' + commentId);
         replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+
+        console.log(selectedReplyId);
+
+        if(selectedReplyId != null) {
+            const target = document.getElementById('replyModifyButton-' + selectedReplyId);
+            target.style.display = 'block';
+        }
+
+         var allReplyModifyForm = document.getElementsByClassName('allReplyModifyForm');
+         var arrayFromCollection = Array.from(allReplyModifyForm);
+         console.log(allReplyModifyForm);
+        arrayFromCollection.forEach(function(allReplyModifyForm) {
+            allReplyModifyForm.style.display = 'none';
+        });
+
+        var allCommentForm = document.getElementsByClassName('allComment');
+        var arrayFromCollectionComment = Array.from(allCommentForm);
+         console.log(allCommentForm);
+        arrayFromCollectionComment.forEach(function(allCommentForm) {
+            allCommentForm.style.display = 'none';
+        });
+
+
+        // 모든 다른 댓글의 replyForm을 숨기기
+        var allReplyForms = document.querySelectorAll('[id^="replyForm-"]');
+        allReplyForms.forEach(function(otherReplyForm) {
+            if (otherReplyForm.id !== 'replyForm-' + commentId) {
+                otherReplyForm.style.display = 'none';
+            }
+        });
+        var isReplyButtonEnabled = true;
+
+
     }
 
     function submitReply(commentId) {
@@ -112,42 +151,126 @@
         replyForm.style.display = 'none';
     }
 
-    function cancelReply(commentId) {
+    function createcancelReply(commentId) {
+           console.log(commentId);
         // 취소 버튼을 눌렀을 때 답글 작성 폼 숨기기
         var replyForm = document.getElementById('replyForm-' + commentId);
         replyForm.style.display = 'none';
-    }
-</script>
-<script th:inline="javascript">
-    /* JavaScript 함수 정의 */
-    function toggleReplyDivVisibility(replyId) {
-        var replyModifyForm = document.getElementById('replyModifyForm-' + replyId);
-        replyModifyForm.style.display = replyModifyForm.style.display === 'none' ? 'block' : 'none';
+
     }
 
+</script>
+<script th:inline="javascript">
+
+
     function submitReply(replyId) {
-        // 여기에 실제 수정한답글을 서버로 전송하는 로직을 추가할 수 있습니다.
+        // 여기에 실제 수정한 답글을 서버로 전송하는 로직을 추가할 수 있습니다.
         var replyContent = document.getElementById('floatingTextarea5').value;
         console.log('reply ID: ' + replyId + ', Reply Content: ' + replyContent);
 
         // 답글 작성 후 폼 숨기기
         var replyModifyForm = document.getElementById('replyModifyForm-' + replyId);
-        replyForm.style.display = 'none';
+        replyModifyForm.style.display = 'none';
+         document.getElementById('replyButton-' + commentId).disabled = false;
     }
 
     function cancelReply(replyId) {
-        // 취소 버튼을 눌렀을 때 답글 작성 폼 숨기기
+        // 취소 버튼을 눌렀을 때 수정 폼 숨기기
         var replyModifyForm = document.getElementById('replyModifyForm-' + replyId);
-        replyForm.style.display = 'none';
+        replyModifyForm.style.display = 'none';
+
+        // 수정 버튼 다시 표시
+        var replyModifyButton = document.getElementById('replyModifyButton-' + replyId);
+        replyModifyButton.style.display = 'block';
+    }
+
+
+     function toggleReplyDivVisibility(replyId) {
+        selectedReplyId = replyId;
+        console.log(selectedReplyId);
+        // 모든 답글에 대한 수정 폼과 수정 버튼을 가져옴
+        var allReplyModifyForms = document.querySelectorAll('[id^=replyModifyForm-]');
+        var allReplyModifyButtons = document.querySelectorAll('[id^=replyModifyButton-]');
+        var allreplyReplyForm = document.getElementsByClassName('allReplyForm');
+        var allCommentForm = document.getElementsByClassName('allComment');
+        var allCommentModifyButton = document.getElementsByClassName('commentModifyClass');
+          console.log(allCommentModifyButton);
+
+              if (selectedReplyId !== null) {
+
+            for (var i = 0; i < allCommentModifyButton.length; i++) {
+                allCommentModifyButton[i].style.display = 'block';
+            }
+        }
+
+        var arrayFromCollection = Array.from(allreplyReplyForm);
+         console.log(arrayFromCollection);
+        arrayFromCollection.forEach(function(allreplyReplyForm) {
+            allreplyReplyForm.style.display = 'none';
+        });
+
+         var arrayCommentFromCollection = Array.from(allCommentForm);
+         console.log(arrayCommentFromCollection);
+        arrayCommentFromCollection.forEach(function(allCommentForm) {
+            allCommentForm.style.display = 'none';
+        });
+
+        // 모든 답글에 대한 수정 폼을 숨김
+        allReplyModifyForms.forEach(function(form) {
+            form.style.display = 'none';
+        });
+
+        // 모든 답글에 대한 수정 버튼을 표시
+        allReplyModifyButtons.forEach(function(button) {
+            button.style.display = 'block';
+        });
+
+        // 선택한 답글에 대한 수정 폼과 수정 버튼을 가져옴
+        var replyModifyForm = document.getElementById('replyModifyForm-' + replyId);
+        var replyModifyButton = document.getElementById('replyModifyButton-' + replyId);
+
+        // 선택한 답글에 대한 수정 폼을 표시
+        replyModifyForm.style.display = 'block';
+
+        // 선택한 답글에 대한 수정 버튼을 숨김
+        replyModifyButton.style.display = 'none';
+
     }
 </script>
 <script th:inline="javascript">
     var currentlyVisibleDivId = null;
 
+
     function toggleDivVisibility(commentId) {
+          console.log(currentlyVisibleDivId);
+
         var contentDiv = document.getElementById("contentDiv-" + commentId);
         var commentButton = document.getElementById("commentButton-" + commentId);
         var cancelButton = document.getElementById("cancelButton-" + commentId);
+        var allCommentModifyButtons = document.querySelectorAll('[id^=commentButton-]');
+        var allreplyReplyForm = document.getElementsByClassName('allReplyForm');
+        var allReplyModifyForm = document.getElementsByClassName('allReplyModifyForm');
+
+
+        var arrayModifyFromCollection = Array.from(allReplyModifyForm);
+         console.log(arrayModifyFromCollection);
+        arrayModifyFromCollection.forEach(function(allReplyModifyForm) {
+            allReplyModifyForm.style.display = 'none';
+        });
+
+        if(selectedReplyId != null) {
+         const target = document.getElementById('replyModifyButton-' + selectedReplyId);
+         target.style.display = 'block';
+        }
+
+
+
+        var arrayFromCollection = Array.from(allreplyReplyForm);
+         console.log(arrayFromCollection);
+        arrayFromCollection.forEach(function(allreplyReplyForm) {
+            allreplyReplyForm.style.display = 'none';
+        });
+
 
         if (currentlyVisibleDivId !== null) {
             hideDiv(currentlyVisibleDivId);
