@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -75,5 +76,14 @@ public class CommentController {
     this.commentService.modify(comment, newcontent);
 
     return "redirect:/board/article/detail/" + articleId;
+  }
+  @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+  @GetMapping("/vote/{id}")
+  public String vote(Principal principal, @PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes){
+    Comment comment = this.commentService.getComment(id);
+    Member member = this.memberService.getMember(principal.getName());
+    boolean ActionCheck = this.commentService.vote(comment,member);
+    redirectAttributes.addFlashAttribute("ActionCheck",ActionCheck);
+    return String.format("redirect:/board/article/detail/%s", comment.getArticle().getId());
   }
 }

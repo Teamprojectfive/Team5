@@ -16,10 +16,16 @@
 <ul>
     <li th:each="comment : ${article.commentList}">
         <div>
-            <span th:text="${comment.member.loginId}">
+            <span th:text="${comment.member.nickName}">
             </span><br>
             <span th:text="${comment.content}"></span><br>
             <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
+            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+               th:data-uri="@{|/Comment/vote/${comment.id}|}"
+               th:data-recommended="${ActionCheck}">
+                &#x1F44D; <!-- 따봉 아이콘(👍)의 Unicode 코드 포인트 -->
+                <span class="badge rounded-pill bg-success" th:text="${#lists.size(comment.voter)}"></span>
+            </a>
             <a th:data-uri="@{|/Comment/delete/${comment.id}?articleId=${article.id}|}"
                class="delete btn btn-sm btn-outline-secondary"
                sec:authorize="isAuthenticated()"
@@ -44,9 +50,15 @@
             <ul>
                 <li th:each="reply : ${comment.commentReplyList}">
                     <label for="text">여기 위에가 댓글 밑에 버튼은 답글의 수정삭제버튼</label>
-                    <span th:text="${reply.member.loginId}"></span>
+                    <span th:text="${reply.member.nickName}"></span>
                     <span th:text="${reply.content}"></span>
                     <span th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                       th:data-uri="@{|/reply/vote/${reply.id}|}"
+                       th:data-recommended="${ActionCheck}">
+                        좋아요
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(reply.voter)}"></span>
+                    </a>
                     <a th:data-uri="@{|/reply/delete/${reply.id}?articleId=${article.id}|}"
                        class="delete btn btn-sm btn-outline-secondary"
                        sec:authorize="isAuthenticated()"
@@ -386,6 +398,27 @@
             };
         });
     });
+
+      const recommend_elements = document.getElementsByClassName("recommend");
+
+          Array.from(recommend_elements).forEach(function (element) {
+            element.addEventListener('click', function () {
+              // 현재 추천 상태 확인
+              const isRecommended = element.getAttribute('data-recommended') === 'true';
+
+              if (isRecommended) {
+                // 추천 취소에 대한 로직 수행
+                location.href = this.dataset.uri;
+                element.setAttribute('data-recommended', 'false');
+                // 여기에서 추천이 취소된 상태로 변경에 따른 UI 업데이트 등을 수행할 수 있습니다.
+              } else {
+                // 추천에 대한 로직 수행
+                location.href = this.dataset.uri;
+                element.setAttribute('data-recommended', 'true');
+                // 여기에서 추천된 상태로 변경에 따른 UI 업데이트 등을 수행할 수 있습니다.
+              }
+            });
+          });
 </script>
 </body>
 </html>

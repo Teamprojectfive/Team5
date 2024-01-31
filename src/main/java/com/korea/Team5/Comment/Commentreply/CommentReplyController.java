@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -76,5 +77,16 @@ public class CommentReplyController {
     }
     this.commentReplyService.modify(commentReply, commentReplyForm.getContent());
     return String.format("redirect:/board/article/detail/%s", articleId);
+  }
+
+  @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+  @GetMapping("/vote/{id}")
+  public String vote(@PathVariable("id")Integer id, Principal principal, Model model, RedirectAttributes redirectAttributes){
+    CommentReply commentReply = this.commentReplyService.getreply(id);
+    Member member = this.memberService.getMember(principal.getName());
+    boolean ActionCheck = this.commentReplyService.vote(commentReply,member);
+    redirectAttributes.addFlashAttribute("ActionCheck",ActionCheck);
+
+    return String.format("redirect:/board/article/detail/%s", commentReply.getComment().getArticle().getId());
   }
 }
