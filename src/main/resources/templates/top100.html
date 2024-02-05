@@ -52,6 +52,9 @@
             장르
         </button>
         <ul class="dropdown-menu" id="genreDropdown">
+            <a href="/movie/top100">
+                <li>전체</li>
+            </a>
             <li th:each="genre : ${genres}">
                 <a th:href="@{|/movie/top100?genreId=${genre.id}|}" th:text="${genre.genreNm}"
                    onclick="selectGenre(this)"></a>

@@ -22,7 +22,8 @@
             <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
             <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
                th:data-uri="@{|/Comment/vote/${comment.id}|}"
-               th:data-recommended="${ActionCheck}">
+               th:data-recommended="${ActionCheck}"
+               th:onclick="voteComment([[${comment.id}]])">
                 &#x1F44D; <!-- 따봉 아이콘(👍)의 Unicode 코드 포인트 -->
                 <span class="badge rounded-pill bg-success" th:text="${#lists.size(comment.voter)}"></span>
             </a>
@@ -55,7 +56,7 @@
                     <span th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
                     <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
                        th:data-uri="@{|/reply/vote/${reply.id}|}"
-                       th:data-recommended="${ActionCheck}">
+                       th:data-recommended="${ActionCheck}"th:onclick="voteReply([[${reply.id}]])">
                         좋아요
                         <span class="badge rounded-pill bg-success" th:text="${#lists.size(reply.voter)}"></span>
                     </a>
@@ -183,6 +184,7 @@
                         }
                     });
                 } else {
+                console.log(response);
                     // 로그인되지 않은 경우, 알림 표시 후 로그인 페이지로 리다이렉트
                     alert("로그인이 필요한 서비스입니다..");
                     window.location.href = "/member/login";
@@ -199,13 +201,20 @@
 
         var replyForm = document.getElementById('replyForm-' + commentId);
         var replyFormButton = document.getElementById('replyButton-' + commentId);
+        var allCommentModifyButton = document.getElementsByClassName('commentModifyClass');
         replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
 
         console.log(selectedReplyId);
-
+        console.log(allCommentModifyButton);
         if(selectedReplyId != null) {
             const target = document.getElementById('replyModifyButton-' + selectedReplyId);
             target.style.display = 'block';
+        }
+         if (selectedReplyId === null) {
+
+            for (var i = 0; i <  allCommentModifyButton.length; i++) {
+                allCommentModifyButton[i].style.display = 'block';
+            }
         }
 
          var allReplyModifyForm = document.getElementsByClassName('allReplyModifyForm');
@@ -401,24 +410,38 @@
 
       const recommend_elements = document.getElementsByClassName("recommend");
 
-          Array.from(recommend_elements).forEach(function (element) {
-            element.addEventListener('click', function () {
-              // 현재 추천 상태 확인
-              const isRecommended = element.getAttribute('data-recommended') === 'true';
+Array.from(recommend_elements).forEach(function (element) {
+    element.addEventListener('click', function (event) {
+        // 현재 추천 상태 확인
+        const isRecommended = element.getAttribute('data-recommended') === 'true';
 
-              if (isRecommended) {
-                // 추천 취소에 대한 로직 수행
+        // 서버와 통신하여 로그인 상태 확인
+        checkLoginStatus().then(response => {
+            if (!response.loggedIn) {
+                // 로그인되지 않은 경우, 알림 표시 후 이벤트 기본 동작(링크 이동) 수행하지 않음
+                alert("로그인이 필요한 서비스입니다.");
+                window.location.href = "/member/login";
+                event.preventDefault();
+            } else {
+                // 로그인된 경우, 추천 토글 로직 수행
                 location.href = this.dataset.uri;
-                element.setAttribute('data-recommended', 'false');
-                // 여기에서 추천이 취소된 상태로 변경에 따른 UI 업데이트 등을 수행할 수 있습니다.
-              } else {
-                // 추천에 대한 로직 수행
-                location.href = this.dataset.uri;
-                element.setAttribute('data-recommended', 'true');
-                // 여기에서 추천된 상태로 변경에 따른 UI 업데이트 등을 수행할 수 있습니다.
-              }
-            });
-          });
+                element.setAttribute('data-recommended', isRecommended ? 'false' : 'true');
+                // 추천 상태에 따른 UI 업데이트 등을 수행할 수 있습니다.
+            }
+        }).catch(error => {
+            console.error("Login status check failed:", error);
+        });
+    });
+});
+
+// 서버와 통신하여 로그인 상태를 확인하는 함수
+function checkLoginStatus() {
+    return fetch("/check-login-status")
+        .then(response => response.json())
+        .catch(error => {
+            console.error("Login status check failed:", error);
+        });
+}
 </script>
 </body>
 </html>
