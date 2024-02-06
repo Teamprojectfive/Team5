@@ -12,7 +12,6 @@ import com.korea.Team5.movie.entity.MovieInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,10 +35,11 @@ public class MovieController {
     private final ReviewService reviewService;
 
 
-    @GetMapping("/list")
+    @GetMapping("/boxOffice")
     public String list(Model model) {
 
         List<Movie> movieList = this.movieService.list();
+
 
 
         int gap = 10;
@@ -54,15 +54,17 @@ public class MovieController {
             start = end;
             end = end + gap;
         }
+
+
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movieList", movieList);
         model.addAttribute("movieSubList", movieSubListList);
 
 
-        return "movieList";
+        return "boxOffice";
     }
 
-    @GetMapping("/mainList")
+    @GetMapping("/top100")
     public String test(Model model, @RequestParam(required = false) Integer genreId) {
         List movieList = new ArrayList<>();
         if(genreId != null){
@@ -82,14 +84,7 @@ public class MovieController {
         model.addAttribute("genres", genres);
         model.addAttribute("movie", movie);
         model.addAttribute("movieSubList", movieSubListList);
-        return "mainList";
-    }
-
-    @GetMapping("/test1")
-    public String test1(Model model) {
-        List<Genre> genres = this.movieService.genreList();
-        model.addAttribute("genres", genres);
-        return "test1";
+        return "top100";
     }
 
 
@@ -100,10 +95,14 @@ public class MovieController {
         List<Movie> movies = this.movieService.list();
 
         Movie movie = this.movieService.getMovie(id);
+
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
+        String audiAcc = movie.getAudiAcc();
 
-//        List<MovieInfoDto> movieInfoList = this.kmapiService.videoListSaveDataBase();8
+        model.addAttribute("audiAcc", audiAcc);
+
+
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movies", movies);
         model.addAttribute("movie", movie);
@@ -120,7 +119,7 @@ public class MovieController {
         Member member = this.memberService.getMember(principal.getName());
         this.movieService.vote(movie, member);
 
-        return String.format("redirect:/movie/list");
+        return String.format("redirect:/member/mypage");
 
     }
 
@@ -131,14 +130,13 @@ public class MovieController {
         Member member = this.memberService.getMember(principal.getName());
         this.movieService.vote(movieInfo, member);
 
-        return String.format("redirect:/movie/mainList");
+        return String.format("redirect:/movie/top100List");
     }
 
 
     @GetMapping("/check")
     public String checkDataBase() {
         return "movie";
-
     }
 
 
@@ -194,7 +192,7 @@ public class MovieController {
         model.addAttribute("movieList",searchMovieList);
 
 
-        return "mainList";
+        return "top100";
     }
 
 }

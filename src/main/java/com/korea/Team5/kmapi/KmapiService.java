@@ -85,18 +85,15 @@ public class KmapiService {
                         if("스즈메의 문단속".equals(title)){
                             movieInfo.setPosters("https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000087/87936/87936221923_727.jpg");
                         }
+                        if(" 바다 탐험대 옥토넛 어보브 앤 비욘드 : 버드, 옥토경보를 울려라!".equals(title)){
+                            movieInfo.setPosters("https://an2-img.amz.wtchn.net/image/v2/tppUDUbCZN0zz-1l5SKFJA.jpg?jwt=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKdmNIUnpJanBiSW1SZk5Ea3dlRGN3TUhFNE1DSmRMQ0p3SWpvaUwzWXlMM04wYjNKbEwybHRZV2RsTHpFM01EQTJNakl5TnpZME5qUXdOVFF4TkRnaWZRLlFRT0hnWTQ2WElvU1ZJdl9MSTRHbVRadGpmZVdHUlRFZDByM3BRN1YzeEk");
+                        }
                         if(title.equals(movieInfo.getMovieNm()) && year.equals(movieInfo.getPrdtYear())){
 
                             System.out.println(firstMovie.getVods());
 
-
-
-
-
                             String posterUrl = firstMovie.getPosters().split("\\|")[0];
                             movieInfo.setPosters(posterUrl);
-
-
 
                             Plot plot = firstMovie.getPlots().getPlot().get(0);
                             Vod vod = firstMovie.getVods().getVod().get(0);
@@ -120,44 +117,7 @@ public class KmapiService {
             }
         }
 
-        // 여기서 반환하고 싶은 값이나 작업이 있는 경우 처리하도록 수정해주세요.
         return null;
     }
 }
 
-
-
-
-
-
-
-//            for (MovieInfoDto info : movieInfoDtoList) {
-//                Optional<MovieInfo> optionalMovieInfo = movieInfoRepository.findByMovieNm();
-//                if (optionalMovieInfo.isPresent()) {
-//                    MovieInfo movieInfo = optionalMovieInfo.get();
-//
-//                    if (info.getPlots() != null) {
-//                        Plot plot = info.getPlots().getPlot().get(0);
-//
-//                        // MovieInfo에 연결된 Plot 저장
-//                        plot.setMovieInfo(movieInfo);
-//                        movieInfo.getPlot().add(plot);
-//
-//                        // 저장
-//
-//                        movieInfoRepository.save(movieInfo);
-//
-//
-//                        System.out.println("영화 제목: " + movieInfo.getMovieNm());
-//                        System.out.println("영화 줄거리: " + plot.getPlotText());
-//                    } else {
-//                        System.out.println("줄거리 없음");
-//                    }
-//                }
-//            }
-//            return movieInfoDtoList;
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//}

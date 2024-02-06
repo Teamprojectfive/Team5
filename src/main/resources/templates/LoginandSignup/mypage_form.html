@@ -23,8 +23,8 @@
         </div>
         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52"
             style="background: aliceblue; width: 155px;">
-            <li><a href="/movie/list">Top100</a></li>
-            <li><a href="/movie/mainlist">장르</a></li>
+            <li><a href="/movie/boxOffice">박스오피스</a></li>
+            <li><a href="/movie/top100">top100</a></li>
         </ul>
     </div>
     <div class="dropdown dropdown-hover">
@@ -54,7 +54,7 @@
     </div>
 
 
-    <div layout:fragment="content" class="container my-3" style="width:50%;  height: 810px">
+    <div layout:fragment="content" class="container my-3" style="width:50%;  height: 825px">
         <form th:action="@{/member/mypage}" method="get" id="myPageForm" class="correction_cont">
             <div class="correction_title">내프로필</div>
             <section>
@@ -97,34 +97,20 @@
                 </div>
             </section>
         </form>
-        <div style="position: absolute;top: 45.6%;left: 60%;">
+        <div style="position: absolute;top: 45%;left: 60%;">
             <a th:href="@{/member/mypagereview}">
                 <input type="submit" value="내가 작성한 리뷰" class="btn btn-primary my-2">
             </a>
         </div>
-
-        <section style="width:58%;height:280px;">
-            <div>
-                <h2 style="color: black;font-weight: bold; margin-bottom: 5px;font-size: 20px;">내가 찜한 영화</h2>
-
-                <ul style="display:flex; " th:each="wishList : ${wishlist}">
-                    <li>
-                        <a th:href="@{|/movie/detail/${wishList.id}|}">
-                            <img th:src="${wishList.posters}" style="border-radius:1em;">
-                        </a>
-                    </li>&nbsp;&nbsp;
-                    <li>
-                        <img style="border-radius:1em;" th:src="${wishList.posters}">
-                    </li>&nbsp;&nbsp;
-                    <li>
-                    </li>
-                    <a th:href="@{/member/my_movie}">
-                        <button class="cast-btn" style="position: relative; height: 30px;width: 80px;border-radius: 3px; margin-left: 5px;top: 96px;">더보기</button>
-                    </a>
-                </ul>
+        <a href="/member/my_movie">더보기</a>
+        <section style="width: 58%; height: 280px; white-space: nowrap; display: flex; align-items: center;">
+            <div th:each="wishList, iterStat : ${wishList}" th:if="${iterStat.index} &lt; 3" style="flex: 0 0 calc(100% / 3); max-width: calc(100% / 3);    margin-right: 10px;">
+                <a th:href="@{|/movie/detail/${wishList.id}|}">
+                    <img th:src="${wishList.posters}" alt="" style="border: solid 1px black;width: 100%; height: auto; border-radius: 10px;">
+                </a>
             </div>
         </section>
-        <div style="display:flex; justify-content: flex-end; position:relative;   bottom: 65px;">
+        <div style="display:flex; justify-content: flex-end; position:relative; bottom: 65px;">
             <a th:href="@{/member/mypagedelete}">
                 <input class="btn btn-primary my-2" style="font-weight: bold; background: red; font-size: 20px;"
                        type="submit" value="회원탈퇴">
@@ -141,6 +127,8 @@
         form.submit(); // 폼 제출
     }
 </script>
+
+
 
 <script>
     function createStar() {
@@ -188,7 +176,5 @@
     moon.style.top = '60vh';
     document.body.appendChild(moon);
 </script>
-
-
 </body>
 </html>

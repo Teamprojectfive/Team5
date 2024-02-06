@@ -1,97 +1,509 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout_without_header}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th=""
+      style="width:1900px">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link rel="stylesheet" href="/Board/articleDetail.css">
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
 </head>
-<body>
-
-<h2>게시물</h2>
-<div>
-    <input type="text" th:value="${article.title}" readonly>
-    <input type="text" th:value="${article.content}" readonly>
-    <input type="text" th:value="${article.createDate}" readonly>
-</div>
-<h2>댓글</h2>
-<ul>
-    <li th:each="comment : ${article.commentList}">
-        <div>
-            <span th:text="${comment.content}"></span><br>
-            <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span><br>
+<body style="background: #f2f2f2;">
+<div layout:fragment="content" style="margin-top: 5%;">
+    <div class="side_top_bar">
+        <div class="side_title"><p>게시판</p></div>
+        <div class="side_top_nav">
+            <div><p>닉네임</p></div>
+            <div><p>날짜</p></div>
+            <div><p>조회수</p></div>
         </div>
-        <a th:data-uri="@{|/Comment/delete/${comment.id}?articleId=${article.id}|}"
-           class="delete btn btn-sm btn-outline-secondary"
-           sec:authorize="isAuthenticated()"
-           th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.loginId}"
-           th:text="삭제">
-        </a>
-        <div th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.loginId}"
-             sec:authorize="isAuthenticated()">
-            <input type="button" value="수정" th:onclick="toggleDivVisibility([[${comment.id}]])"
-                   th:id="'commentButton-' + ${comment.id}">
-        </div>
-        <form th:action="@{|/Comment/modify/${comment.id}|}" method="get">
-            <div th:id="'contentDiv-'+ ${comment.id}" style="display: none;">
-                <input type="hidden" name="articleId" th:value="${article.id}">
-                <textarea class="form-control" id="floatingTextarea" style="height: 100px" name="newcontent"
-                          th:text="${content}"></textarea>
-                <input type="submit" value="댓글 수정하기">
-                <input type="button" value="취소" th:onclick="hideDiv([[${comment.id}]])"
-                       th:id="'cancelButton-' + ${comment.id}">
-            </div>
-        </form>
-    </li>
-</ul>
-<form th:action="@{|/Comment/create/${id}|}" th:object="${commentcreateForm}" method="get">
-    <div class="form-floating">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <input type="hidden" th:value="${article.id}" name="id">
-        <textarea class="form-control" placeholder="댓글을 남겨보세요." id="floatingTextarea2" style="height: 100px"
-                  name="content" th:value="${content}"></textarea>
-        <input type="submit" value="댓글 작성하기">
     </div>
-</form>
-<script th:inline="javascript">
-    var currentlyVisibleDivId = null;
+    <section class="board_warp" style="display:flex;">
+        <div class="side_menu_cont">
+            <div>
+                <h2>영화 목록</h2>
+            </div>
+            <ul th:each="movie : ${movieInfoList}">
+                <li>
+                    <a th:href="@{|/board/article/list/${movie.id}|}">
+                        <div th:text="${movie.movieNm}"></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <section class="board_cont">
+            <div class="board_contents">
+                <div class="hour_cont">
+                    <p th:text="${article.member.nickName}"></p>
+                    <p th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                    <div>
+                        <div th:text="${article.views}"></div>
+                    </div>
+                </div>
+                <div class="title_cont">
+                    <p th:text="${article.title}"></p>
+                    <img src="data:image/jpeg;base64,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"
+                         alt="">
+                </div>
+                <div class="contents_cont">
+                    <p th:text="${article.content}"></p>
+                </div>
+            </div>
+            <h2 class="comment_title">댓글</h2>
+            <ul style=" display: flow;">
+                <li th:each="comment : ${article.commentList}">
+                    <div style="border-top: solid 1px gainsboro;border-bottom: solid 1px gainsboro;    padding: 10px;">
+                        <div class="comment_nick">
+                            <div>
+                                <span th:text="${comment.member.loginId}"></span>
+                                <span>(
+                                <span th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                            )
+                            </span>
+                            </div>
+                            <a href="javascript:void(0);" class="voterClass"
+                               th:data-uri="@{|/Comment/vote/${comment.id}|}"
+                               th:data-recommended="${ActionCheck}">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                <span class="badge" th:text="${#lists.size(comment.voter)}"></span>
+                            </a>
+                        </div>
+                        <div>
+                            <span th:text="${comment.content}" style="padding-top: 20px; padding-bottom: 20px;"></span>
+                            <form th:action="@{|/Comment/modify/${comment.id}|}" method="get">
+                                <div th:id="'contentDiv-'+ ${comment.id}" style="display: none;" class="allComment">
+                                    <input type="hidden" name="articleId" th:value="${article.id}">
+                                    <textarea class="form-control" id="floatingTextarea"
+                                              style="height: 100px; margin-top: 5px;"
+                                              name="newcontent"
+                                              th:text="${content}"></textarea>
+                                    <input type="submit" value="댓글 수정하기">
+                                    <input type="button" value="취소" th:onclick="hideDiv([[${comment.id}]])"
+                                           th:id="'cancelButton-' + ${comment.id}">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="comment_btn">
+                            <a id="delete" th:data-uri="@{|/Comment/delete/${comment.id}?articleId=${article.id}|}"
+                               sec:authorize="isAuthenticated()"
+                               th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.loginId}"
+                               th:text="삭제" class="delete btn btn-sm btn-outline-secondary" style="width: 50px;">
+                            </a>
+                            <div th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.loginId}"
+                                 sec:authorize="isAuthenticated()">
+                                <input type="button" value="수정" th:onclick="toggleDivVisibility([[${comment.id}]])"
+                                       th:id="'commentButton-' + ${comment.id}"
+                                       class="commentModifyClass btn btn-sm btn-outline-secondary" style="width: 50px;">
+                            </div>
+                            <input type="button" value="답글쓰기" th:onclick="toggleReply([[${comment.id}]])"
+                                   th:id="'replyButton-' + ${comment.id}"
+                                   class="recommend btn btn-sm btn-outline-secondary" style="width: 75px;">
+                        </div>
+                        <ul class="reply_cont" style="display: flow;">
+                            <li class="turn-up">
+                                <i class="fa-solid fa-turn-up"></i>
+                            </li>
+                            <li th:each="reply : ${comment.commentReplyList}"
+                                style="background: gainsboro;margin-right: auto;margin-left: auto;width: 90%;padding: 10px; margin-top: 10px;">
+                                <div style="display:flex;    justify-content: space-between;">
+                                    <div>
+                                        <span th:text="${reply.member.loginId}"></span>
+                                        <span th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                                    </div>
+                                    <div>
+                                        <a href="javascript:void(0);"
+                                           class="voterClass "
+                                           th:data-uri="@{|/reply/vote/${reply.id}|}"
+                                           th:data-recommended="${ActionCheck}">
+                                            <i class="fa-solid fa-thumbs-up"></i>
+                                            <span class="badge " th:text="${#lists.size(reply.voter)}"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <span th:text="${reply.content}"></span>
+                                <div style="display:flex;    flex-direction: row-reverse;">
+                                    <a th:data-uri="@{|/reply/delete/${reply.id}?articleId=${article.id}|}"
+                                       class="delete btn btn-sm btn-outline-secondary"
+                                       sec:authorize="isAuthenticated()"
+                                       th:if="${reply.member != null and #authentication.getPrincipal().getUsername() == reply.member.loginId}"
+                                       th:text="삭제" style="width: 50px;">
+                                    </a>
+                                    <div th:if="${reply.member != null and #authentication.getPrincipal().getUsername() == reply.member.loginId}"
+                                         sec:authorize="isAuthenticated()">
+                                        <input type="button" value="수정"
+                                               th:onclick="toggleReplyDivVisibility([[${reply.id}]])"
+                                               th:id="'replyModifyButton-' + ${reply.id}"
+                                               class="commentModifyClass btn btn-sm btn-outline-secondary"
+                                               style="width: 50px;">
+                                    </div>
+                                </div>
+                                <form th:action="@{|/reply/modify/${reply.id}|}" th:object="${commentReplyForm}"
+                                      method="get">
+                                    <div th:id="'replyModifyForm-' + ${reply.id}" style="display: none;"
+                                         class="allReplyModifyForm">
+                                        <input type="hidden" name="articleId" th:value="${article.id}">
+                                        <textarea class="form-control" id="floatingTextarea5"
+                                                  style="height: 100px; margin-top: 5px;"
+                                                  name="content"
+                                                  th:text="${reply.content}"></textarea>
+                                        <div style=" margin-top: 10px;text-align: end;">
+                                            <input type="submit" value="수정" class="btn btn-sm btn-outline-secondary">
+                                            <input type="button" value="취소" th:onclick="cancelReply([[${reply.id}]])"
+                                                   th:id="'cancelButton-' + ${reply.id}"
+                                                   class="btn btn-sm btn-outline-secondary">
+                                        </div>
+                                    </div>
+                                </form>
+                                <!--답글 수정  끝 !!-->
+                            </li>
+                        </ul>
+                        <!-- 답글 작성시작  -->
 
-    function toggleDivVisibility(commentId) {
-        var contentDiv = document.getElementById("contentDiv-" + commentId);
-        var commentButton = document.getElementById("commentButton-" + commentId);
-        var cancelButton = document.getElementById("cancelButton-" + commentId);
+                    </div>
+                    <form th:action="@{|/reply/create/${comment.id}|}" th:object="${commentReplyForm}" method="post">
+                        <div th:id="'replyForm-' + ${comment.id}" style="display: none;" class="allReplyForm">
+                <textarea class="form-control" placeholder="답글을 남겨보세요." id="floatingTextarea3" style="height: 100px"
+                          name="content" th:value="${content}"></textarea>
+                            <input type="hidden" th:value="${comment.id}" name="commentId" th:id="CommentScriptId">
+                            <input type="submit" value="답글 작성하기" th:onclick="commentCreateRedirect()">
+                            <input type="button" value="취소" th:onclick="createcancelReply([[${comment.id}]])">
+                        </div>
+                    </form>
+                    <!-- 답글 작성종료  -->
+                </li>
+            </ul>
+            <!--댓글작성시작-->
+            <form th:action="@{|/Comment/create/${id}|}" th:object="${commentcreateForm}" method="get"
+                  style="margin-top: 20px;">
+                <div class="form-floating">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" th:value="${article.id}" name="id" th:id="ActicleScriptId">
+                    <textarea class="form-control" placeholder="댓글을 남겨보세요." id="floatingTextarea2" style="height: 100px"
+                              name="content" th:value="${content}" required></textarea>&nbsp;
+                    <div>
+                        <input type="submit" value="등록" onclick="submitCommentForm()"
+                               class="recommend btn btn-sm btn-outline-secondary" style="width: 100%;height: 100%;">
+                    </div>
+                </div>
+            </form>
+        </section>
+    </section>
+    <!--댓글 작성 종료-->
 
-        if (currentlyVisibleDivId !== null) {
-            hideDiv(currentlyVisibleDivId);
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function commentCreateRedirect(commentId) {
+            // 'id' 변수는 해당 값을 사용하도록 대체해야 합니다.
+            var id = document.getElementById("CommentScriptId").value;
+
+            // 'content' 변수는 해당 값을 사용하도록 대체해야 합니다.
+            var content = document.getElementById("floatingTextarea3").value;
+
+            // 로그인 상태 확인 후 폼 제출 함수 호출
+            checkLoginAndSubmit(id, content);
         }
 
-        if (contentDiv.style.display === "none") {
-            contentDiv.style.display = "block";
-            commentButton.style.display = "none";
-            currentlyVisibleDivId = commentId;
-        } else {
+        function checkLoginAndSubmit(id, content) {
+            $.ajax({
+                url: "/check-login-status",
+                method: "GET",
+                success: function(response) {
+                    if (response.loggedIn) {
+                        // 로그인된 경우, AJAX를 사용하여 댓글 제출
+                        $.ajax({
+                            url: "/reply/create/" + id,
+                            method: "POST",
+                            data: { "content": content, "_csrf": "${_csrf.token}" },
+                            success: function(commentResponse) {
+                                // 필요한 경우 성공 처리를 처리합니다.
+                            },
+                            error: function() {
+                                // 필요한 경우 오류 처리를 처리합니다.
+                            }
+                        });
+                    } else {
+                        // 로그인되지 않은 경우, 알림 표시 후 로그인 페이지로 리다이렉트
+                        alert("로그인이 필요한 서비스입니다.");
+                        window.location.href = "/member/login";
+                    }
+                }
+            });
+        }
+    </script>
+    <script>
+        function submitCommentForm(commentId) {
+            // 'id' 변수는 해당 값을 사용하도록 대체해야 합니다.
+            var id = document.getElementById("ActicleScriptId").value;
+
+            // 'content' 변수는 해당 값을 사용하도록 대체해야 합니다.
+            var content = document.getElementById("floatingTextarea2").value;
+
+            // 로그인 상태 확인 후 폼 제출 함수 호출
+            checkLoginAndSubmit(id, content);
+        }
+
+        function checkLoginAndSubmit(id, content) {
+            $.ajax({
+                url: "/check-login-status",
+                method: "GET",
+                success: function(response) {
+                    if (response.loggedIn) {
+                        // 로그인된 경우, AJAX를 사용하여 댓글 제출
+                        $.ajax({
+                            url: "/Comment/create/" + id,
+                            method: "POST",
+                            data: { "content": content, "_csrf": "${_csrf.token}" },
+                            success: function(commentResponse) {
+                                // 필요한 경우 성공 처리를 처리합니다.
+                            },
+                            error: function() {
+                                // 필요한 경우 오류 처리를 처리합니다.
+                            }
+                        });
+                    } else {
+                        // 로그인되지 않은 경우, 알림 표시 후 로그인 페이지로 리다이렉트
+                        alert("로그인이 필요한 서비스입니다..");
+                        window.location.href = "/member/login";
+                    }
+                }
+            });
+        }
+    </script>
+    <script th:inline="javascript">
+
+        let selectedReplyId = null;
+
+        function toggleReply(commentId) {
+
+            var replyForm = document.getElementById('replyForm-' + commentId);
+            var replyFormButton = document.getElementById('replyButton-' + commentId);
+            var allCommentModifyButton = document.getElementsByClassName('commentModifyClass');
+            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+
+            console.log(selectedReplyId);
+
+            if(selectedReplyId != null) {
+                const target = document.getElementById('replyModifyButton-' + selectedReplyId);
+                target.style.display = 'block';
+            }
+             if (selectedReplyId === null) {
+
+                for (var i = 0; i < allCommentModifyButton.length; i++) {
+                    allCommentModifyButton[i].style.display = 'block';
+                }
+            }
+
+             var allReplyModifyForm = document.getElementsByClassName('allReplyModifyForm');
+             var arrayFromCollection = Array.from(allReplyModifyForm);
+             console.log(allReplyModifyForm);
+            arrayFromCollection.forEach(function(allReplyModifyForm) {
+                allReplyModifyForm.style.display = 'none';
+            });
+
+            var allCommentForm = document.getElementsByClassName('allComment');
+            var arrayFromCollectionComment = Array.from(allCommentForm);
+             console.log(allCommentForm);
+            arrayFromCollectionComment.forEach(function(allCommentForm) {
+                allCommentForm.style.display = 'none';
+            });
+
+
+            // 모든 다른 댓글의 replyForm을 숨기기
+            var allReplyForms = document.querySelectorAll('[id^="replyForm-"]');
+            allReplyForms.forEach(function(otherReplyForm) {
+                if (otherReplyForm.id !== 'replyForm-' + commentId) {
+                    otherReplyForm.style.display = 'none';
+                }
+            });
+            var isReplyButtonEnabled = true;
+
+
+        }
+
+        function submitReply(commentId) {
+            // 여기에 실제 답글을 서버로 전송하는 로직을 추가할 수 있습니다.
+            var replyContent = document.getElementById('floatingTextarea3').value;
+            console.log('Comment ID: ' + commentId + ', Reply Content: ' + replyContent);
+
+            // 답글 작성 후 폼 숨기기
+            var replyForm = document.getElementById('replyForm-' + commentId);
+            replyForm.style.display = 'none';
+        }
+
+        function createcancelReply(commentId) {
+               console.log(commentId);
+            // 취소 버튼을 눌렀을 때 답글 작성 폼 숨기기
+            var replyForm = document.getElementById('replyForm-' + commentId);
+            replyForm.style.display = 'none';
+
+        }
+
+    </script>
+    <script th:inline="javascript">
+
+
+        function submitReply(replyId) {
+            // 여기에 실제 수정한 답글을 서버로 전송하는 로직을 추가할 수 있습니다.
+            var replyContent = document.getElementById('floatingTextarea5').value;
+            console.log('reply ID: ' + replyId + ', Reply Content: ' + replyContent);
+
+            // 답글 작성 후 폼 숨기기
+            var replyModifyForm = document.getElementById('replyModifyForm-' + replyId);
+            replyModifyForm.style.display = 'none';
+             document.getElementById('replyButton-' + commentId).disabled = false;
+        }
+
+        function cancelReply(replyId) {
+            // 취소 버튼을 눌렀을 때 수정 폼 숨기기
+            var replyModifyForm = document.getElementById('replyModifyForm-' + replyId);
+            replyModifyForm.style.display = 'none';
+
+            // 수정 버튼 다시 표시
+            var replyModifyButton = document.getElementById('replyModifyButton-' + replyId);
+            replyModifyButton.style.display = 'block';
+        }
+
+
+         function toggleReplyDivVisibility(replyId) {
+            selectedReplyId = replyId;
+            console.log(selectedReplyId);
+            // 모든 답글에 대한 수정 폼과 수정 버튼을 가져옴
+            var allReplyModifyForms = document.querySelectorAll('[id^=replyModifyForm-]');
+            var allReplyModifyButtons = document.querySelectorAll('[id^=replyModifyButton-]');
+            var allreplyReplyForm = document.getElementsByClassName('allReplyForm');
+            var allCommentForm = document.getElementsByClassName('allComment');
+            var allCommentModifyButton = document.getElementsByClassName('commentModifyClass');
+              console.log(allCommentModifyButton);
+
+                  if (selectedReplyId !== null) {
+
+                for (var i = 0; i < allCommentModifyButton.length; i++) {
+                    allCommentModifyButton[i].style.display = 'block';
+                }
+            }
+
+            var arrayFromCollection = Array.from(allreplyReplyForm);
+             console.log(arrayFromCollection);
+            arrayFromCollection.forEach(function(allreplyReplyForm) {
+                allreplyReplyForm.style.display = 'none';
+            });
+
+             var arrayCommentFromCollection = Array.from(allCommentForm);
+             console.log(arrayCommentFromCollection);
+            arrayCommentFromCollection.forEach(function(allCommentForm) {
+                allCommentForm.style.display = 'none';
+            });
+
+            // 모든 답글에 대한 수정 폼을 숨김
+            allReplyModifyForms.forEach(function(form) {
+                form.style.display = 'none';
+            });
+
+            // 모든 답글에 대한 수정 버튼을 표시
+            allReplyModifyButtons.forEach(function(button) {
+                button.style.display = 'block';
+            });
+
+            // 선택한 답글에 대한 수정 폼과 수정 버튼을 가져옴
+            var replyModifyForm = document.getElementById('replyModifyForm-' + replyId);
+            var replyModifyButton = document.getElementById('replyModifyButton-' + replyId);
+
+            // 선택한 답글에 대한 수정 폼을 표시
+            replyModifyForm.style.display = 'block';
+
+            // 선택한 답글에 대한 수정 버튼을 숨김
+            replyModifyButton.style.display = 'none';
+
+        }
+    </script>
+    <script th:inline="javascript">
+        var currentlyVisibleDivId = null;
+
+
+        function toggleDivVisibility(commentId) {
+              console.log(currentlyVisibleDivId);
+
+            var contentDiv = document.getElementById("contentDiv-" + commentId);
+            var commentButton = document.getElementById("commentButton-" + commentId);
+            var cancelButton = document.getElementById("cancelButton-" + commentId);
+            var allCommentModifyButtons = document.querySelectorAll('[id^=commentButton-]');
+            var allreplyReplyForm = document.getElementsByClassName('allReplyForm');
+            var allReplyModifyForm = document.getElementsByClassName('allReplyModifyForm');
+
+
+            var arrayModifyFromCollection = Array.from(allReplyModifyForm);
+             console.log(arrayModifyFromCollection);
+            arrayModifyFromCollection.forEach(function(allReplyModifyForm) {
+                allReplyModifyForm.style.display = 'none';
+            });
+
+            if(selectedReplyId != null) {
+             const target = document.getElementById('replyModifyButton-' + selectedReplyId);
+             target.style.display = 'block';
+            }
+
+
+
+            var arrayFromCollection = Array.from(allreplyReplyForm);
+             console.log(arrayFromCollection);
+            arrayFromCollection.forEach(function(allreplyReplyForm) {
+                allreplyReplyForm.style.display = 'none';
+            });
+
+
+            if (currentlyVisibleDivId !== null) {
+                hideDiv(currentlyVisibleDivId);
+            }
+
+            if (contentDiv.style.display === "none") {
+                contentDiv.style.display = "block";
+                commentButton.style.display = "none";
+                currentlyVisibleDivId = commentId;
+            } else {
+                contentDiv.style.display = "none";
+                commentButton.style.display = "block";
+                currentlyVisibleDivId = null;
+            }
+        }
+
+        function hideDiv(commentId) {
+            var contentDiv = document.getElementById("contentDiv-" + commentId);
+            var commentButton = document.getElementById("commentButton-" + commentId);
+
             contentDiv.style.display = "none";
             commentButton.style.display = "block";
-            currentlyVisibleDivId = null;
         }
-    }
-
-    function hideDiv(commentId) {
-        var contentDiv = document.getElementById("contentDiv-" + commentId);
-        var commentButton = document.getElementById("commentButton-" + commentId);
-
-        contentDiv.style.display = "none";
-        commentButton.style.display = "block";
-    }
-</script>
-<script type='text/javascript'>
-    const delete_elements = document.getElementsByClassName("delete");
-    Array.from(delete_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            if(confirm("정말로 삭제하시겠습니까?")) {
-                location.href = this.dataset.uri;
-            };
+    </script>
+    <script type='text/javascript'>
+        const delete_elements = document.getElementsByClassName("delete");
+        Array.from(delete_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
         });
-    });
-</script>
+        const recommend_elements = document.getElementsByClassName("voterClass");
+
+          Array.from(recommend_elements).forEach(function (element) {
+            element.addEventListener('click', function () {
+              // 현재 추천 상태 확인
+              const isRecommended = element.getAttribute('data-recommended') === 'true';
+
+              if (isRecommended) {
+                // 추천 취소에 대한 로직 수행
+                location.href = this.dataset.uri;
+                element.setAttribute('data-recommended', 'false');
+                // 여기에서 추천이 취소된 상태로 변경에 따른 UI 업데이트 등을 수행할 수 있습니다.
+              } else {
+                // 추천에 대한 로직 수행
+                location.href = this.dataset.uri;
+                element.setAttribute('data-recommended', 'true');
+                // 여기에서 추천된 상태로 변경에 따른 UI 업데이트 등을 수행할 수 있습니다.
+              }
+            });
+          });
+    </script>
+</div>
 </body>
 </html>

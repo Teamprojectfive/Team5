@@ -122,7 +122,6 @@ public class MemberController {
   @GetMapping("/mypage")
   public String mypage(Model model, Principal principal) {
     String loginId = principal.getName();
-
     // MemberService를 이용하여 사용자 정보 가져오기
     Member member = this.memberService.getMember(loginId);
 
@@ -131,7 +130,7 @@ public class MemberController {
 
     // 모델에 Member 객체와 찜 목록 추가
     model.addAttribute("member", member);
-    model.addAttribute("wishlist", wishlist);
+    model.addAttribute("wishList", wishlist);
 
     return "/LoginandSignup/mypage_form";
   }
@@ -204,7 +203,7 @@ public class MemberController {
 
     if (review != null) {
       // 리뷰를 수정합니다.
-      reviewService.modify(review, newSubject, newContent,newStarRating);
+      reviewService.modify(review, newSubject,newStarRating);
       // 수정이 완료되면 마이페이지 리뷰로 리다이렉트합니다.
       return "redirect:/member/mypagereview";
     } else {
@@ -671,7 +670,17 @@ public class MemberController {
   // 패스워드찾기 휴대폰으로 인증 메서드 끝
 
   @GetMapping("/my_movie")
-  public String mypagemoive(){
+  public String mypagemoive(Model model, Principal principal){
+
+    String loginId = principal.getName();
+    // MemberService를 이용하여 사용자 정보 가져오기
+    Member member = this.memberService.getMember(loginId);
+
+    List<MovieInfo> wishList = this.memberService.getWishList(loginId);
+
+    // 모델에 Member 객체와 찜 목록 추가
+    model.addAttribute("wishList", wishList);
+
     return "/LoginandSignup/mypage_moive.html";
   }
 }

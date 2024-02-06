@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-
 </head>
 <body style="background: #f2f2f2;">
 <div layout:fragment="content">
-    <div  style="display:flex; justify-content: space-between; padding: 20px; margin-bottom: 20px; margin-top:20px;">
-        <div th:each="genre : ${genreList}" class="genreItem"     >
-            <button onclick="filterMoviesByGenre(this.innerText)" class="recommend btn btn-sm btn-outline-secondary" style="color:black; font-weight:bold;background: aliceblue;"><span th:text="${genre.genreNm}"></span></button>
+    <div style="display:flex; justify-content: space-between; padding: 20px; margin-bottom: 20px; margin-top:20px;">
+        <div th:each="genre : ${genreList}" class="genreItem">
+            <button onclick="filterMoviesByGenre(this.innerText)" class="recommend btn btn-sm btn-outline-secondary"
+                    style="color:black; font-weight:bold;background: aliceblue;"><span
+                    th:text="${genre.genreNm}"></span></button>
         </div>
     </div>
     <section class="movie_room_cont" style="display:flex; flex-wrap:wrap; justify-content: center; width:100%;">
@@ -24,7 +25,8 @@
                     <label>장르:</label>
                     <p class="detail_cont_subb" th:text="${genre.genre.genreNm}" style="color:black;"></p>
                 </div>
-                <a th:href="@{|/board/article/list/${movie.id}?page=0|}" class="recommend btn btn-sm btn-outline-secondary"
+                <a th:href="@{|/board/article/list/${movie.id}?page=0|}"
+                   class="recommend btn btn-sm btn-outline-secondary"
                    style="width: 100%;">들어가기</a>
             </div>
         </div>
@@ -32,7 +34,6 @@
     <script>
         function filterMoviesByGenre(genre) {
             var movieItems = document.querySelectorAll('.movieItem');
-
             movieItems.forEach(function(item) {
                 var genres = item.querySelectorAll('.detail_cont_subb');
                 var found = false;

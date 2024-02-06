@@ -208,7 +208,7 @@ transition: transform 1.5s ease;
     background: none;
     border: 0px;
     left:50px;
-    top:66%;
+    top:60%;
     z-index:99;
     cursor: pointer;
 }
@@ -220,7 +220,7 @@ transition: transform 1.5s ease;
     background: none;
     border: 0px;
     right:50px;
-    top:66%;
+    top:60%;
     z-index:99;
     cursor: pointer;
 }

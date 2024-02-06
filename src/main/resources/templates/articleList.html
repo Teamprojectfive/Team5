@@ -4,64 +4,96 @@
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article List</title>
-
     <link rel="stylesheet" href="/Board/articeList.css">
 </head>
 <body style="background: #f2f2f2; width: 100%; max-width: 1900px;">
 <div layout:fragment="content">
     <section>
-        <div class="article_title">
-            <img th:src="${movieInfo.posters}" alt="Selected Movie Poster" width="230"/>
-            <h1>자유게시판</h1>
-        </div>
-
-        <!-- 게시글 목록 -->
-        <table class="article">
-            <thead>
-            <tr>
-                <th>닉네임</th>
-                <th>제목</th>
-                <th>게시일</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <div th:each="article : ${articles}">
-                <tr>
-                    <td>
-                        <a th:href="@{|/board/article/detail/${article.id}|}">
-                            <div th:text="${article.member.nickName}"></div>
-                        </a>
-                    </td>
-                    <td>
-                        <a th:href="@{|/board/article/detail/${article.id}|}">
-                            <h1 th:text="${article.title}"></h1>
-                        </a>
-                    </td>
-                    <td>
-                        <div th:text="${article.createDate}"></div>
-                    </td>
-                    <td style="display: flex; flex-direction: row-reverse;margin: 5px;">
-                        <a th:href="@{|/board/article/modify/${article.id}|}"
-                           class="btn btn-sm btn-outline-secondary"
-                           sec:authorize="isAuthenticated()"
-                           th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-                           th:text="수정" style="width: 20%;">
-                        </a>&nbsp;
-                        <a href="javascript:void(0);"
-                           th:data-uri="@{|/board/article/delete/${article.id}|}"
-                           class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-                           th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-                           th:text="삭제" style="width: 20%;"></a>
-                    </td>
-                </tr>
+        <section>
+            <div class="article_title">
+                <img th:src="${movieInfo.posters}" alt="Selected Movie Poster" width="230"/>
+                <h1>자유게시판</h1>
             </div>
-            </tbody>
-        </table>
+            <!-- 게시글 목록 -->
+            <table class="article">
+                <thead>
+                <tr>
+                    <th>조회수</th>
+                    <th>닉네임</th>
+                    <th>제목</th>
+                    <th>게시일</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <div th:each="article : ${articles}">
+                    <tr>
+                        <td>
+                            <div th:text="${article.views}"></div>
+                        </td>
+                        <td>
+                            <a th:href="@{|/board/article/detail/${article.id}|}">
+                                <div th:text="${article.member.nickName}"></div>
+                            </a>
+                        </td>
+                        <td>
+                            <a th:href="@{|/board/article/detail/${article.id}|}">
+                                <h1 th:text="${article.title}"></h1>
 
-        <div th:each="movie : ${movieInfo}">
-            <a th:href="@{|/board/article/create?id=${movie.id}|}" class="create-link">글 작성</a>
-        </div>
+                                <!--                            <span class="text-danger small ms-2"-->
+                                <!--                                  th:if="${#lists.size(article.commentList) > 0}"-->
+                                <!--                                  th:text="${#lists.size(article.commentList)}">-->
+                                <!--                    </span>-->
+                            </a>
+                        </td>
+                        <td>
+                            <div th:text="${article.createDate}"></div>
+                        </td>
+                        <td style="display: flex; flex-direction: row-reverse;margin: 5px;">
+                            <a th:href="@{|/board/article/modify/${article.id}?movieInfoId=${movieInfo.id}|}"
+                               class="btn btn-sm btn-outline-secondary"
+                               sec:authorize="isAuthenticated()"
+                               th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+                               th:text="수정" style="width: 20%;">
+                            </a>&nbsp;
+                            <a href="javascript:void(0);"
+                               th:data-uri="@{|/board/article/delete/${article.id}?movieInfoId=${movieInfo.id}|}"
+                               class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                               th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
+                               th:text="삭제" style="width: 20%;"></a>
+
+
+                        </td>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
+            <div th:if="${!articles.isEmpty()}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${articles.number == 0} ? 'disabled' : ''">
+                        <a class="page-link"
+                           th:href="@{|?page=${articles.number-1}|}">
+                            <span>이전</span>
+                        </a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, articles.totalPages-1)}"
+                        th:if="${page >= articles.number-5 and page <= articles.number+5}"
+                        th:classappend="${page == articles.number} ? 'active'"
+                        class="page-item">
+                        <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"
+                           style=background-color:gray;></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!articles.hasNext} ? 'disabled'">
+                        <a class="page-link" th:href="@{|?page=${articles.number+1}|}">
+                            <span>다음</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div th:each="movie : ${movieInfo}">
+                <a th:href="@{|/board/article/create?id=${movie.id}|}" class="create-link">글 작성</a>
+            </div>
+        </section>
     </section>
     <script type='text/javascript'>
         const delete_elements = document.getElementsByClassName("delete");
@@ -73,25 +105,42 @@
             });
         });
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function checkLoginAndRedirect(movieInfoId) {
+            // 'id' 변수는 해당 값을 사용하도록 대체해야 합니다.
+            var id = document.getElementById("articleScriptId").value;
+            // 로그인 상태 확인 후 폼 제출 함수 호출
+            checkLoginAndSubmit(id);
+        }
+        function checkLoginAndSubmit(id) {
+            $.ajax({
+                url: "/check-login-status",
+                method: "GET",
+                success: function(response) {
+                    if (response.loggedIn) {
+                        // 로그인된 경우, AJAX를 사용하여 댓글 제출
+                        $.ajax({
+                            url: "/reply/create/" + id,
+                            method: "GET",
+                            data: { "content": content, "_csrf": "${_csrf.token}" },
+                            success: function(commentResponse) {
+                                // 필요한 경우 성공 처리를 처리합니다.
+                            },
+                            error: function() {
+                                // 필요한 경우 오류 처리를 처리합니다.
+                            }
+                        });
+                    } else {
+                        // 로그인되지 않은 경우, 알림 표시 후 로그인 페이지로 리다이렉트
+                        alert("로그인이 필요한 서비스입니다.");
+                        window.location.href = "/member/login";
+                    }
+                }
+            });
+        }
+    </script>
 </div>
 </body>
 </html>
-<!-- 게시글 목록 -->
-<!--/*
-<div th:each="article : ${articles}" class="article">
-    <a th:href="@{|/board/article/detail/${article.id}|}">
-        <h1 th:text="${article.title}"></h1>
-    </a>
-    <div th:text="${article.member.nickName}"></div>
-    <div th:text="${article.createDate}"></div>
-    <a th:href="@{|/board/article/modify/${article.id}?boardId=${board.id}|}" class="btn btn-sm btn-outline-secondary"
-       sec:authorize="isAuthenticated()"  th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-       th:text="수정">
-    </a>
-    <a href="javascript:void(0);" th:data-uri="@{|/board/article/delete/${article.id}?boardId=${board.id}|}"
-       class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-       th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
-       th:text="삭제"></a>
-
-</div>
-*/-->
