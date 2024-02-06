@@ -45,7 +45,7 @@
                 <i class="fa-solid fa-magnifying-glass" style="font-size: 35px;color:white;"></i>
             </button>
             <form th:action="@{/movie/search}" method="get">
-            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요">
+            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요" required>
             </form>
         </div>
     </div>

@@ -22,7 +22,5 @@ public class Region {
   @ManyToOne
   private Excel excel;
 
-  @ManyToOne
-  private Theater theater;
 
 }

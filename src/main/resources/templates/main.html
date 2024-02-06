@@ -93,7 +93,7 @@
         <form th:action="@{/movie/search}" method="get">
             <div class="serch_container">
                 <input class="search" type="text" name="enterMovie" th:value="${entermovie}"
-                       placeholder="검색할 영화를입력하세요.">&nbsp;
+                       placeholder="검색할 영화를입력하세요." required>&nbsp;
                 <button class="button button-first" data-type="square"> 검색</button>
             </div>
         </form>
