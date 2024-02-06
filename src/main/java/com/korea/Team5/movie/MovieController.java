@@ -9,15 +9,14 @@ import com.korea.Team5.movie.entity.Genre;
 import com.korea.Team5.movie.entity.GenreMovieInfo;
 import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.entity.MovieInfo;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -60,7 +59,14 @@ public class MovieController {
 
         return "boxOffice";
     }
+    @PostMapping("/saveSelectedGenre")
+    @ResponseBody
+    public ResponseEntity<String> saveSelectedGenre(@RequestParam("genreId") String genreId, HttpSession session) {
+        // 세션에 선택한 장르 정보 저장
+        session.setAttribute("selectedGenreId", genreId);
 
+        return ResponseEntity.ok("Selected genre saved to session");
+    }
     @GetMapping("/top100")
     public String test(Model model, @RequestParam(required = false) Integer genreId) {
         List movieList = new ArrayList<>();

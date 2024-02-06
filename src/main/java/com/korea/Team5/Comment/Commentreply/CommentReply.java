@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,7 +19,8 @@ public class CommentReply {
 
   private String content;
 
-  private String voter;
+  @ManyToMany
+  Set<Member> voter; // 추천 ,좋아요
 
   private LocalDateTime createDate;
 

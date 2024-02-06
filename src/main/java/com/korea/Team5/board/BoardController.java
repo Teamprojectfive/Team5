@@ -40,7 +40,7 @@ public class BoardController {
     List<Genre> genreList = this.movieService.genreList();
     model.addAttribute("genreList", genreList);
     model.addAttribute("movieInfoList", movieInfoList);
-    return "boardList";
+    return "ArticleandBoard/boardList";
   }
 
 
@@ -51,7 +51,7 @@ public class BoardController {
     MovieInfo movieInfo = this.movieService.getMovieInfo(id);
     model.addAttribute("movieInfo", movieInfo);
     model.addAttribute("articles", articleList);
-    return "articleList";
+    return "ArticleandBoard/articleList";
 
   }
 
@@ -61,7 +61,7 @@ public class BoardController {
     MovieInfo movieInfo = this.movieService.getMovieInfo(id);
     model.addAttribute("movieInfo", movieInfo);
 
-    return "articleCreate";
+    return "ArticleandBoard/articleCreate";
   }
 
   @PostMapping("/article/create")
@@ -69,7 +69,7 @@ public class BoardController {
   public String articleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @RequestParam Integer id) {
 
     if (bindingResult.hasErrors()) {
-      return "articleCreate";
+      return "ArticleandBoard/articleCreate";
     }
     MovieInfo movieInfo = movieService.getMovieInfo(id);
     Member member = memberService.getMember(principal.getName());
@@ -81,7 +81,7 @@ public class BoardController {
   public String articledetail(@PathVariable("id") Integer id, Model model) {
     Article article = this.articleService.getArticle(id);
     model.addAttribute("article", article);
-    return "articleDetail";
+    return "ArticleandBoard/articleDetail";
   }
 
 
@@ -97,7 +97,7 @@ public class BoardController {
     model.addAttribute("movieInfo", movieInfo);
     articleForm.setTitle(article.getTitle());
     articleForm.setContent(article.getContent());
-    return "articleCreate";
+    return "ArticleandBoard/articleCreate";
   }
 
   @PostMapping("/article/modify/{id}")

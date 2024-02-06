@@ -52,8 +52,11 @@
             장르
         </button>
         <ul class="dropdown-menu" id="genreDropdown">
+            <a href="/movie/top100">
+                <li>전체</li>
+            </a>
             <li th:each="genre : ${genres}">
-                <a th:href="@{|/movie/mainList?genreId=${genre.id}|}" th:text="${genre.genreNm}"
+                <a th:href="@{|/movie/top100?genreId=${genre.id}|}" th:text="${genre.genreNm}"
                    onclick="selectGenre(this)"></a>
             </li>
         </ul>
@@ -134,12 +137,28 @@
         }
     }, false);
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         const recommendElements = document.getElementsByClassName('recommend');
         Array.from(recommendElements).forEach(function(element) {
             element.addEventListener('click', function() {
                 if (confirm('이 영화를 찜하시겠습니까?')) {
-                    location.href = this.dataset.uri;
+                    // 추가된 부분: AJAX를 이용한 로그인 상태 확인
+                    $.ajax({
+                        url: "/check-login-status",
+                        method: "GET",
+                        success: function(response) {
+                            if (response.loggedIn) {
+                                // 로그인된 경우 리뷰 작성 페이지로 이동
+                                location.href = element.dataset.uri;
+                            } else {
+                                // 로그인되지 않은 경우 알림 메시지 표시
+                                alert("로그인이 필요합니다.");
+                                // 로그인 페이지로 리다이렉트
+                                window.location.href = "/member/login";
+                            }
+                        }
+                    });
                 }
             });
         });

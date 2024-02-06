@@ -93,7 +93,7 @@
         <form th:action="@{/movie/search}" method="get">
             <div class="serch_container">
                 <input class="search" type="text" name="enterMovie" th:value="${entermovie}"
-                       placeholder="검색할 영화를입력하세요.">&nbsp;
+                       placeholder="검색할 영화를입력하세요." required>&nbsp;
                 <button class="button button-first" data-type="square"> 검색</button>
             </div>
         </form>
@@ -153,4 +153,30 @@
 </div>
 </body>
 <script src="main.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    const recommendElements = document.getElementsByClassName('recommend');
+    Array.from(recommendElements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if (confirm('이 영화를 찜하시겠습니까?')) {
+                // 추가된 부분: AJAX를 이용한 로그인 상태 확인
+                $.ajax({
+                    url: "/check-login-status",
+                    method: "GET",
+                    success: function(response) {
+                        if (response.loggedIn) {
+                            // 로그인된 경우 리뷰 작성 페이지로 이동
+                            location.href = element.dataset.uri;
+                        } else {
+                            // 로그인되지 않은 경우 알림 메시지 표시
+                            alert("로그인이 필요합니다.");
+                            // 로그인 페이지로 리다이렉트
+                            window.location.href = "/member/login";
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
 </html>

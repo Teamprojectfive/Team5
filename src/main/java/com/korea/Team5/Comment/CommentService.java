@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +49,20 @@ public class CommentService {
     comment.setContent(content);
     comment.setModifyDate(LocalDateTime.now());
     this.commentRepository.save(comment);
+  }
+
+  public boolean vote(Comment comment, Member member){
+    Set<Member> voters = comment.getVoter();
+
+    // 이미 추천한 상태이면 취소하고 false 반환
+    if (voters.contains(member)) {
+      voters.remove(member);
+      this.commentRepository.save(comment);
+      return false;
+    }
+    // 추천되지 않은 상태이면 추가하고 true 반환
+    voters.add(member);
+    this.commentRepository.save(comment);
+    return true;
   }
 }
