@@ -693,4 +693,3 @@ public class MemberController {
     return "/LoginandSignup/mypage_moive.html";
   }
 }
-
