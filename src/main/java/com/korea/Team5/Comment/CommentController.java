@@ -38,7 +38,7 @@ public class CommentController {
     Article article = this.articleService.getArticle(articleId);
     if (bindingResult.hasErrors()) {
       model.addAttribute("article", article);
-      return "articleDetail";
+      return "ArticleandBoard/articleDetail";
     }
     this.commentService.create(member, commentCreateForm.getContent(), article);
 
@@ -67,7 +67,7 @@ public class CommentController {
                        BindingResult bindingResult) {
     Comment comment = this.commentService.getComment(id);
     if (bindingResult.hasErrors()) {
-      return "articleDetail";
+      return "ArticleandBoard/articleDetail";
     }
     if (!comment.getMember().getLoginId().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");

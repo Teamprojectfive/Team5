@@ -9,7 +9,7 @@
         <div class="movie_name">
             <a href="/main" style="  text-decoration: none;">
                 <i class="fa-solid fa-video" style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                <span class="m_p" style="color:red;">M</span><span class="m_o">o</span><span class="m_v">v</span><span class="m_i">i</span><span class="m_e">e</span>
+                <span class="phantom-film">Phantom Film</span>
             </a>
         </div>
         <div class="login">
@@ -41,7 +41,7 @@
                 <i class="fa-solid fa-magnifying-glass" style="font-size: 35px;color:white;"></i>
             </button>
             <form th:action="@{/movie/search}" method="get">
-            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요">
+            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요" required>
             </form>
         </div>
     </div>

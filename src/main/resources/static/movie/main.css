@@ -58,9 +58,7 @@ body {
     transform: skewY(-3deg);
 }
 
-.icon-container {
-    text-shadow: 2px 2px 4px rgba(251,251,251);
-}
+
 
 .logo{
     color:white;
@@ -134,8 +132,16 @@ ul{
     top:2px;
 }
 
+      .phantom-film {
+           background: linear-gradient(to right,#663399, #ff0000, #663399);
+           -webkit-background-clip: text;
+           color: transparent;
+           font-weight: bold;
+           text-shadow: 2px 2px 4px (255, 0, 0, 1);
+         }
+
 .video_container {
-    background-color: #313137;
+
     position: relative;
     overflow: hidden;
     height: 70vh;
@@ -144,6 +150,7 @@ ul{
 
 .video_container::before,
 .video_container::after {
+    overflow-y: hidden;
     content: '';
     position: absolute;
     top: 0;
@@ -159,7 +166,19 @@ ul{
 .video_container::after {
     right: -40px;
 }
+.video-wrapper{
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: black;
+}
 
+.video-iframe {
+background: black;
+  position: absolute;
+  width: 100%; /* 부모에 맞게 꽉 채운다. */
+  height: 100%;
+}
 .video  {
     margin-left: 16%;
 }
@@ -170,6 +189,8 @@ ul{
     object-fit: cover;
     opacity: 1;
 }
+
+
 
 .movie_title_container{
     position: absolute;

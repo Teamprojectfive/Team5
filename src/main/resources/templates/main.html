@@ -29,10 +29,9 @@
     <div class="title_container">
         <div class="logo">
              <span class="icon-container">
-                 <i class="fa-solid fa-video"></i>
+                 <i class="fa-solid fa-video" style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
              </span>
-            <span class="m_p" style="color:red;">M</span><span class="m_o">o</span><span class="m_v">v</span><span
-                class="m_i">i</span><span class="m_e">e</span>
+            <span class="phantom-film" >Phantom Film</span>
         </div>
         <div class="sub_nav">
             <div class=" dropdown dropdown-hover">
@@ -40,6 +39,8 @@
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
                     <li><a href="/movie/boxOffice">박스오피스</a></li>
                     <li><a href="/movie/top100">전체영화</a></li>
+
+
                 </ul>
             </div>
             <div class="dropdown dropdown-hover">
@@ -71,7 +72,7 @@
         <div class="video_bg" style="background-image: url('pexels-blockhaus-malung-19298575 (Original).mp4');"></div>
         <div class="video">
             <div style="position: relative; height:0; padding-bottom: 56.25%; margin: 40px 0px;">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/w99yyjtYanE?autoplay=1&mute=1&controls=0&loop=1&"
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/w99yyjtYanE?autoplay=1&mute=1&controls=0&loop=1&&playlist=w99yyjtYanE&"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen style="position: absolute; width: 81%; height: 70%; z-index: 99;"></iframe>
@@ -82,11 +83,12 @@
     </div>
     <!-- 비디오컨테이너 여기까지 -->
     <!-- 검색컨테이너 -->
+
     <section class="frame">
         <form th:action="@{/movie/search}" method="get">
             <div class="serch_container">
                 <input class="search" type="text" name="enterMovie" th:value="${entermovie}"
-                       placeholder="검색할 영화를입력하세요.">&nbsp;
+                       placeholder="검색할 영화를입력하세요." required>&nbsp;
                 <button class="button button-first" data-type="square"> 검색</button>
             </div>
         </form>
@@ -134,20 +136,39 @@
 
 </body>
 <script src="main.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     const recommendElements = document.getElementsByClassName('recommend');
     Array.from(recommendElements).forEach(function(element) {
         element.addEventListener('click', function() {
             if (confirm('이 영화를 찜하시겠습니까?')) {
                 location.href = this.dataset.uri;
+
+                // 추가된 부분: AJAX를 이용한 로그인 상태 확인
+                $.ajax({
+                    url: "/check-login-status",
+                    method: "GET",
+                    success: function(response) {
+                        if (response.loggedIn) {
+                            // 로그인된 경우 리뷰 작성 페이지로 이동
+                            location.href = element.dataset.uri;
+                        } else {
+                            // 로그인되지 않은 경우 알림 메시지 표시
+                            alert("로그인이 필요합니다.");
+                            // 로그인 페이지로 리다이렉트
+                            window.location.href = "/member/login";
+                        }
+                    }
+                });
             }
         });
     });
 </script>
+
 <script>
     // 페이지 로드 시 자동 재생 시도
     window.onload = function() {
       document.querySelector('iframe').src += '?autoplay=1';
     };
-</script
+</script>
 </html>

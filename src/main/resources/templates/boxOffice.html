@@ -35,14 +35,18 @@
             </div>
         </section>
     </section>
+
     <button id="nextWeekButton" class="left" onclick="movePage(1)"><i class="fa-solid fa-chevron-left"></i></button>
     <button  id="previousWeekButton" class="right" onclick="movePage(-1)"><i class="fa-solid fa-chevron-right"></i></button>
-    <script>nextWeekButton
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
 
         const totalSlides = document.querySelectorAll('.list_box').length; // 전체 슬라이드 수
+        let currentSlide = 0;
         const moveDistance = -1925; // 이동 거리
         const listContainer = document.getElementById('listContainer');
-        let currentSlide = 0;
+
 
 function movePage(direction) {
     currentSlide += direction;
@@ -162,6 +166,25 @@ updateDate();
                 }
             });
         });
+    </script>
+    <script>
+        function selectGenre(element) {
+            var genreId = $(element).data("genre-id");
+
+            // AJAX 요청으로 선택한 장르를 서버에 전송
+            $.ajax({
+                type: "POST",
+                url: "/saveSelectedGenre",
+                data: { genreId: genreId },
+                success: function (response) {
+                    // 성공 시 처리
+                    console.log("Selected genre saved to session");
+                },
+                error: function (error) {
+                    console.error("Error saving selected genre to session", error);
+                }
+            });
+        }
     </script>
 </div>
 </body>

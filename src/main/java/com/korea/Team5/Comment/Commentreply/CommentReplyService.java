@@ -46,7 +46,6 @@ public class CommentReplyService {
     commentReply.setModifyDate(LocalDateTime.now());
     this.commentReplyRepository.save(commentReply);
   }
-
   public boolean vote(CommentReply commentReply, Member member){
     Set<Member> voters = commentReply.getVoter();
 
@@ -61,4 +60,5 @@ public class CommentReplyService {
     this.commentReplyRepository.save(commentReply);
     return true;
   }
+
 }

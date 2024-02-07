@@ -1,5 +1,9 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<head>
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/movie/main.css">
+</head>
 <body style="background:black; width:1920px;">
 <div layout:fragment="content" class="container my-3" style="position: relative; top:10%; padding:0;width:1920px">
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
@@ -9,18 +13,12 @@
         -ms-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(255,255,255);
         -o-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(255,255,255);
         box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 3px 12px rgba(255,255,255);
-        background-image: url('https://cdn.pixabay.com/photo/2014/10/16/09/15/lens-490806_640.jpg'); background-size: cover; background-position: center; height: 75vh;">
+        background:; height: 75vh;">
         <div style="margin-left:50px; padding:180px; width: 57.5%;">
             <div style="font-size:23px;">
-                <i class="fa-solid fa-video"></i>
+                <i class="fa-solid fa-video" style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                 <a th:href="@{/main}" style="text-decoration:none;">
-                    <span class="m_p" style="color:red;">M</span><span class="m_o" style="color: black">o</span><span
-                        class="m_v" style="color: black">v</span><span class="m_i" style="color: black">i</span><span
-                        class="m_e" style="color: black">e</span>
-
-                    <!--                    <span class="m_p" style="color:red;">M</span><span class="m_o" style="color: black">o</span><span-->
-                    <!--                        class="m_v" style="color: black">v</span><span class="m_i" style="color: black">i</span><span-->
-                    <!--                        class="m_e" style="color: black">e</span>-->
+                    <span class="phantom-film">Phantom Film</span>
                 </a>
             </div>
             <h2 style="text-align: center; color:white;"><strong>로그인</strong></h2>
@@ -73,7 +71,7 @@
             </div>
         </div>
         <div>
-            <img src="https://www.jejunews.com/news/photo/201904/2136336_165654_2112.jpg" alt=""
+            <img src="https://search.pstatic.net/common?quality=75&direct=true&src=https%3A%2F%2Fmovie-phinf.pstatic.net%2F20240103_132%2F1704256822900I1c3f_JPEG%2Fmovie_image.jpg" alt=""
                  style="height:100%; width:102%; box-shadow: 0 152px 28px rgba(0,0,0,0.25), 0 12px 35px rgba(255,255,255)">
         </div>
     </form>

@@ -18,8 +18,11 @@ public class CommentReply {
   private Integer id;
 
   private String content;
+
+
   @ManyToMany
-  private Set<Member> voter;
+  Set<Member> voter; // 추천 ,좋아요
+
 
   private LocalDateTime createDate;
 

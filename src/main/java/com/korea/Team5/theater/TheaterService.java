@@ -12,7 +12,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TheaterService {
 
-  private final TheaterRepository theaterRepository;
+
   private final ExcelRepository excelRepository;
 
   public List<Excel> getExcelRegion(String targetBigRegion, String targetSmallRegion) {

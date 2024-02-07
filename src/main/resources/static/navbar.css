@@ -132,3 +132,10 @@ ul{
 .search-container:hover .search-input {
     width: 170px;
 }
+      .phantom-film {
+           background: linear-gradient(to right,#663399, #ff0000, #663399);
+           -webkit-background-clip: text;
+           color: transparent;
+           font-weight: bold;
+           text-shadow: 2px 2px 4px (255, 0, 0, 1);
+         }

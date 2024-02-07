@@ -23,7 +23,9 @@ public class Comment {
   private String content;
 
   @ManyToMany
-  private Set<Member> voter;
+
+  Set<Member> voter;
+
 
   private LocalDateTime createDate;
 
@@ -36,4 +38,6 @@ public class Comment {
 
   @OneToMany(mappedBy = "comment",cascade = CascadeType.REMOVE)
   private List<CommentReply> commentReplyList;
+
+
 }

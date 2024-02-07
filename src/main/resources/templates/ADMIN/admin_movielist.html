@@ -45,6 +45,7 @@
                     <li th:each="page: ${#numbers.sequence(0, adminmoviespaging.totalPages-1)}"
                         th:classappend="${page == adminmoviespaging.number} ? 'active'"
                         class="page-item">
+
                         <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
                     </li>
                     <li class="page-item" th:classappend="${!adminmoviespaging.hasNext} ? 'disabled'">

@@ -78,13 +78,16 @@ public class CommentReplyController {
     this.commentReplyService.modify(commentReply, commentReplyForm.getContent());
     return String.format("redirect:/board/article/detail/%s", articleId);
   }
+
   @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
   @GetMapping("/vote/{id}")
-  public String vote(Principal principal, @PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes){
+  public String vote(@PathVariable("id")Integer id, Principal principal, Model model, RedirectAttributes redirectAttributes){
+
     CommentReply commentReply = this.commentReplyService.getreply(id);
     Member member = this.memberService.getMember(principal.getName());
     boolean ActionCheck = this.commentReplyService.vote(commentReply,member);
     redirectAttributes.addFlashAttribute("ActionCheck",ActionCheck);
+
     return String.format("redirect:/board/article/detail/%s", commentReply.getComment().getArticle().getId());
   }
 }

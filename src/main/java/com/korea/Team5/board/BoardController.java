@@ -7,9 +7,11 @@ import com.korea.Team5.board.article.Article;
 import com.korea.Team5.board.article.ArticleForm;
 import com.korea.Team5.board.article.ArticleService;
 import com.korea.Team5.kmapi.dto.MovieInfoDto;
+import com.korea.Team5.kmapi.entity.Vod;
 import com.korea.Team5.movie.MovieService;
 import com.korea.Team5.movie.entity.Genre;
 import com.korea.Team5.movie.entity.MovieInfo;
+import com.mysql.cj.PerConnectionLRUFactory;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +38,14 @@ public class BoardController {
   private final ArticleService articleService;
 
 
+
   @GetMapping("/movie")
   public String list(Model model) {
     List<MovieInfo> movieInfoList = this.movieService.infoList();
     List<Genre> genreList = this.movieService.genreList();
     model.addAttribute("genreList", genreList);
     model.addAttribute("movieInfoList", movieInfoList);
-    return "boardList";
+    return "ArticleandBoard/boardList";
   }
 
 
@@ -51,9 +54,10 @@ public class BoardController {
   public String articleList(Model model, @PathVariable("id") Integer id,  @RequestParam(value="page", defaultValue="0") int page) {
     Page<Article> articleList = this.articleService.getListByMovieInfo(id, page);
     MovieInfo movieInfo = this.movieService.getMovieInfo(id);
+
     model.addAttribute("movieInfo", movieInfo);
     model.addAttribute("articles", articleList);
-    return "articleList";
+    return "ArticleandBoard/articleList";
 
   }
 
@@ -63,7 +67,7 @@ public class BoardController {
     MovieInfo movieInfo = this.movieService.getMovieInfo(id);
     model.addAttribute("movieInfo", movieInfo);
 
-    return "articleCreate";
+    return "ArticleandBoard/articleCreate";
   }
 
   @PostMapping("/article/create")
@@ -71,7 +75,7 @@ public class BoardController {
   public String articleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @RequestParam Integer id) {
 
     if (bindingResult.hasErrors()) {
-      return "articleCreate";
+      return "ArticleandBoard/articleCreate";
     }
     MovieInfo movieInfo = movieService.getMovieInfo(id);
     Member member = memberService.getMember(principal.getName());
@@ -86,7 +90,7 @@ public class BoardController {
     model.addAttribute("movieInfoList", movieInfoList);
 
     model.addAttribute("article", article);
-    return "articleDetail";
+    return "ArticleandBoard/articleDetail";
   }
 
 
@@ -102,7 +106,7 @@ public class BoardController {
     model.addAttribute("movieInfo", movieInfo);
     articleForm.setTitle(article.getTitle());
     articleForm.setContent(article.getContent());
-    return "articleCreate";
+    return "ArticleandBoard/articleCreate";
   }
 
   @PostMapping("/article/modify/{id}")

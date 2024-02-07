@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px" lang="">
+<body>
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
-    <div th:each="movie : ${movie.movieInfo}" >
-        <div class="detail_container" >
-            <div  class="movie_content" >
+    <div th:each="movie : ${movie.movieInfo}">
+        <div class="detail_container">
+            <div class="movie_content">
                 <section class="post_cont">
                     <div class="main_img">
                         <img th:src="${movie.posters}" alt="">
                         <button class="custom-btn btn-4"><span>예매</span></button>
                     </div>
-                    <div  class="attendance_cont">
+                    <div class="attendance_cont">
                         <i class="fa-regular fa-user" style="font-size:100px;color:white;"></i>&nbsp;
                         <p class="detail_cont_sub">누적관객수</p>&nbsp;
                         <p th:text="${audiAcc}"></p>
@@ -19,7 +20,8 @@
                         <h1 th:text="${movie.movieNm}"></h1>
                         <div class="detail_cont">
                             <p class="detail_cont_sub">개봉일</p>
-                            <p class="detail_cont_subb" th:text="${#strings.substring(movie.openDt, 0, 4) + '.' + #strings.substring(movie.openDt, 4, 6) + '.' + #strings.substring(movie.openDt, 6)}"></p>
+                            <p class="detail_cont_subb"
+                               th:text="${#strings.substring(movie.openDt, 0, 4) + '.' + #strings.substring(movie.openDt, 4, 6) + '.' + #strings.substring(movie.openDt, 6)}"></p>
                         </div>
                         <div th:each="genre : ${movie.genreMovieInfos}" class="detail_cont">
                             <p class="detail_cont_sub">장르</p>
@@ -87,9 +89,9 @@
             </div>
             <div class="video_cont">
                 <h5 class="video_cont_title">영상</h5>
-                <div th:each="vod : ${movie.vods}">
+                <div th:each="vod : ${movie.vods}" style="background: #f2f2f2;">
                     <iframe width="1000" height="700" th:src="${vod.vodUrl}" frameborder="0"
-                            allowfullscreen></iframe>
+                            allowfullscreen style="background: #f2f2f2;"></iframe>
                 </div>
             </div>
         </div>
@@ -270,5 +272,6 @@
             return isConfirmed;
         }
     </script>
-    1</div>
+</div>
+</body>
 </html>
