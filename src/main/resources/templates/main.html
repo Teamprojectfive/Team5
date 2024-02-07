@@ -6,7 +6,8 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="/movie/main.css">
+    <link rel="stylesheet" href="/movie/movie_btn.css">
 </head>
 <body>
 <div class="main_container">
@@ -28,21 +29,32 @@
     <div class="title_container">
         <div class="logo">
              <span class="icon-container">
-                 <i class="fa-solid fa-video"></i>
+                 <i class="fa-solid fa-video" style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
              </span>
+<<<<<<< HEAD
             <span class="m_p" style="color:red;">M</span><span class="m_o">o</span><span class="m_v">v</span><span
                 class="m_i">i</span><span class="m_e">e</span>
+=======
+            <span class="phantom-film" >Phantom Film</span>
+>>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4
         </div>
         <div class="sub_nav">
-            <div class="dropdown dropdown-hover">
+            <div class=" dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="btn m-1" style="color:white; background-color:black;">영화</div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
                     <li><a href="/movie/boxOffice">박스오피스</a></li>
+<<<<<<< HEAD
                     <li><a href="/movie/top100">Top100</a></li>
+=======
+                    <li><a href="/movie/top100">전체영화</a></li>
+
+
+>>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4
                 </ul>
             </div>
             <div class="dropdown dropdown-hover">
                 <div tabindex="0" role="button" class="btn m-1" style="color:white; background-color:black;"><a
+<<<<<<< HEAD
                         href="/movie/intro">소개</a></div>
             </div>
             <div class="dropdown dropdown-hover">
@@ -53,6 +65,11 @@
                 </ul>
             </div>
             <div class="dropdown dropdown-hover">
+=======
+                        href="/theater/smallRegion">극장</a></div>
+            </div>
+            <div class="dropdown dropdown-hover">
+>>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4
                 <div tabindex="0" role="button" class="btn m-1" style="color:white; background-color:black;">공지</div>
                 <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
                     <li><a href="/notice/list">공지사항</a></li>
@@ -75,25 +92,35 @@
     <!-- 비디오컨테이너 -->
     <div class="video_container">
         <div class="video_bg" style="background-image: url('pexels-blockhaus-malung-19298575 (Original).mp4');"></div>
-        <div class="movie_title_container">
-            <h1 class="movie_title"><strong style="z-index:99;">마블 공식 예고편</strong></h1>
-            <button id="movie_view_btn" class="movie_view_btn">예고편 보기</button>
-        </div>
         <div class="video">
             <div style="position: relative; height:0; padding-bottom: 56.25%; margin: 40px 0px;">
+<<<<<<< HEAD
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/ybhXVSAdIRE" frameborder="0"
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
                         style="position: absolute; width:100%; height:100%; z-index:99;"></iframe>
+=======
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/w99yyjtYanE?autoplay=1&mute=1&controls=0&loop=1&&playlist=w99yyjtYanE&"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen style="position: absolute; width: 81%; height: 70%; z-index: 99;"></iframe>
+
+>>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4
             </div>
+
         </div>
     </div>
     <!-- 비디오컨테이너 여기까지 -->
     <!-- 검색컨테이너 -->
+
     <section class="frame">
         <form th:action="@{/movie/search}" method="get">
             <div class="serch_container">
                 <input class="search" type="text" name="enterMovie" th:value="${entermovie}"
+<<<<<<< HEAD
                        placeholder="검색할 영화를입력하세요.">&nbsp;
+=======
+                       placeholder="검색할 영화를입력하세요." required>&nbsp;
+>>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4
                 <button class="button button-first" data-type="square"> 검색</button>
             </div>
         </form>
@@ -103,6 +130,7 @@
     <section class="card_container">
         <div class="list_container">
             <ul class="list">
+<<<<<<< HEAD
                 <th:block th:each="movie, loop : ${movieInfoList}" class="list_item">
                     <li class="card">
                         <a th:href="@{|/movie/detail/${movie.id}|}">
@@ -116,10 +144,79 @@
                 <button class="left"><i class="fa-solid fa-chevron-left"></i></button>
                 <button class="right"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
+=======
+                <li th:each="movie : ${movieInfoList}" class="list_item" style="    text-align: center;">
+                    <div class="card" th:style="'background-image: url(' + ${movie.posters } + ');'">
+                        <section class="additional-info">
+                            <div>
+                                <div style="padding-top: 10px;text-align: center;font-weight: bold;font-size: 25px;"
+                                     th:text="${movie.movieNm}"></div>
+                            </div>
+                            <div class="sub_info">
+                                <label>개봉일:</label>
+                                <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
+                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                            </div>
+                            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                               th:data-uri="@{|/movie/vote/${movie.id}|}" onclick="voteMovie(${movie.id})"
+                               style=" width: 98%;">
+                                찜하기
+                            </a>
+                        </section>
+                    </div>
+                    <div class="dropdown dropdown-hover" style="top: -34px;width: 202px;">
+                        <div tabindex="0" role="button" class="custom-btn btn-4 btn m-1"
+                             style="color:white; background-color:black;">예매
+                        </div>
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
+                            <li><a href="https://www.megabox.co.kr/booking">메가박스</a></li>
+                            <li><a href="http://www.cgv.co.kr/ticket/">CGV</a></li>
+                            <li><a href="https://www.lottecinema.co.kr/NLCHS/Ticketing">롯데시네마</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+>>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4
         </div>
     </section>
 </div>
 
 </body>
 <script src="main.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    const recommendElements = document.getElementsByClassName('recommend');
+    Array.from(recommendElements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if (confirm('이 영화를 찜하시겠습니까?')) {
+                location.href = this.dataset.uri;
+
+                // 추가된 부분: AJAX를 이용한 로그인 상태 확인
+                $.ajax({
+                    url: "/check-login-status",
+                    method: "GET",
+                    success: function(response) {
+                        if (response.loggedIn) {
+                            // 로그인된 경우 리뷰 작성 페이지로 이동
+                            location.href = element.dataset.uri;
+                        } else {
+                            // 로그인되지 않은 경우 알림 메시지 표시
+                            alert("로그인이 필요합니다.");
+                            // 로그인 페이지로 리다이렉트
+                            window.location.href = "/member/login";
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    // 페이지 로드 시 자동 재생 시도
+    window.onload = function() {
+      document.querySelector('iframe').src += '?autoplay=1';
+    };
+</script>
 </html>

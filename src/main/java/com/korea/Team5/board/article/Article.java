@@ -1,5 +1,6 @@
 package com.korea.Team5.board.article;
 
+
 import com.korea.Team5.USER.Member;
 
 
@@ -7,7 +8,11 @@ import com.korea.Team5.movie.entity.MovieInfo;
 
 import com.korea.Team5.board.Comment.Comment;
 
+
+
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,8 +28,12 @@ public class Article {
     private Integer id;
 
     private String title;
+
+    @Column(columnDefinition = "LONGTEXT")
+    @Size( max = 1000)
     private String content;
 
+    private Integer views;
     private LocalDateTime createDate;
 
     @ManyToOne
@@ -33,7 +42,7 @@ public class Article {
     @ManyToOne
     private MovieInfo movieInfo;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
 

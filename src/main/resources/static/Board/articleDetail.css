@@ -1,0 +1,141 @@
+input{
+    background: #f2f2f2;
+}
+.side_top_bar{
+    display: flex;
+    width: 82.5%;
+    height: 40px;
+    border: solid 2px #f2f2f2;
+    margin-left: 5%;
+    background-color: #333;
+    align-items: center;
+    justify-content: space-between;
+}
+.side_title{
+    text-align: center;
+    width: 13%;
+    border: solid 2px #f2f2f2;
+    padding: 7px;
+    margin-left: -4px;
+}
+
+.side_top_nav{
+    width: 87%;
+    display: flex;
+    justify-content: space-between;\
+
+}
+.side_top_bar p{
+    color:white;
+}
+.board_warp{
+    margin-left: auto;
+    margin-right: auto;
+    width:90%;
+}
+.side_menu_cont{
+    background-color: #333;
+    width: 200px;
+}
+
+.side_menu_cont h2{
+    background: #f2f2f2;
+    font-size: 28px;
+    text-align: center;
+    padding: 15px;
+    color: black;
+    border-bottom: solid 2px white;
+}
+
+.side_menu_cont ul{
+    display: flow;
+    text-align: center;
+    list-style-type: none;
+    padding: 0; margin: 0;
+    color: white;
+}
+.side_menu_cont ul > li{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.side_menu_cont ul > li > a > div{
+    text-decoration: none;
+    color: white;
+    transition: all 0.5s ease ;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.side_menu_cont ul > li > a >div:hover{
+    background: gray;
+    color:black;
+    font-size: 1.1em;
+}
+.board_cont{
+    width:80%;
+}
+
+.board_contents > input{
+    font-size:18px;
+}
+
+.hour_cont{
+    padding: 8px;
+    border-bottom: solid 2px darkgray;
+    display: flex;
+    justify-content: space-between;
+    background: gainsboro;
+}
+.hour_cont input{
+    background: gainsboro;
+}
+.hour_cont div{
+    display:flex;
+}
+
+.title_cont{
+    font-size: 25px;
+    margin-top: 35px;
+    padding-bottom: 35px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    border-bottom: solid 2px darkgray;
+}
+
+.contents_cont{
+    padding:35px;
+    border-bottom: solid 2px darkgray;
+}
+
+.comment_title{
+    width: 6%;
+    padding: 10px;
+    text-align: center;
+}
+
+.comment_nick{
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment_btn{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.form-floating{
+    display:flex;
+}
+
+.badge{
+    background: #f2f2f2;
+    color:black;
+    border:none;
+}
+
+.reply_cont > .turn-up > .fa-solid{
+    transform: rotate(90deg);
+}
+

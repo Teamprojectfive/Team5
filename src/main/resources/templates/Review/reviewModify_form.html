@@ -3,13 +3,10 @@
     <link rel="stylesheet" href="/modify.css">
 </head>
 <div layout:fragment="content" class="container" style="height:82vh">
-    <h5 class="my-3 border-bottom pb-2">답변 수정</h5>
     <form th:object="${reviewForm}" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
-            <label for="subject" class="form-label">제목</label>
-            <textarea th:field="*{subject}" class="form-control" rows="10" style="height:38px;"></textarea>
             <label for="content" class="form-label">내용</label>
             <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
             <!-- 별점 선택 -->

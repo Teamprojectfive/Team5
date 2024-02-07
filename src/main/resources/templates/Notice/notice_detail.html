@@ -1,46 +1,67 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
-<div layout:fragment="content">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-        <title>Title</title>
-    </head>
-    <body>
-    <h2>공지사항</h2>
-    <div th:id="'noticeDetails-' + ${notice.Id}" class="notice-details">
-        <h2 th:text="${notice.subject}"></h2>
-        <p th:text="${notice.content}"></p>
-        <p class="card-text" th:text="${notice.member.loginId}"></p>
-        <p class="card-text"
-           th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
-        <p class="card-text" th:text="${notice.views}"></p>
-        <form th:action="@{/admin/notice/delete}" method="post">
-            <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
-                <input type="hidden" name="noticeId" th:value="${notice.Id}">
-                <input type="submit" value="공지사항 삭제" onclick="confirmDelete(event)">
-            </div>
-        </form>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <title>Title</title>
+    <link rel="stylesheet" href="./notice_detail.css">
+</head>
+<body style="background: #f2f2f2;">
+<div layout:fragment="content" style="text-align: center; height:100vh;">
+    <div style="border-bottom: solid 1px gainsboro; margin-top: 30px; padding:5px; width: 50%; text-align: start; margin-left: auto;margin-right: auto;">
+        <h2 style="font-size: 30px;">공지사항</h2>
     </div>
-    <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
-        <!-- 수정 버튼 -->
-        <button th:onclick="toggleElements([[${notice.Id}]])" th:id="'editButton-' + ${notice.Id}">공지사항
-            수정
-        </button>
+    <div th:id="'noticeDetails-' + ${notice.Id}" class="notice-details">
+        <div style="border-bottom: solid 1px gainsboro; margin-top: 18px; padding: 5px;width: 50%;text-align: start; margin-left: auto;margin-right: auto;">
+            <h2 th:text="${notice.subject}" style="font-size: 18px; font-weight: bold;"></h2>
+            <div style="display:flex;padding-top: 10px;">
+                <div style="display:flex; width: 20%;">
+                    <label>작성자:</label>&nbsp;
+                    <p class="card-text" th:text="${notice.member.loginId}"></p>
+                </div>
+                <div style="display:flex; width: 30%;">
+                    <label>작성일:</label>&nbsp;
+                    <p class="card-text" th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                </div>
+            </div>
+        </div>
+        <div style="border-bottom: solid 1px gainsboro; margin-top: 18px; margin-bottom: 18px; padding: 5px; width: 50%;text-align: start; margin-left: auto;margin-right: auto;">
+            <p th:text="${notice.content}"></p>
+        </div>
+        <div style="width: 50%;display: flex;margin-left: auto; margin-right: auto;flex-direction: row-reverse;">
+            <form th:act ion="@{/admin/notice/delete}" method="post">
+                <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
+                    <input type="hidden" name="noticeId" th:value="${notice.Id}">
+                    <input type="submit" value="삭제" onclick="confirmDelete(event)">
+                </div>
+            </form>&nbsp;&nbsp;
+            <div th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}">
+                <!-- 수정 버튼 -->
+                <button th:onclick="toggleElements([[${notice.Id}]])" th:id="'editButton-' + ${notice.Id}">
+                    수정
+                </button>
+            </div>
+        </div>
     </div>
     <form th:action="@{/admin/notice/modify}" method="post">
         <div th:id="'editForm-' + ${notice.Id}" style="display:none;">
-            <div>
+            <div style="width: 45%;margin-left: auto;margin-right: auto;">
                 <input type="hidden" name="noticeId" th:value="${notice.Id}">
-                <label for="newSubject"><strong>공지사항 제목</strong>:</label>
-                <input type="text" name="newsubject" th:value="${notice.subject}" required/>
-                <label for="newcontent"><strong>공지사항 내용</strong>:</label>
-                <input type="text" name="newcontent" th:value="${notice.content}">
-                <input type="submit" value="수정하기">
-                <input type="button" value="취소하기" th:id="'cancelButton-' + ${notice.Id}" th:onclick="toggleForms([[${notice.Id}]]);">
+                <div style="width: 100%;">
+                    <label for="newSubject" style="width: 30%;"><strong>공지사항 제목</strong></label>
+                    <input type="text" class="form-control" name="newsubject" th:value="${notice.subject}" style="width: 50%;margin-left: auto; margin-right: auto"  required/>
+                </div>
+                <div>
+                    <label for="newcontent"><strong>공지사항 내용</strong></label>
+                    <textarea type="text"  class="form-control" name="newcontent" th:value="${notice.content}" style="height:620px;"></textarea>
+                </div>
+                <div>
+                    <input type="submit" value="수정하기">
+                    <input type="button" value="취소하기" th:id="'cancelButton-' + ${notice.Id}"
+                           th:onclick="toggleForms([[${notice.Id}]]);">
+                </div>
             </div>
         </div>
     </form>
-    </body>
     <script>
         function confirmDelete(event) {
             var isConfirmed = confirm("정말로 삭제하시겠습니까?");
@@ -119,4 +140,5 @@
           }
     </script>
 </div>
+</body>
 </html>

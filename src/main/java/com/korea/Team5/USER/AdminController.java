@@ -8,6 +8,7 @@ import com.korea.Team5.Review.Review;
 import com.korea.Team5.Review.ReviewService;
 import com.korea.Team5.movie.MovieService;
 import com.korea.Team5.movie.entity.Movie;
+import com.korea.Team5.movie.entity.MovieInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -147,9 +148,9 @@ public class AdminController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/adminmovielist")
-  public String adminmovielist(Model model, @RequestParam(value = "page", defaultValue = "0") int page, Movie movie) {
+  public String adminmovielist(Model model, @RequestParam(value = "page", defaultValue = "0") int page, MovieInfo movieInfo) {
 
-    Page<Movie> adminmoviespaging = this.movieService.getAllMovies(page);
+    Page<MovieInfo> adminmoviespaging = this.movieService.getAllMoviesiNfo(page);
     model.addAttribute("adminmoviespaging", adminmoviespaging);
     if (adminmoviespaging.isEmpty()) {
       model.addAttribute("error", "조회된 영화가 없습니다.");

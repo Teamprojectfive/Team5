@@ -14,8 +14,6 @@ public class Review {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer Id;
 
-  private String subject;//제목
-
   private String content;//내용
 
 

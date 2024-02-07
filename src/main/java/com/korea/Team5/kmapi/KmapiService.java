@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,9 +52,11 @@ public class KmapiService {
         this.movieService = movieService;
     }
 
-//    public List<Kmapi> getList(){
-//        return this.kmapiRepository.findAll();
-//    }
+
+    public Optional<Vod> getVod(){
+        return vodRepository.findById(0);
+    }
+
 
     @Transactional
     public List<MovieInfoDto> videoListSaveDataBase() {
@@ -101,7 +104,6 @@ public class KmapiService {
                         if("소년들".equals(title)){
                             movieInfo.setPosters("https://i.namu.wiki/i/KAUR15tC2YIfKZ4WRg4iV1S7mCvMLk6ARQi2gVnGjdUWPa-k4NiBDtckddcoqz5glrtK-V-w1KeR0OvFm4_lmw.webp");
                         }
-
 
                         if(title.equals(movieInfo.getMovieNm()) && year.equals(movieInfo.getPrdtYear())){
 

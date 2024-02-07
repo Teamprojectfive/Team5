@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" th:href="@{/navbar.css}">
-    <link rel="stylesheet" th:href="@{/detail.css}">
+    <link rel="stylesheet" th:href="@{/movie/detail.css}">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
@@ -24,6 +24,7 @@
 <nav th:replace="~{navbar :: navbarFragment}"></nav>
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->
 <th:block layout:fragment="content"></th:block>
+
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
 <!-- Bootstrap JS -->
 <script th:src="@{/bootstrap.min.js}"></script>

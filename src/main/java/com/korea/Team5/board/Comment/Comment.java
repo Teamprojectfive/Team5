@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +22,10 @@ public class Comment {
 
   private String content;
 
-  private String voter;
+  @ManyToMany
+
+  Set<Member> voter;
+
 
   private LocalDateTime createDate;
 
@@ -32,6 +36,8 @@ public class Comment {
   @ManyToOne
   private Article article;
 
-  @OneToMany(mappedBy = "comment")
+  @OneToMany(mappedBy = "comment",cascade = CascadeType.REMOVE)
   private List<CommentReply> commentReplyList;
+
+
 }

@@ -5,9 +5,13 @@ import com.korea.Team5.USER.MemberService;
 import com.korea.Team5.board.article.Article;
 import com.korea.Team5.board.article.ArticleForm;
 import com.korea.Team5.board.article.ArticleService;
+import com.korea.Team5.kmapi.dto.MovieInfoDto;
+import com.korea.Team5.kmapi.entity.Vod;
 import com.korea.Team5.movie.MovieService;
 import com.korea.Team5.movie.entity.Genre;
 import com.korea.Team5.movie.entity.MovieInfo;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,48 +31,50 @@ import java.util.List;
 public class BoardController {
 
 
-    private final MovieService movieService;
-    private final BoardService boardService;
-    private final MemberService memberService;
-    private final ArticleService articleService;
+  private final MovieService movieService;
 
-
-    @GetMapping("/movie")
-    public String list(Model model) {
-        List<MovieInfo> movieInfoList = this.movieService.infoList();
-        List<Genre> genreList = this.movieService.genreList();
-        model.addAttribute("genreList", genreList);
-        model.addAttribute("movieInfoList", movieInfoList);
-        return "Board/boardList";
-    }
+  private final MemberService memberService;
+  private final ArticleService articleService;
 
 
 
-    @GetMapping("/article/list/{id}")
-    public String articleList(Model model, @PathVariable("id") Integer id,  @RequestParam(value="page", defaultValue="0") int page) {
-        Page<Article> articleList = this.articleService.getListByMovieInfo(id, page);
-        MovieInfo movieInfo = this.movieService.getMovieInfo(id);
-        model.addAttribute("movieInfo", movieInfo);
-        model.addAttribute("articles", articleList);
-        return "Board/articleList";
+  @GetMapping("/movie")
+  public String list(Model model) {
+    List<MovieInfo> movieInfoList = this.movieService.infoList();
+    List<Genre> genreList = this.movieService.genreList();
+    model.addAttribute("genreList", genreList);
+    model.addAttribute("movieInfoList", movieInfoList);
+    return "ArticleandBoard/boardList";
+  }
 
-    }
 
-    @GetMapping("/article/create")
-    @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
-    public String articlecreate(ArticleForm articleForm, @RequestParam Integer id, Model model) {
-        MovieInfo movieInfo = this.movieService.getMovieInfo(id);
-        model.addAttribute("movieInfo", movieInfo);
 
-        return "Board/articleCreate";
-    }
+  @GetMapping("/article/list/{id}")
+  public String articleList(Model model, @PathVariable("id") Integer id,  @RequestParam(value="page", defaultValue="0") int page) {
+    Page<Article> articleList = this.articleService.getListByMovieInfo(id, page);
+    MovieInfo movieInfo = this.movieService.getMovieInfo(id);
+
+    model.addAttribute("movieInfo", movieInfo);
+    model.addAttribute("articles", articleList);
+    return "ArticleandBoard/articleList";
+
+  }
+
+  @GetMapping("/article/create")
+  @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
+  public String articlecreate(ArticleForm articleForm, @RequestParam Integer id, Model model) {
+    MovieInfo movieInfo = this.movieService.getMovieInfo(id);
+    model.addAttribute("movieInfo", movieInfo);
+
+    return "ArticleandBoard/articleCreate";
+  }
 
     @PostMapping("/article/create")
     @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
     public String articleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @RequestParam Integer id) {
 
         if (bindingResult.hasErrors()) {
-            return "Board/articleCreate";
+            return "ArticleandBoard/articleCreate";
         }
         MovieInfo movieInfo = movieService.getMovieInfo(id);
         Member member = memberService.getMember(principal.getName());
@@ -76,18 +82,24 @@ public class BoardController {
         return "redirect:/board/article/list/" + id;
     }
 
-    @GetMapping("/article/detail/{id}")
-    public String articledetail(@PathVariable("id") Integer id, Model model) {
-        Article article = this.articleService.getArticle(id);
-        model.addAttribute("article", article);
-        return "Board/articleDetail";
-    }
+
+  @GetMapping("/article/detail/{id}")
+  public String articledetail(@PathVariable("id") Integer id, Model model) {
+    Article article = this.articleService.getArticle(id);
+    List<MovieInfo> movieInfoList = this.movieService.infoList();
+    model.addAttribute("movieInfoList", movieInfoList);
+
+    model.addAttribute("article", article);
+    return "ArticleandBoard/articleDetail";
+  }
 
 
 
   @GetMapping("/article/modify/{id}")
   @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
-  public String articleModify(ArticleForm articleForm, @PathVariable("id") Integer id, Principal principal,Model model,@RequestParam Integer movieInfoId) {
+
+  public String articleModify(ArticleForm articleForm, @PathVariable("id") Integer id, Principal principal, Model model, @RequestParam Integer movieInfoId) {
+
     Article article = this.articleService.getArticle(id);
     if (!article.getMember().getLoginId().equals(principal.getName())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이없습니다.");
@@ -96,12 +108,15 @@ public class BoardController {
     model.addAttribute("movieInfo", movieInfo);
     articleForm.setTitle(article.getTitle());
     articleForm.setContent(article.getContent());
-    return "Board/articleCreate";
+
+    return "ArticleandBoard/articleCreate";
   }
 
   @PostMapping("/article/modify/{id}")
   @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
-  public String articleModify(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id,@RequestParam Integer movieInfoId) {
+
+  public String articleModify(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Integer id, @RequestParam Integer movieInfoId) {
+
     if (bindingResult.hasErrors()) {
       return "Board/articleCreate";
     }
@@ -126,9 +141,10 @@ public class BoardController {
 
     this.articleService.delete(article);
 
-    return "redirect:/board/article/list/%s" + movieInfoId;
+
+    return "redirect:/board/article/list/" + movieInfoId;
+
   }
 
 
 }
-

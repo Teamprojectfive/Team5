@@ -9,16 +9,14 @@ import com.korea.Team5.movie.entity.Genre;
 import com.korea.Team5.movie.entity.GenreMovieInfo;
 import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.entity.MovieInfo;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -42,6 +40,7 @@ public class MovieController {
         List<Movie> movieList = this.movieService.list();
 
 
+
         int gap = 10;
         int start = 0;
         int end = start + gap;
@@ -59,12 +58,22 @@ public class MovieController {
             end = start + gap;
         }
 
+
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movieList", movieList);
         model.addAttribute("movieSubList", movieSubListList);
 
 
+
         return "Movie/boxOffice";
+
+    }
+    @PostMapping("/saveSelectedGenre")
+    @ResponseBody
+    public ResponseEntity<String> saveSelectedGenre(@RequestParam("genreId") String genreId, HttpSession session) {
+        // 세션에 선택한 장르 정보 저장
+        session.setAttribute("selectedGenreId", genreId);
+        return ResponseEntity.ok("Selected genre saved to session");
     }
 
     @GetMapping("/top100")
@@ -87,7 +96,9 @@ public class MovieController {
         model.addAttribute("genres", genres);
         model.addAttribute("movie", movie);
         model.addAttribute("movieSubList", movieSubListList);
+
         return "Movie/top100";
+
     }
 
 
@@ -98,11 +109,13 @@ public class MovieController {
         List<Movie> movies = this.movieService.list();
 
         Movie movie = this.movieService.getMovie(id);
+
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
         String audiAcc = movie.getAudiAcc();
 
         model.addAttribute("audiAcc", audiAcc);
+
 
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movies", movies);
@@ -138,7 +151,6 @@ public class MovieController {
     @GetMapping("/check")
     public String checkDataBase() {
         return "Movie/movie";
-
     }
 
     @GetMapping("/addDetail")
@@ -181,7 +193,9 @@ public class MovieController {
         List<MovieInfo> searchMovieList = this.movieService.getMovieInfoNm(enterMovie);
         model.addAttribute("movieList",searchMovieList);
 
+
         return "Movie/top100";
+
     }
 
 }

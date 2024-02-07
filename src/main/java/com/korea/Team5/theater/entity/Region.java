@@ -26,4 +26,5 @@ public class Region {
   @ManyToOne
   private Theater theater;
 
+
 }

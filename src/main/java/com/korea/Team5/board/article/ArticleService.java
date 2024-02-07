@@ -22,25 +22,27 @@ public class ArticleService {
 
   private final ArticleRepository articleRepository;
 
-    public void create(String title, String content, Member member, MovieInfo movieInfo){
 
-        Article article = new Article();
-        article.setTitle(title);
-        article.setContent(content);
-        article.setCreateDate(LocalDateTime.now());
-        article.setMember(member);
-        article.setMovieInfo(movieInfo);
-        this.articleRepository.save(article);
-    }
-    public List<Article> list(){
-        return this.articleRepository.findAll();
-    }
+  public void create(String title, String content, Member member, MovieInfo movieInfo){
+
+    Article article = new Article();
+    article.setTitle(title);
+    article.setContent(content);
+    article.setCreateDate(LocalDateTime.now());
+    article.setMember(member);
+    article.setMovieInfo(movieInfo);
+    this.articleRepository.save(article);
+  }
+  public List<Article> list(){
+    return this.articleRepository.findAll();
+  }
 
 
-    public Page<Article> getListByMovieInfo(Integer id, int page){
-          Pageable pageable = PageRequest.of(page, 10);
-          return this.articleRepository.findByMovieInfoId(id, pageable);
-      }
+  public Page<Article> getListByMovieInfo(Integer id, int page){
+    Pageable pageable = PageRequest.of(page, 10);
+    return this.articleRepository.findByMovieInfoId(id, pageable);
+  }
+
 
   public void modify(Article article, String title, String content) {
     article.setTitle(title);
@@ -57,13 +59,23 @@ public class ArticleService {
   public Article getArticle(Integer id) {
     Optional<Article> article = this.articleRepository.findById(id);
     if (article.isPresent()) {
-      return article.get();
+      Article article1 = article.get();
+
+      Integer currentViews = article1.getViews();
+      if (currentViews == null) {
+        currentViews = 0;
+      }
+      currentViews++;
+      article1.setViews(currentViews);
+      articleRepository.save(article1); // 조회수가 증가한 업데이트된 공지사항을 저장
+
+      return article1;
     } else {
-      throw new DataNotFoundException("article not found");
+
+      throw new DataNotFoundException("Article not found");
 
     }
   }
 
 
 }
-

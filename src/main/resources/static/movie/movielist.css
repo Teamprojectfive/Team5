@@ -5,7 +5,7 @@
   user-select: none;
 }
 
-body {
+body{
     background: black;
     align-items: center;
     justify-content: center;
@@ -19,6 +19,21 @@ body {
     align-items: center;
     top: -3%;
     box-shadow: 0 0 50px lightsteelblue;
+}
+
+.list_title{
+    color: red;
+    font-size: 30px;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.date_cont{
+    margin-bottom:20px;
+    margin-left: auto;
+    color: white;
+    margin-right: auto;
+    font-size:25px;
 }
 
 .suggestion_cont{
@@ -100,10 +115,11 @@ body {
   transform: translate(-50%, -50%) rotateY(-10deg) translateZ(-200px);
 }
 
-
+.list_all_cont{
+transition: transform 1.5s ease;
+}
 
 .list_box_wrap {
-    margin-top: 3%;
     width:100vw;
     display:flex;
     transition: transform 1.5s ease;
@@ -127,9 +143,8 @@ body {
     height: 400px;
     box-sizing: border-box;
     border: 1px solid #ddd;
-    border-radius:5px;
+    border-radius: 5px;
     margin-bottom: 20px;
-
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -147,12 +162,12 @@ body {
 }
 
 .list_item{
+    background-size: cover;
     width: 100%;
-    height: 400px;
+    height: 398px;
     clear: both;
     position: relative;
-    top: -20px;
-    right: 1px;
+    border-radius: 4px;
 }
 .additional-info{
     height:100%;
@@ -165,9 +180,12 @@ body {
     margin-top: 133px;
 }
 .list_item:hover .additional-info {
+    color: white;
+    display: flex;
     visibility: visible;
-    color:white;
     opacity: 1;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .list_item .additional-info {
@@ -177,9 +195,10 @@ body {
     left: 0;
     color:black;
     background-color: rgba(051, 051, 051, 0.8);
-    width:101%;
+    width:100%;
     height:100%;
     transition: visibility 0s, opacity 0.5s ease;
+
 }
 
 .left{
@@ -189,7 +208,7 @@ body {
     background: none;
     border: 0px;
     left:50px;
-    top:183%;
+    top:60%;
     z-index:99;
     cursor: pointer;
 }
@@ -201,11 +220,55 @@ body {
     background: none;
     border: 0px;
     right:50px;
-    top:183%;
+    top:60%;
     z-index:99;
     cursor: pointer;
 }
 
+.fa-solid:hover{
+    color:gray;
+}
 
+.calendar_layer {
+    color: black;
+    font-size: 12px;
+    position: fixed;
+    top: 47%;
+    left: 86%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000;
+}
 
+.tbl_calendar {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tbl_calendar th, .tbl_calendar td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.btn_move {
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+    /* 600px 이하의 화면 크기에 대한 스타일 */
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    /* 601px에서 1024px 사이의 화면 크기에 대한 스타일 */
+}
+
+@media only screen and (min-width: 1025px) {
+    /* 1025px 이상의 화면 크기에 대한 스타일 */
+}
 
