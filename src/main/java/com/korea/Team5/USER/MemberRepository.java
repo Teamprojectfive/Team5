@@ -1,5 +1,6 @@
 package com.korea.Team5.USER;
 
+import com.korea.Team5.USER.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

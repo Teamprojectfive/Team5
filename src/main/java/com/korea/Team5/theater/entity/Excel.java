@@ -1,4 +1,4 @@
-package com.korea.Team5.theater;
+package com.korea.Team5.theater.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

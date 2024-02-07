@@ -53,7 +53,7 @@
         </button>
         <ul class="dropdown-menu" id="genreDropdown">
             <li th:each="genre : ${genres}">
-                <a th:href="@{|/movie/mainList?genreId=${genre.id}|}" th:text="${genre.genreNm}"
+                <a th:href="@{|/movie/top100?genreId=${genre.id}|}" th:text="${genre.genreNm}"
                    onclick="selectGenre(this)"></a>
             </li>
         </ul>

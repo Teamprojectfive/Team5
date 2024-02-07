@@ -1,4 +1,4 @@
-package com.korea.Team5.Comment.Commentreply;
+package com.korea.Team5.board.Comment.Commentreply;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -86,8 +87,22 @@ public class KmapiService {
                             movieInfo.setPosters("https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000087/87936/87936221923_727.jpg");
                         }
                         if(" 바다 탐험대 옥토넛 어보브 앤 비욘드 : 버드, 옥토경보를 울려라!".equals(title)){
-                            movieInfo.setPosters("https://an2-img.amz.wtchn.net/image/v2/tppUDUbCZN0zz-1l5SKFJA.jpg?jwt=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKdmNIUnpJanBiSW1SZk5Ea3dlRGN3TUhFNE1DSmRMQ0p3SWpvaUwzWXlMM04wYjNKbEwybHRZV2RsTHpFM01EQTJNakl5TnpZME5qUXdOVFF4TkRnaWZRLlFRT0hnWTQ2WElvU1ZJdl9MSTRHbVRadGpmZVdHUlRFZDByM3BRN1YzeEk");
+                            movieInfo.setPosters("https://d3ihz389yobwks.cloudfront.net/1700538605929eHH53.jpg");
                         }
+                        if("스노우 폭스 : 썰매개가 될 거야!".equals(title)){
+                            movieInfo.setPosters("https://www.ydct.org/uploaded/file/editor/show/202311/17004650050440.png");
+                        }
+                        if("명탐정코난: 흑철의 어영".equals(title)){
+                            movieInfo.setPosters("https://i.namu.wiki/i/W9-BvWLJ1wJOLLOUldPw1Px_TeVnr2_5v_ODtYZSooI0NYAvAY1hXoabVa8MscXl6C_fJq-oUoCoDiLwig54PQ.webp");
+                        }
+                        if("30일".equals(title)){
+                            movieInfo.setPosters("https://i.namu.wiki/i/_bA-MObF5EXnGyBOJI1McaWX0xuyYLTqW6qBaKZVaa2u_K1VfLuWGmbaQhaAiS2oJkUjraEGXP5kyFjfx1bVBQ.webp");
+                        }
+                        if("소년들".equals(title)){
+                            movieInfo.setPosters("https://i.namu.wiki/i/KAUR15tC2YIfKZ4WRg4iV1S7mCvMLk6ARQi2gVnGjdUWPa-k4NiBDtckddcoqz5glrtK-V-w1KeR0OvFm4_lmw.webp");
+                        }
+
+
                         if(title.equals(movieInfo.getMovieNm()) && year.equals(movieInfo.getPrdtYear())){
 
                             System.out.println(firstMovie.getVods());
@@ -95,12 +110,15 @@ public class KmapiService {
                             String posterUrl = firstMovie.getPosters().split("\\|")[0];
                             movieInfo.setPosters(posterUrl);
 
+
                             Plot plot = firstMovie.getPlots().getPlot().get(0);
                             Vod vod = firstMovie.getVods().getVod().get(0);
+
                             // Plot 정보와 MovieInfo 연결
                             plot.setMovieInfo(movieInfo);
                             vod.setMovieInfo(movieInfo);
                             // Plot 저장
+
                             this.vodRepository.save(vod);
                             this.plotRepository.save(plot);
                             System.out.println("영화 제목: " + movieInfo.getMovieNm());

@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-	implementation files('C:/Users/admin/Downloads/kobis-opcl-rest-v1.0 (2)')
+//	implementation files('C:/Users/admin/Downloads/kobis-opcl-rest-v1.0 (2)')
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -31,7 +31,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'com.mysql:mysql-connector-j:8.0.33'
+//	implementation 'com.mysql:mysql-connector-j:8.0.33'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
@@ -42,10 +42,10 @@ dependencies {
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:3.1.5'
-	implementation files('libs/kobis-opcl-rest-v1.0.jar')
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation 'com.google.android.gms:play-services-location:17.0.0'
+//	implementation 'com.google.android.gms:play-services-location:17.0.0'
+	implementation 'org.postgresql:postgresql:42.7.1'
+
 }
 
 tasks.named('bootBuildImage') {
@@ -55,3 +55,8 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jar {
+	enabled = false
+}
+

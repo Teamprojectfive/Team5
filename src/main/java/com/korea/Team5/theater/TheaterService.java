@@ -1,5 +1,8 @@
 package com.korea.Team5.theater;
 
+import com.korea.Team5.theater.entity.Excel;
+import com.korea.Team5.theater.repository.ExcelRepository;
+import com.korea.Team5.theater.repository.TheaterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

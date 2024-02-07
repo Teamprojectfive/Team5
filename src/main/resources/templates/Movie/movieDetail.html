@@ -2,24 +2,24 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px" lang="">
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
-    <div>
-        <div class="detail_container">
-            <div th:each="movie : ${movieInfo}" class="movie_content">
+    <div th:each="movie : ${movieInfo}" >
+        <div class="detail_container" >
+            <div  class="movie_content" >
                 <section class="post_cont">
                     <div class="main_img">
                         <img th:src="${movie.posters}" alt="">
                         <button class="custom-btn btn-4"><span>예매</span></button>
                     </div>
-                    <div th:each="movieList : ${movie.movieList}" class="attendance_cont">
+                    <div  class="attendance_cont">
                         <i class="fa-regular fa-user" style="font-size:100px;color:white;"></i>&nbsp;
                         <p class="detail_cont_sub">누적관객수</p>&nbsp;
-                        <p th:text="${movieList.audiAcc}"></p>
+                        <p th:text="${audiAcc}"></p>
                     </div>
                     <div class="detail_content">
                         <h1 th:text="${movie.movieNm}"></h1>
                         <div class="detail_cont">
                             <p class="detail_cont_sub">개봉일</p>
-                            <p class="detail_cont_subb" th:text="${movie.openDt}"></p>
+                            <p class="detail_cont_subb" th:text="${#strings.substring(movie.openDt, 0, 4) + '.' + #strings.substring(movie.openDt, 4, 6) + '.' + #strings.substring(movie.openDt, 6)}"></p>
                         </div>
                         <div th:each="genre : ${movie.genreMovieInfos}" class="detail_cont">
                             <p class="detail_cont_sub">장르</p>
@@ -107,6 +107,7 @@
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${review.subject}"></h5>
                                 <p class="card-text" th:text="${review.content}"></p>
+                                <p class="card-text" th:text="${review.member.loginId}"></p>
                             </div>
                             <!-- 별점 -->
                             <div class="star-rating" th:if="${review.starRating != null}"

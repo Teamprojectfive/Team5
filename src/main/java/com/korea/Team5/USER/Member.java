@@ -1,11 +1,8 @@
 package com.korea.Team5.USER;
 
-import com.korea.Team5.Comment.Comment;
-import com.korea.Team5.Comment.Commentreply.CommentReply;
+import com.korea.Team5.board.Comment.Comment;
+import com.korea.Team5.board.Comment.Commentreply.CommentReply;
 import com.korea.Team5.Review.Review;
-
-
-import com.korea.Team5.board.Board;
 
 
 import com.korea.Team5.board.article.Article;

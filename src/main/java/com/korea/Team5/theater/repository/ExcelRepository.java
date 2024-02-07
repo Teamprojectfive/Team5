@@ -1,5 +1,6 @@
-package com.korea.Team5.theater;
+package com.korea.Team5.theater.repository;
 
+import com.korea.Team5.theater.entity.Excel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

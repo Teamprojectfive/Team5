@@ -1,4 +1,4 @@
-package com.korea.Team5.Comment;
+package com.korea.Team5.board.Comment;
 
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;

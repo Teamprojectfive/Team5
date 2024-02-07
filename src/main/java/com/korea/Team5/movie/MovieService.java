@@ -5,7 +5,6 @@ import com.korea.Team5.USER.Member;
 
 import com.korea.Team5.USER.MemberRepository;
 
-import com.korea.Team5.board.Board;
 import com.korea.Team5.board.BoardRepository;
 import com.korea.Team5.kmapi.repository.PlotRepository;
 import com.korea.Team5.movie.entity.*;
@@ -200,7 +199,7 @@ public class MovieService {
             Set<String> displayedMovieSet = new HashSet<>();
 
 
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 12; i++) {
                 String url = apiUrl + "?key=" + apiKey + "&targetDt=" + targetDate.format(formatter);
                 System.out.println(url);
                 ResponseEntity<WeeklyBoxOfficeList> responseEntity = restTemplate.getForEntity(url, WeeklyBoxOfficeList.class);
@@ -229,7 +228,7 @@ public class MovieService {
 
                 int i = 0;
                 for (Movie movie : movieList) {
-                    if (i == 30) {
+                    if (i == 120) {
                         break;
                     }
 

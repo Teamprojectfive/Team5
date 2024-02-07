@@ -1,4 +1,4 @@
-package com.korea.Team5.theater;
+package com.korea.Team5.theater.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -28,7 +26,7 @@ public class Theater {
 
   //영화 상영관코드
   private String code;
-  //영화 상영사업주회사이름
+  //영화 상영사업주mys회사이름
   private String businessname;
   //운영상태
   private String operatingstatus;

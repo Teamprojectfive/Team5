@@ -45,21 +45,26 @@ public class MovieController {
         int gap = 10;
         int start = 0;
         int end = start + gap;
-        int displayCount = 20;
-        int subListCount = displayCount / gap;
+        int displayCount = 120;
+        int subListCount = (int) Math.ceil((double) displayCount / gap);
         List<MovieInfo> movieInfo = this.movieService.infoList();
         List<List<Movie>> movieSubListList = new ArrayList<List<Movie>>();
+
         for (int i = 0; i < subListCount; i++) {
+            if (end > movieList.size()) {
+                end = movieList.size();
+            }
             movieSubListList.add(movieList.subList(start, end));
             start = end;
-            end = end + gap;
+            end = start + gap;
         }
+
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movieList", movieList);
         model.addAttribute("movieSubList", movieSubListList);
 
 
-        return "boxOffice";
+        return "Movie/boxOffice";
     }
 
     @GetMapping("/top100")
@@ -82,7 +87,7 @@ public class MovieController {
         model.addAttribute("genres", genres);
         model.addAttribute("movie", movie);
         model.addAttribute("movieSubList", movieSubListList);
-        return "top100";
+        return "Movie/top100";
     }
 
 
@@ -95,6 +100,9 @@ public class MovieController {
         Movie movie = this.movieService.getMovie(id);
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
+        String audiAcc = movie.getAudiAcc();
+
+        model.addAttribute("audiAcc", audiAcc);
 
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movies", movies);
@@ -102,7 +110,7 @@ public class MovieController {
         model.addAttribute("paging", paging);
 
 
-        return "movieDetail";
+        return "Movie/movieDetail";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -129,29 +137,17 @@ public class MovieController {
 
     @GetMapping("/check")
     public String checkDataBase() {
-        return "movie";
+        return "Movie/movie";
 
     }
-
-
-
-
-
 
     @GetMapping("/addDetail")
     public String addDetail(Model model) {
         MovieInfo movieInfo = this.movieService.getMovieDetail();
         model.addAttribute("movieInfo", movieInfo);
-        return "movie";
+        return "Movie/movie";
     }
 
-    @GetMapping("/testDetail")
-    public String testDetail() {
-        return "testDetail";
-    }
-
-
-    // api 데이터 넣는 메서드
     @GetMapping("/weeklyMovie")
     public String getMovies(@RequestParam(name = "key") String apiKey, Model model, String targetDt) {
         // weeklyMovie인 경우 기본값 설정
@@ -167,13 +163,13 @@ public class MovieController {
         model.addAttribute("movies", movies);
 
 
-        return "movie";
+        return "Movie/movie";
     }
 
 
     @GetMapping("/intro")
     public String movieintro() {
-        return "movie_intro";
+        return "Movie/movie_intro";
     }
 
 
@@ -185,8 +181,7 @@ public class MovieController {
         List<MovieInfo> searchMovieList = this.movieService.getMovieInfoNm(enterMovie);
         model.addAttribute("movieList",searchMovieList);
 
-
-        return "top100";
+        return "Movie/top100";
     }
 
 }

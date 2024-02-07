@@ -1,4 +1,4 @@
-package com.korea.Team5.Comment;
+package com.korea.Team5.board.Comment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

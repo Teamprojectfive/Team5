@@ -1,7 +1,7 @@
-package com.korea.Team5.Comment.Commentreply;
+package com.korea.Team5.board.Comment.Commentreply;
 
-import com.korea.Team5.Comment.Comment;
-import com.korea.Team5.Comment.CommentService;
+import com.korea.Team5.board.Comment.Comment;
+import com.korea.Team5.board.Comment.CommentService;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.USER.MemberService;
 import com.korea.Team5.board.article.Article;

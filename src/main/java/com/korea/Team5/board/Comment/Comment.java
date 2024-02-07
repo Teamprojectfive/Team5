@@ -1,7 +1,7 @@
-package com.korea.Team5.Comment;
+package com.korea.Team5.board.Comment;
 
 
-import com.korea.Team5.Comment.Commentreply.CommentReply;
+import com.korea.Team5.board.Comment.Commentreply.CommentReply;
 import com.korea.Team5.USER.Member;
 import com.korea.Team5.board.article.Article;
 import jakarta.persistence.*;

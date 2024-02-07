@@ -18,7 +18,7 @@ public class KmapiController {
         List<MovieInfoDto> movieInfoList = this.kmapiService.videoListSaveDataBase();
 
         model.addAttribute("movieInfoList", movieInfoList);
-        return "movie";
+        return "Movie/movie";
     }
 
 

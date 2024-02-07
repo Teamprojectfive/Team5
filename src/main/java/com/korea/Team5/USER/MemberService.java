@@ -1,7 +1,6 @@
 package com.korea.Team5.USER;
 
 import com.korea.Team5.DataNotFoundException;
-import com.korea.Team5.movie.entity.Movie;
 import com.korea.Team5.movie.entity.MovieInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

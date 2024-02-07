@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/movielist.css">
+</head>
+<body style="width:1920px;">
+<div layout:fragment="content">
+    <div class="list_title">
+        <h1><strong>박스오피스</strong></h1>
+        <span id="dateDisplay"></span>
+    </div>
+
+    <section class="list_box_wrap" id="listContainer">
+        <div id="boxOfficeDataContainer"></div>
+        <section class="list_box" th:each="movieList, iterStat : ${movieSubList}">
+            <div th:each="movie : ${movieList}" class="list">
+                <div class="list_item" th:style="'background-image: url(' + ${movie.movieInfo.posters } + ');'">
+                    <div class="additional-info">
+                        <div style="padding-top: 10px;text-align: center;font-weight: bold;font-size: 25px;"
+                             th:text="${movie.movieNm}"></div>
+                        <div class="sub_info">
+                            <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
+                            <div style="margin-top: 10px;" th:if="${movie.movieCd != null}">
+                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                            </div>
+                            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                               th:data-uri="@{|/movie/vote/${movie.id}|}" onclick="voteMovie(${movie.id})">
+                                찜하기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <button id="previousWeekButton" class="left" onclick="movePage(1)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button  id="nextWeekButton"  class="right" onclick="movePage(-1)"><i class="fa-solid fa-chevron-right"></i></button>
+    <script>
+
+        const totalSlides = document.querySelectorAll('.list_box').length; // 전체 슬라이드 수
+const moveDistance = -1925; // 이동 거리
+const listContainer = document.getElementById('listContainer');
+let currentSlide = 0;
+
+function movePage(direction) {
+    currentSlide += direction;
+
+    // 처음 또는 마지막 슬라이드에 도달하면 반대편으로 이동
+    if (currentSlide < 0) {
+        currentSlide = totalSlides - 1;
+    } else if (currentSlide >= totalSlides) {
+        currentSlide = 0;
+    }
+
+    const translateValue = currentSlide * moveDistance;
+    listContainer.style.transform = `translateX(${translateValue}px)`;
+
+    // 마지막 번호인 경우 다음 버튼을 비활성화
+    if (currentSlide === totalSlides - 1) {
+        document.getElementById('previousWeekButton').disabled = true;
+    } else {
+        document.getElementById('previousWeekButton').disabled = false;
+    }
+
+    // 첫 번째 번호인 경우 이전 버튼을 비활성화
+    if (currentSlide === 0) {
+        document.getElementById('nextWeekButton' ).disabled = true;
+    } else {
+        document.getElementById('nextWeekButton' ).disabled = false;
+    }
+}
+
+// 초기 호출
+movePage(0);
+     const dateDisplay = document.getElementById('dateDisplay');
+  let currentDate = new Date(); // 현재날짜
+  let constDate = new Date();
+  let firstDisplay = true;
+
+  function getPreviousWeekStartDate() {
+      const previousWeekStartDate = new Date(currentDate);
+      previousWeekStartDate.setDate(previousWeekStartDate.getDate() - 7);
+      return previousWeekStartDate;
+  }
+
+  function getCurrentDate() {
+      return currentDate.toLocaleDateString();
+  }
+
+  function displayDate() {
+      const previousWeekStartDate = getPreviousWeekStartDate().toLocaleDateString();
+      const currentDateString = getCurrentDate();
+
+      if (firstDisplay) {
+          dateDisplay.textContent = currentDateString;
+          firstDisplay = false;
+      } else {
+          dateDisplay.textContent = previousWeekStartDate + " ~ " + currentDateString;
+      }
+  }
+
+  function goToPreviousWeek() {
+      currentDate.setDate(currentDate.getDate() - 7);
+      displayDate();
+      return currentDate;
+  }
+
+  function goToNextWeek() {
+      if(constDate.toLocaleDateString() === currentDate.toLocaleDateString()) {
+          return;
+      }
+
+      currentDate.setDate(currentDate.getDate() + 7);
+      displayDate();
+
+  }
+
+  displayDate();
+
+  document.getElementById('previousWeekButton').addEventListener('click', function() {
+      goToPreviousWeek();
+  });
+
+  document.getElementById('nextWeekButton').addEventListener('click', function() {
+      goToNextWeek();
+
+  });
+    </script>
+    <script>
+        const recommendElements = document.getElementsByClassName('recommend');
+        Array.from(recommendElements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if (confirm('이 영화를 찜하시겠습니까?')) {
+                    location.href = this.dataset.uri;
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

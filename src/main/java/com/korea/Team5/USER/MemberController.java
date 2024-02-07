@@ -52,24 +52,24 @@ public class MemberController {
 
   @GetMapping("/signup")
   public String signup(MemberCreateForm memberCreateForm) {
-    return "/LoginandSignup/signup_form";
+    return "LoginandSignup/signup_form";
 
   }
   @PostMapping("/signup")
   public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
-      return "/LoginandSignup/signup_form";
+      return "LoginandSignup/signup_form";
     }
     if (!memberCreateForm.getPassword1().equals(memberCreateForm.getPassword2())) {
       bindingResult.rejectValue("password2", "passwordInCorrect",
               "2개의 패스워드가 일치하지 않습니다.");
-      return "/LoginandSignup/signup_form";
+      return "LoginandSignup/signup_form";
     }
     if (memberService.isDuplicated(memberCreateForm.getLoginId(), memberCreateForm.getNickName())) {
       // 중복된 값이 있을 경우 에러 처리
       bindingResult.rejectValue("loginId", "duplicateValue", "이미 사용 중인 아이디입니다.");
       bindingResult.rejectValue("nickName", "duplicateValue", "이미 사용 중인 닉네임입니다.");
-      return "/LoginandSignup/signup_form";
+      return "LoginandSignup/signup_form";
     }
     memberService.create(memberCreateForm.getLoginId(), memberCreateForm.getNickName(), memberCreateForm.getPassword1(), memberCreateForm.getEmail()
             , memberCreateForm.getPhone());
@@ -108,7 +108,7 @@ public class MemberController {
     if (isDuplicated) {
       model.addAttribute("error", "닉네임이 중복되었습니다. 다른 닉네임을 입력해주세요.");
       // 에러 메세지를 모델에 추가하고, 이후 필요한 처리를 수행할 수 있습니다.
-      return "/LoginandSignup/socialIndex_form"; // 에러 메세지를 표시하는 뷰로 리턴하거나 다른 리다이렉트 또는 처리를 수행할 수 있습니다.
+      return "LoginandSignup/socialIndex_form"; // 에러 메세지를 표시하는 뷰로 리턴하거나 다른 리다이렉트 또는 처리를 수행할 수 있습니다.
     }
 
     // 서비스에서 닉네임 업데이트 확인
@@ -132,7 +132,7 @@ public class MemberController {
     model.addAttribute("member", member);
     model.addAttribute("wishList", wishlist);
 
-    return "/LoginandSignup/mypage_form";
+    return "LoginandSignup/mypage_form";
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -146,7 +146,7 @@ public class MemberController {
     model.addAttribute("member", member);
 
 
-    return "/LoginandSignup/mypage_form";
+    return "LoginandSignup/mypage_form";
   }
 
 
@@ -158,7 +158,7 @@ public class MemberController {
     Member member = this.memberService.getMember(principal.getName());
     model.addAttribute("member",member);
 
-    return "/LoginandSignup/mypagedelete";
+    return "LoginandSignup/mypagedelete";
   }
   //회원탈퇴기능
   @PreAuthorize("isAuthenticated()")
@@ -176,7 +176,7 @@ public class MemberController {
       Member member = this.memberService.getMember(principal.getName());
       model.addAttribute("member",member);
       // 체크박스가 확인되지 않은 경우, 에러 메시지와 함께 폼 페이지로 리다이렉션
-      return "/LoginandSignup/mypagedelete"; // 폼 페이지의 이름이 myPage.html인 것으로 가정합니다.
+      return "LoginandSignup/mypagedelete"; // 폼 페이지의 이름이 myPage.html인 것으로 가정합니다.
     }
   }
 
@@ -191,7 +191,7 @@ public class MemberController {
     model.addAttribute("paging", paging);
 
 
-    return "/LoginandSignup/mypagereview";
+    return "LoginandSignup/mypagereview";
 
   }
   //마이페이지 리뷰수정.
@@ -228,7 +228,7 @@ public class MemberController {
   @GetMapping("/updatePhone")
   public String updatePhone() {
 
-    return "/LoginandSignup/phoneMypage";  // 적절한 리다이렉트 경로로 변경
+    return "LoginandSignup/phoneMypage";  // 적절한 리다이렉트 경로로 변경
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -237,14 +237,14 @@ public class MemberController {
     // 입력값이 없을 경우 에러 메시지 반환
     if (phone == null || phone.isEmpty()) {
       model.addAttribute("errorMessage", "핸드폰번호를 입력하세요.");
-      return "/LoginandSignup/phoneMypage"; // 또는 리다이렉트 등을 원하는 대로 처리 가능
+      return "LoginandSignup/phoneMypage"; // 또는 리다이렉트 등을 원하는 대로 처리 가능
     }
     String verificationCode = emailService.sendVerificationCodeSMS(phone);
     // 생성된 인증 코드를 세션에 저장
     session.setAttribute("verificationCode", verificationCode);
     // 모델에 전화번호를 추가하여 폼에 전달
     model.addAttribute("phone", phone);
-    return "/LoginandSignup/phoneMypage";
+    return "LoginandSignup/phoneMypage";
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -264,7 +264,7 @@ public class MemberController {
       model.addAttribute("errorMessage", "인증번호가 일치하지 않습니다.");
       // 모델에 전화번호를 추가하여 폼에 전달
       model.addAttribute("phone", phone);
-      return "/LoginandSignup/phoneMypage";
+      return "LoginandSignup/phoneMypage";
     }
   }
 

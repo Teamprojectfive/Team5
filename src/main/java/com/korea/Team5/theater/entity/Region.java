@@ -1,5 +1,6 @@
-package com.korea.Team5.theater;
+package com.korea.Team5.theater.entity;
 
+import com.korea.Team5.theater.SmallRegion;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

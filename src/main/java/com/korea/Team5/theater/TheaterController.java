@@ -1,5 +1,6 @@
 package com.korea.Team5.theater;
 
+import com.korea.Team5.theater.entity.Excel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +54,7 @@ public class TheaterController {
     model.addAttribute("targetBigRegion", targetBigRegion);
     model.addAttribute("targetSmallRegion", targetSmallRegion);
 
-    return "/Theater/theater_detail";
+    return "Theater/theater_detail";
   }
 
   @GetMapping("/smallRegion")
