@@ -5,6 +5,7 @@ import com.korea.Team5.USER.Member;
 import com.korea.Team5.board.Board;
 import com.korea.Team5.movie.entity.MovieInfo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,9 @@ public class Article {
     private Integer id;
 
     private String title;
+
+    @Column(columnDefinition = "LONGTEXT")
+    @Size( max = 1000)
     private String content;
 
     private Integer views;

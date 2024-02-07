@@ -19,8 +19,10 @@ public class CommentReply {
 
   private String content;
 
+
   @ManyToMany
   Set<Member> voter; // 추천 ,좋아요
+
 
   private LocalDateTime createDate;
 

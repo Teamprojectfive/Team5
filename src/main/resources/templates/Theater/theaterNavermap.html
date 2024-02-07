@@ -12,11 +12,9 @@
 <body>
 <div>
     <button onclick="getCurrentLocation()">내 위치 확인</button>
-</div>
-<div id="map" style="width:100%;height:850px;"></div>
-<div>
     <input type="submit" onclick="searchOnNaverMap()" value="지도에서 검색">
 </div>
+<div id="map" style="width:100%;height:850px;"></div>
 <input type="hidden" id="addressInput" th:value="${address}">
 <script>
     var addressnaver = document.getElementById('addressInput').value;

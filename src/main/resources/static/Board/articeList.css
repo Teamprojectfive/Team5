@@ -1,0 +1,91 @@
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+}
+
+
+.article_title{
+    display: flex;
+    font-size: 50px;
+    font-weight: bold;
+    align-items: center;
+}
+
+.article_title > h1{
+    position: relative;
+    left: 26%;
+}
+section{
+    width:85%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.article{
+    margin-top:30px;
+    width:100%;
+    text-align:center;
+}
+
+.article h1 {
+    font-size: 18px;
+}
+
+.article div {
+    font-size: 14px;
+    color: #777;
+}
+
+.article > thead {
+    border-top: solid 1px;
+    background: aliceblue;
+}
+
+tbody tr{
+    border-bottom:solid 1px gray;
+    height: 45px;
+}
+
+.create-link {
+    width: 30%;
+    display: block;
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: #4CAF50;
+    border-radius:5px;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.create-link:hover {
+    background-color: #45a049;
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}

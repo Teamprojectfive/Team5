@@ -1,128 +1,57 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html layout:decorate="~{layout_without_header}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th=""
+      style="width:1900px">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
-        .genreItem {
-            margin-bottom: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #movieList {
-            margin-top: 20px;
-        }
-
-        .movieItem {
-            display: block;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .movieItem img {
-            max-width: 100px;
-            max-height: 100px; /* 이미지 최대 높이 설정 */
-            height: auto;
-            margin-right: 10px;
-            float: left;
-        }
-
-        .movieItem h2 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
-        }
-
-        .detail_cont_subb {
-            margin: 0;
-        }
-
-        a {
-            display: inline-block;
-            background-color: #007bff;
-            color: #fff;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        a:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
-<body>
-<div class="container">
-    <!-- 장르 버튼들 -->
-    <div th:each="genre : ${genreList}" class="genreItem">
-        <button onclick="filterMoviesByGenre(this.innerText)"><span th:text="${genre.genreNm}"></span></button>
+<body style="background: #f2f2f2;">
+<div layout:fragment="content">
+    <div style="display:flex; justify-content: space-between; padding: 20px; margin-bottom: 20px; margin-top:20px;">
+        <div th:each="genre : ${genreList}" class="genreItem">
+            <button onclick="filterMoviesByGenre(this.innerText)" class="recommend btn btn-sm btn-outline-secondary"
+                    style="color:black; font-weight:bold;background: aliceblue;"><span
+                    th:text="${genre.genreNm}"></span></button>
+        </div>
     </div>
-
-
-    <!-- 영화 목록 -->
-    <div id="movieList">
-        <span th:each="movie : ${movieInfoList}" class="movieItem">
-            <span style="display: inline-block;"> <!-- 이미지를 감싸는 span 요소 추가 -->
-                <img th:src="${movie.posters}" alt="">
-            </span>
-            <h2 th:text="${movie.movieNm}"></h2>
-            <div class="detail_cont" th:each="genre : ${movie.genreMovieInfos}">
-                <p class="detail_cont_subb" th:text="${genre.genre.genreNm}"></p>
+    <section class="movie_room_cont" style="display:flex; flex-wrap:wrap; justify-content: center; width:100%;">
+        <div th:each="movie : ${movieInfoList}" class="movieItem"
+             style="border:solid 3px black; border-radius:5px; padding:10px; width:13%; text-align:center;margin: 10px">
+            <img th:src="${movie.posters}" alt="" style="width:222px; height:305px;">
+            <div style="height: 16vh; display: flex;flex-direction: column;justify-content: space-between;">
+                <h2 th:text="${movie.movieNm}" style="font-weight: bold; font-size: 18px"></h2>
+                <div class="detail_cont" th:each="genre : ${movie.genreMovieInfos}">
+                    <label>장르:</label>
+                    <p class="detail_cont_subb" th:text="${genre.genre.genreNm}" style="color:black;"></p>
+                </div>
+                <a th:href="@{|/board/article/list/${movie.id}?page=0|}"
+                   class="recommend btn btn-sm btn-outline-secondary"
+                   style="width: 100%;">들어가기</a>
             </div>
-            <a th:href="@{|/board/article/list/${movie.id}|}">들어가기</a>
-        </span>
-    </div>
+        </div>
+    </section>
+    <script>
+        function filterMoviesByGenre(genre) {
+            var movieItems = document.querySelectorAll('.movieItem');
+            movieItems.forEach(function(item) {
+                var genres = item.querySelectorAll('.detail_cont_subb');
+                var found = false;
 
-</div>
+                genres.forEach(function(genreElem) {
+                    if (genreElem.textContent.trim() === genre) {
+                        found = true;
+                    }
+                });
 
-<script>
-    function filterMoviesByGenre(genre) {
-        var movieItems = document.querySelectorAll('.movieItem');
-
-        movieItems.forEach(function(item) {
-            var genres = item.querySelectorAll('.detail_cont_subb');
-            var found = false;
-
-            genres.forEach(function(genreElem) {
-                if (genreElem.textContent.trim() === genre) {
-                    found = true;
+                if (found) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
                 }
             });
-
-            if (found) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
-</script>
+        }
+    </script>
+</div>
 </body>
 </html>

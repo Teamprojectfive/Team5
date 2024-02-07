@@ -17,4 +17,19 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -40,6 +40,7 @@ public class MovieController {
         List<Movie> movieList = this.movieService.list();
 
 
+
         int gap = 10;
         int start = 0;
         int end = start + gap;
@@ -52,6 +53,9 @@ public class MovieController {
             start = end;
             end = end + gap;
         }
+
+
+
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movieList", movieList);
         model.addAttribute("movieSubList", movieSubListList);
@@ -98,8 +102,13 @@ public class MovieController {
         List<Movie> movies = this.movieService.list();
 
         Movie movie = this.movieService.getMovie(id);
+
         MovieInfo movieInfo = this.movieService.getMovieInfo(id);
         Page<Review> paging = this.reviewService.getList(page);
+        String audiAcc = movie.getAudiAcc();
+
+        model.addAttribute("audiAcc", audiAcc);
+
 
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movies", movies);
@@ -135,7 +144,6 @@ public class MovieController {
     @GetMapping("/check")
     public String checkDataBase() {
         return "movie";
-
     }
 
 

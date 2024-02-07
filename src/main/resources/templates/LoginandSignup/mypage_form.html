@@ -1,8 +1,8 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/mypage.css">
+    <link rel="stylesheet" href="/LoginandSignup/mypage.css">
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
     <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
@@ -45,20 +45,19 @@
 
 <section class="pro_cont" style="position: relative; z-index:99;">
     <div class="profile_cont">
-        <div>
+        <div style=" position: relative;top: 15%;">
             <a th:href="@{/main}"><i class="fa-solid fa-video"
                                      style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i></a>
             <h1><span style="color:red;">M</span>&nbsp;o&nbsp;v&nbsp;i&nbsp;e</h1>
+
         </div>
     </div>
 
 
-    <div layout:fragment="content" class="container my-3" style="width:50%;">
-
+    <div layout:fragment="content" class="container my-3" style="width:50%;  height: 825px">
         <form th:action="@{/member/mypage}" method="get" id="myPageForm" class="correction_cont">
             <div class="correction_title">내프로필</div>
             <section>
-
                 <div class="crn_box">
                     <label for="loginId" class="form-label">아이디</label>
                     <input type="hidden" name="loginId" th:value="${member}">
@@ -98,31 +97,28 @@
                 </div>
             </section>
         </form>
-        <div style="position: absolute;top: 46%;left: 60%;">
+        <div style="position: absolute;top: 45%;left: 60%;">
             <a th:href="@{/member/mypagereview}">
                 <input type="submit" value="내가 작성한 리뷰" class="btn btn-primary my-2">
             </a>
         </div>
-
         <a href="/member/my_movie">더보기</a>
-        <section style="width: 58%; height: 280px; overflow-x: auto; white-space: nowrap; display: flex; align-items: center;">
-            <div th:each="wishList, iterStat : ${wishList}" th:if="${iterStat.index} &lt; 3" style="flex: 0 0 calc(100% / 3); max-width: calc(100% / 3);">
+        <section style="width: 58%; height: 280px; white-space: nowrap; display: flex; align-items: center;">
+            <div th:each="wishList, iterStat : ${wishList}" th:if="${iterStat.index} &lt; 3" style="flex: 0 0 calc(100% / 3); max-width: calc(100% / 3);    margin-right: 10px;">
                 <a th:href="@{|/movie/detail/${wishList.id}|}">
-                    <img th:src="${wishList.posters}" alt="" style="width: 100%; height: auto;">
+                    <img th:src="${wishList.posters}" alt="" style="border: solid 1px black;width: 100%; height: auto; border-radius: 10px;">
                 </a>
             </div>
         </section>
-
-
-        <div style="display:flex; justify-content: flex-end; position:relative;   bottom: 65px;">
-            <a href="/member/mypagedelete">
+        <div style="display:flex; justify-content: flex-end; position:relative; bottom: 65px;">
+            <a th:href="@{/member/mypagedelete}">
                 <input class="btn btn-primary my-2" style="font-weight: bold; background: red; font-size: 20px;"
                        type="submit" value="회원탈퇴">
             </a>
         </div>
     </div>
-
 </section>
+
 
 <script>
     function submitForm(formId, action) {
@@ -180,7 +176,5 @@
     moon.style.top = '60vh';
     document.body.appendChild(moon);
 </script>
-
-
 </body>
 </html>

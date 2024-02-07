@@ -9,7 +9,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/mainlist.css">
+    <link rel="stylesheet" href="/movie/mainlist.css">
 </head>
 <body>
 <div layout:fragment="content">
@@ -59,58 +59,64 @@
                 <a th:href="@{|/movie/top100?genreId=${genre.id}|}" th:text="${genre.genreNm}"
                    onclick="selectGenre(this)"></a>
             </li>
+
         </ul>
     </div>
     <section class="list_box_wrap" id="listContainer">
         <section class="list_box">
             <div class="list genre" th:each="movie : ${movieList}">
-                <h1 th:text="${movie.id}"></h1>
-                <div class="list_item" th:style="'background-image: url(' + ${movie.posters } + ');'">
-                    <div class="additional-info">
-                        <div style="padding-top: 10px; text-align: center;font-weight: bold;font-size: 25px;"
-                             th:text="${movie.movieNm}"></div>
-                        <div class="sub_info">
-                            <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
-                            <div style="margin-top: 10px;" th:if="${movie.movieCd != null}">
-                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                <div class="list_item">
+                    <div class="list_item" th:style="'background-image: url(' + ${movie.posters } + ');'">
+                        <div class="additional-info">
+                            <div style="padding-top: 10px; text-align: center;font-weight: bold;font-size: 25px;"
+                                 th:text="${movie.movieNm}"></div>
+                            <div class="sub_info">
+                                <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${#strings.replace(#strings.replace(#strings.substring(movie.openDt, 0, 4) + '-' + #strings.substring(movie.openDt, 4, 6) + '-' + #strings.substring(movie.openDt, 6, 8), '-', ' '), ' ', '-')}"></span></p>
+                                <div style="margin-top: 10px;text-align: center;">
+                                    <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                                </div>
+                                <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                                   th:data-uri="@{|/movie/vote/${movie.id}|}" onclick="voteMovie(${movie.id})"  style=" width: 98%;">
+                                    찜하기
+                                </a>
                             </div>
-                            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-                               th:data-uri="@{|/movie/vote/${movie.id}|}" onclick="voteMovie(${movie.id})">
-                                찜하기
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </section>
-    <button class="left" onclick="movePage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-    <button class="right" onclick="movePage(1)"><i class="fa-solid fa-chevron-right"></i></button>
     <script>
         $(document).ready(function() {
-          // 페이지 로드 시 localStorage에 저장된 genre 정보를 확인
-          var storedGenre = localStorage.getItem('selectedGenre');
+         // 페이지 로드 시 localStorage에 저장된 genre 정보를 확인
+         var storedGenre = localStorage.getItem('selectedGenre');
 
-          // 저장된 정보가 있으면 해당 정보를 버튼에 적용
-          if (storedGenre) {
-            storedGenre = JSON.parse(storedGenre);
-            $('#genreDropdownButton').html(storedGenre.name);
-          }
+         // 저장된 정보가 있으면 해당 정보를 버튼에 적용
+         if (storedGenre) {
+           storedGenre = JSON.parse(storedGenre);
+           $('#genreDropdownButton').html(storedGenre.name);
+         } else {
+           // 만약 저장된 정보가 없다면, 초기값을 설정
+           var defaultGenre = 'Default Genre'; // 원하는 초기값으로 변경
+           $('#genreDropdownButton').html(defaultGenre);
 
-          // Dropdown에서 항목을 클릭했을 때 이벤트 처리
-          $('#genreDropdown a').on('click', function(){
-            var selectedGenre = $(this).text(); // 선택한 장르 텍스트
-            var selectedGenreId = $(this).data('genre-id'); // 선택한 장르 ID
+           // 초기값을 localStorage에 저장
+           localStorage.setItem('selectedGenre', JSON.stringify({ id: 0, name: defaultGenre }));
+         }
 
-            // 선택한 장르 정보를 버튼에 적용
-            $('#genreDropdownButton').html(selectedGenre);
+         // Dropdown에서 항목을 클릭했을 때 이벤트 처리
+         $('#genreDropdown a').on('click', function(){
+           var selectedGenre = $(this).text(); // 선택한 장르 텍스트
+           var selectedGenreId = $(this).data('genre-id'); // 선택한 장르 ID
 
-            // 선택한 장르 정보를 localStorage에 저장
-            localStorage.setItem('selectedGenre', JSON.stringify({ id: selectedGenreId, name: selectedGenre }));
-          });
-        });
+           // 선택한 장르 정보를 버튼에 적용
+           $('#genreDropdownButton').html(selectedGenre);
+
+           // 선택한 장르 정보를 localStorage에 저장
+           localStorage.setItem('selectedGenre', JSON.stringify({ id: selectedGenreId, name: selectedGenre }));
+         });
+       });
     </script>
-
     <script>
         let currentSlide = 0;
         const totalSlides = document.querySelectorAll('.list_box').length;

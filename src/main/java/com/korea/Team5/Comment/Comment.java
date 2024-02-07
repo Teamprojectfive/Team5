@@ -23,7 +23,9 @@ public class Comment {
   private String content;
 
   @ManyToMany
+
   Set<Member> voter;
+
 
   private LocalDateTime createDate;
 

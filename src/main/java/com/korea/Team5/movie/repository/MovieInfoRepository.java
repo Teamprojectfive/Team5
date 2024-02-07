@@ -18,16 +18,8 @@ public interface MovieInfoRepository extends JpaRepository<MovieInfo, Integer> {
     Page<MovieInfo> findAll(Pageable pageable);
 
 
-
-
-
-
-
-
     MovieInfo findByMovieNm(String movieNm);
 
     MovieInfo findByMovieCd(String movieCd);
 
-
-//    MovieInfo findById(Integer movieInfoId);
 }

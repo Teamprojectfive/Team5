@@ -339,6 +339,14 @@ public class MovieService {
         return movieRepository.findAll(pageable);
     }
 
+    public Page<MovieInfo> getAllMoviesiNfo ( int page){
+        // 페이징 처리를 위해 Pageable 객체 생성
+        Pageable pageable = PageRequest.of(page, 10); // PAGE_SIZE는 페이지당 보여줄 항목 수
+
+        // 모든 멤버를 가져오는 메서드 호출
+        return movieInfoRepository.findAll(pageable);
+    }
+
 
 
 }

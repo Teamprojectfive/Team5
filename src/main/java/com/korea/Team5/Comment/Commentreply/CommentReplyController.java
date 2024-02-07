@@ -82,6 +82,7 @@ public class CommentReplyController {
   @PreAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasRole('USER'))")
   @GetMapping("/vote/{id}")
   public String vote(@PathVariable("id")Integer id, Principal principal, Model model, RedirectAttributes redirectAttributes){
+
     CommentReply commentReply = this.commentReplyService.getreply(id);
     Member member = this.memberService.getMember(principal.getName());
     boolean ActionCheck = this.commentReplyService.vote(commentReply,member);

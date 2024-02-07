@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +54,10 @@ public class KmapiService {
 //    public List<Kmapi> getList(){
 //        return this.kmapiRepository.findAll();
 //    }
+    public Optional<Vod> getVod(){
+        return vodRepository.findById(0);
+    }
+
 
     @Transactional
     public List<MovieInfoDto> videoListSaveDataBase() {
