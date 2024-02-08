@@ -47,7 +47,7 @@
                             </a>
                         </td>
                         <td>
-                            <div th:text="${article.createDate}"></div>
+                            <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
                         </td>
                         <td style="display: flex; flex-direction: row-reverse;margin: 5px;">
                             <a th:href="@{|/board/article/modify/${article.id}?movieInfoId=${movieInfo.id}|}"
@@ -61,8 +61,9 @@
                                class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
                                th:if="${article.member != null and #authentication.getPrincipal().getUsername() == article.member.loginId}"
                                th:text="삭제" style="width: 20%;"></a>
-
-
+                            <a th:href="@{|/board/adminDelete?articleId=${article.id}&movieInfoId=${movieInfo.id}|}" th:text="삭제"
+                               th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                            </a>
                         </td>
                     </tr>
                 </div>

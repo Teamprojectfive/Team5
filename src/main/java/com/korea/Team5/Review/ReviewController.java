@@ -50,7 +50,7 @@ public class ReviewController {
     Movie movie = movieService.getMovie(movieId);
     model.addAttribute("movie", movie);
 
-    return "/Review/review_form";
+    return "Review/review_form";
   }
   //리뷰 생성
   @PreAuthorize("isAuthenticated()")
@@ -62,7 +62,7 @@ public class ReviewController {
     if (bindingResult.hasErrors()) {
       model.addAttribute("movie", movie);
 //      model.addAttribute("member", member);
-      return "/Review/review_form";
+      return "Review/review_form";
     }
     this.reviewService.create(movie,reviewForm.getContent(), reviewForm.getStarRating(),
             member);
@@ -108,7 +108,7 @@ public class ReviewController {
     reviewForm.setStarRating(review.getStarRating());
 
 
-    return "/Review/reviewModify_form";
+    return "Review/reviewModify_form";
   }
 
   //리뷰수정
@@ -117,7 +117,7 @@ public class ReviewController {
   public String reviewModify(@Valid ReviewForm reviewForm, BindingResult bindingResult,
                              @PathVariable("id") Integer id, Principal principal) {
     if (bindingResult.hasErrors()) {
-      return "/Review/reviewModify_form";
+      return "Review/reviewModify_form";
     }
     Review review = this.reviewService.getReview(id);
     if (!review.getMember().getLoginId().equals(principal.getName())) {

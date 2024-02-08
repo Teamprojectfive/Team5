@@ -1,5 +1,6 @@
 package com.korea.Team5.USER;
 
+import com.korea.Team5.Notice.Notice;
 import com.korea.Team5.board.Comment.Comment;
 import com.korea.Team5.board.Comment.Commentreply.CommentReply;
 import com.korea.Team5.Review.Review;
@@ -45,13 +46,17 @@ public class Member {
   @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<CommentReply> commentReplyList;
   // 소셜 로그인 정보
-  private String socialProvider;  // Google, Kakao, Naver 등
+  private String socialProvider;  // Google, Kakao, Nave
+  // r 등
   @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<Review> reviewList;
 
+  @OneToMany(mappedBy = "member" , cascade = CascadeType.REMOVE)
+  private List<Notice> noticeList;
+
   private String role;
 
-  @OneToMany(mappedBy = "member")
+  @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
   private List<Article> articleList;
 
 

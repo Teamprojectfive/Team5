@@ -99,6 +99,12 @@
                                    th:id="'replyButton-' + ${comment.id}"
                                    class="recommend btn btn-sm btn-outline-secondary" style="width: 75px;">
                         </div>
+                        <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                            <form th:action="@{/Comment/admindelete}" method="get">
+                                <input type="hidden" th:value="${comment.id}" name="adminDeleteId">
+                                <input type="submit" value="삭제">
+                            </form>
+                        </div>
                         <ul class="reply_cont" style="display: flow;">
                             <li class="turn-up">
                                 <i class="fa-solid fa-turn-up"></i>

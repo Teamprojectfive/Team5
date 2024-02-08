@@ -17,34 +17,6 @@ public class TheaterController {
 
   private final TheaterService theaterService;
 
-
-
-
-//  @GetMapping("/bigregion")
-//  public String bigregion(Model model,@RequestParam String bigRegion,@RequestParam String smallRegion){
-//
-//    List<Excel> regionexcelList = this.theaterService.getExcelRegion(bigRegion, smallRegion);
-//    model.addAttribute("region",regionexcelList);
-//
-//
-//    return "/Theater/theater_form";
-//  }
-
-
-
-
-
-
-//  @GetMapping("/bigregion")
-//  public String bigregion(Model model,@RequestParam String bigRegion,@RequestParam String smallRegion){
-//
-//    List<Excel> regionexcelList = this.theaterService.getExcelRegion(bigRegion, smallRegion);
-//    model.addAttribute("region",regionexcelList);
-//
-//
-//    return "/Theater/theater_form";
-//  }
-
   @GetMapping("/detail")
   public String detail(Model model, @RequestParam String targetBigRegion, @RequestParam String targetSmallRegion) {
     List<Excel> regionList = theaterService.getExcelRegion(targetBigRegion, targetSmallRegion);
@@ -68,7 +40,7 @@ public class TheaterController {
     model.addAttribute("bigRegionlList",bigList);
     model.addAttribute("bigRegion",targetBigRegion);
 
-    return "/Theater/theater_form";
+    return "Theater/theater_form";
   }
   @GetMapping("/listdetail")
   public String listdetail(Model model,@RequestParam String region){
@@ -81,14 +53,14 @@ public class TheaterController {
     model.addAttribute("theaterName", theaterName);
 
 
-    return "/Theater/theater_listdetail";
+    return "Theater/theater_listdetail";
   }
   @GetMapping("/navermap")
   public String theatermap(Model model,@RequestParam String address){
 
     model.addAttribute("address",address);
     System.out.println(address);
-    return  "/Theater/theaterNavermap";
+    return  "Theater/theaterNavermap";
   }
 
 }

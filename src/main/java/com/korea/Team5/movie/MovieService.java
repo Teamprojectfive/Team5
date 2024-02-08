@@ -169,6 +169,9 @@ public class MovieService {
     public void delete (Movie movie){
         this.movieRepository.delete(movie);
     }
+    public void Infodelete (MovieInfo movieInfo){
+        this.movieInfoRepository.delete(movieInfo);
+    }
 
 
 
@@ -198,7 +201,7 @@ public class MovieService {
 
 
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 16; i++) {
             String url = apiUrl + "?key=" + apiKey + "&targetDt=" + targetDate.format(formatter);
             System.out.println(url);
             ResponseEntity<WeeklyBoxOfficeList> responseEntity = restTemplate.getForEntity(url, WeeklyBoxOfficeList.class);
@@ -230,7 +233,7 @@ public class MovieService {
 
             int i = 0;
             for (Movie movie : movieList) {
-                if (i == 30) {
+                if (i == 150) {
                     break;
                 }
 

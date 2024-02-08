@@ -88,7 +88,7 @@ public class MemberController {
       // 중복이면 재설정 폼으로 이동
       session.removeAttribute("duplicatedNickName");
 
-      return "/LoginandSignup/socialIndex_form";
+      return "LoginandSignup/socialIndex_form";
     } else {
       // 중복이 아니면 메인으로 리다이렉트
       return "redirect:/main";
@@ -657,7 +657,7 @@ public class MemberController {
     model.addAttribute("verificationform", true);
     model.addAttribute("phoneverificationCodeform", true);
 
-    return "/LoginandSignup/findpassword_form";
+    return "LoginandSignup/findpassword_form";
   }
 
   @GetMapping("/passwordephoneverification")

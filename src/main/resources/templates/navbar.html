@@ -9,7 +9,7 @@
         <div class="movie_name">
             <a href="/main" style="  text-decoration: none;">
                 <i class="fa-solid fa-video" style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                <span class="phantom-film">Phantom Film</span>
+                <span class="phantom-film">FilmPahntom</span>
             </a>
         </div>
         <div class="login">
@@ -23,11 +23,7 @@
             <div tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px; font-weight:bold;">영화</div>
             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
                 <li><a href="/movie/boxOffice">박스오피스</a></li>
-<<<<<<< HEAD
-                <li><a href="/movie/top100">top100</a></li>
-=======
                 <li><a href="/movie/top100">전체영화</a></li>
->>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4
             </ul>
         </div>
         <div class="dropdown dropdown-hover">
@@ -45,11 +41,7 @@
                 <i class="fa-solid fa-magnifying-glass" style="font-size: 35px;color:white;"></i>
             </button>
             <form th:action="@{/movie/search}" method="get">
-<<<<<<< HEAD
-            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요">
-=======
-            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요" required>
->>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4
+                <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요" required>
             </form>
         </div>
     </div>

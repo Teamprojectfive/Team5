@@ -29,12 +29,12 @@ public class NoticeController {
     try {
       List<Notice> noticeList = this.noticeService.getnoticeList();
       model.addAttribute("noticeList", noticeList);
-      return "/Notice/notice_form";
+      return "Notice/notice_form";
     } catch (DataNotFoundException e) {
       // DataNotFoundException이 발생한 경우
       // 클라이언트에게 메시지를 전달하거나, 다른 처리를 수행할 수 있습니다.
       model.addAttribute("errorMessage", "공지사항이 없습니다."); // 적절한 메시지로 수정
-      return "/Notice/notice_form";
+      return "Notice/notice_form";
     }
   }
   @GetMapping("/detail")
@@ -42,10 +42,10 @@ public class NoticeController {
     try {
       Notice notice = this.noticeService.getNotice(noticeId);
       model.addAttribute("notice" , notice);
-      return "/Notice/notice_detail";
+      return "Notice/notice_detail";
     }catch (DataNotFoundException e){
       model.addAttribute("error", "공지사항이 없습니다.");
-      return "/Notice/notice_form";
+      return "Notice/notice_form";
     }
   }
 
@@ -56,7 +56,7 @@ public class NoticeController {
     model.addAttribute("adminLoginId", member.getLoginId());
 
 
-    return "/Notice/notice_create";
+    return "Notice/notice_create";
   }
 
   @PreAuthorize("hasRole('ADMIN')")

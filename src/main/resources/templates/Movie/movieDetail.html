@@ -1,27 +1,16 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="" style="width:1920px" lang="">
-<body>
+<body style="background: #f2f2f2;">
 <div layout:fragment="content">
     <!--    메인 포스터&설명 start-->
-<<<<<<< HEAD:src/main/resources/templates/Movie/movieDetail.html
-    <div th:each="movie : ${movieInfo}" >
-        <div class="detail_container" >
-            <div  class="movie_content" >
-=======
     <div th:each="movie : ${movie.movieInfo}">
         <div class="detail_container">
             <div class="movie_content">
->>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4:src/main/resources/templates/movieDetail.html
                 <section class="post_cont">
                     <div class="main_img">
                         <img th:src="${movie.posters}" alt="">
-                        <button class="custom-btn btn-4"><span>예매</span></button>
                     </div>
-<<<<<<< HEAD:src/main/resources/templates/Movie/movieDetail.html
-                    <div  class="attendance_cont">
-=======
                     <div class="attendance_cont">
->>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4:src/main/resources/templates/movieDetail.html
                         <i class="fa-regular fa-user" style="font-size:100px;color:white;"></i>&nbsp;
                         <p class="detail_cont_sub">누적관객수</p>&nbsp;
                         <p th:text="${audiAcc}"></p>
@@ -30,12 +19,8 @@
                         <h1 th:text="${movie.movieNm}"></h1>
                         <div class="detail_cont">
                             <p class="detail_cont_sub">개봉일</p>
-<<<<<<< HEAD:src/main/resources/templates/Movie/movieDetail.html
-                            <p class="detail_cont_subb" th:text="${#strings.substring(movie.openDt, 0, 4) + '.' + #strings.substring(movie.openDt, 4, 6) + '.' + #strings.substring(movie.openDt, 6)}"></p>
-=======
                             <p class="detail_cont_subb"
                                th:text="${#strings.substring(movie.openDt, 0, 4) + '.' + #strings.substring(movie.openDt, 4, 6) + '.' + #strings.substring(movie.openDt, 6)}"></p>
->>>>>>> f5512ddd4376917118b938519b4ec6894402c1e4:src/main/resources/templates/movieDetail.html
                         </div>
                         <div th:each="genre : ${movie.genreMovieInfos}" class="detail_cont">
                             <p class="detail_cont_sub">장르</p>
@@ -121,7 +106,6 @@
                     <div class="col-md-8" style="width: 100%;">
                         <div th:each="review : ${paging}" class="card mb-3">
                             <div class="card-body">
-                                <h5 class="card-title" th:text="${review.subject}"></h5>
                                 <p class="card-text" th:text="${review.content}"></p>
                                 <p class="card-text" th:text="${review.member.loginId}"></p>
                             </div>

@@ -39,7 +39,7 @@ public class AdminController {
   public String adminpage() {
 
 
-    return "/ADMIN/admin_signform";
+    return "ADMIN/admin_signform";
   }
 
 
@@ -55,7 +55,8 @@ public class AdminController {
       model.addAttribute("memberExists", true);
       model.addAttribute("memberFromDB", memberFromDB);
 
-      return "/ADMIN/admin_signform"; // 일치하는 경우
+      return "ADMIN/admin_signform"; // 일치하는 경우
+
 
     } catch (DataNotFoundException ex) {
       // DB에 해당 loginId가 존재하지 않을 경우의 로직
@@ -63,7 +64,7 @@ public class AdminController {
       model.addAttribute("validSearch", true);
       model.addAttribute("memberExists", false);
 
-      return "/ADMIN/admin_signform";
+      return "ADMIN/admin_signform";
 
 
     }
@@ -85,7 +86,7 @@ public class AdminController {
       // 데이터를 찾을 수 없는 경우의 예외 처리
       model.addAttribute("errorMessage", "해당 아이디가 존재하지 않습니다.");
 
-      return "/ADMIN/admin_signform"; // 예를 들어, notfound 뷰로 이동하거나 다른 방식으로 처리 가능
+      return "ADMIN/admin_signform"; // 예를 들어, notfound 뷰로 이동하거나 다른 방식으로 처리 가능
 
 
     }
@@ -107,7 +108,7 @@ public class AdminController {
         model.addAttribute("memberFromDB", memberFromDB);
         model.addAttribute("validSearch", true);
         model.addAttribute("memberExists", true);
-        return "/ADMIN/admin_signform";
+        return "ADMIN/admin_signform";
       }
       // 가져온 리뷰 목록을 모델에 추가
       model.addAttribute("paging", paging);
@@ -115,7 +116,7 @@ public class AdminController {
     } catch (DataNotFoundException e) {
       // 데이터를 찾을 수 없는 경우의 예외 처리
       model.addAttribute("error", "아이디가 존재하지 않습니다.");
-      return "/ADMIN/admin_signform";
+      return "ADMIN/admin_signform";
     }
 
   }
@@ -143,7 +144,7 @@ public class AdminController {
     if (signpaging.isEmpty()) {
       model.addAttribute("error", "조회된 회원이 없습니다.");
     }
-    return "/ADMIN/admin_signform";
+    return "ADMIN/admin_signform";
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -155,16 +156,17 @@ public class AdminController {
     if (adminmoviespaging.isEmpty()) {
       model.addAttribute("error", "조회된 영화가 없습니다.");
     }
-    return "/ADMIN/admin_movielist";
+    return "ADMIN/admin_movielist";
   }
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/adminmoviedelete")
-  public String adminmoviedelete(@RequestParam Integer movie) {
+  public String adminmoviedelete(@RequestParam Integer movie, Model model) {
 
     // reviewId를 기반으로 Review를 검색합니다.
-    Movie movie1 = movieService.getMovie(movie);
-    movieService.delete(movie1);
+    MovieInfo movie1 = movieService.getMovieInfo(movie);
+    this.movieService.Infodelete(movie1);
+    model.addAttribute("movie1" ,movie1);
 
 
     return "redirect:/admin/adminmovielist";
@@ -178,13 +180,13 @@ public class AdminController {
     model.addAttribute("member", member);
 
 
-    return "/ADMIN/admindetail_form";
+    return "ADMIN/admindetail_form";
   }
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/check")
   public String checkDataBase() {
-    return "movie";
+    return "Movie/movie";
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -194,7 +196,7 @@ public class AdminController {
     model.addAttribute("adminLoginId", member.getLoginId());
 
 
-    return "/Notice/notice_create";
+    return "Notice/notice_create";
   }
 
   @PreAuthorize("hasRole('ADMIN')")

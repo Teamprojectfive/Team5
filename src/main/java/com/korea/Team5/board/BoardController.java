@@ -146,5 +146,14 @@ public class BoardController {
 
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/adminDelete")
+  public String adminDelete(@RequestParam Integer articleId,@RequestParam String movieInfoId){
 
+    Article article = this.articleService.getArticle(articleId);
+    this.articleService.delete(article);
+
+
+    return "redirect:/board/article/list/" + movieInfoId;
+  }
 }

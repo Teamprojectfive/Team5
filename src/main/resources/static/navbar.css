@@ -112,7 +112,7 @@ ul{
       display: none;
       padding: 10px;
       background: border-box;
-      color:white;
+      color:gray;
       outline: none;
       width: 0;
       opacity: 0;
@@ -132,7 +132,7 @@ ul{
 .search-container:hover .search-input {
     width: 170px;
 }
-      .phantom-film {
+    .phantom-film {
            background: linear-gradient(to right,#663399, #ff0000, #663399);
            -webkit-background-clip: text;
            color: transparent;

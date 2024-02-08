@@ -13,13 +13,28 @@ body {
   width:1920px;
 }
 
+.logo{
+    color:white;
+    font-size: 60px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+      .phantom-film {
+           background: linear-gradient(to right,#663399, #ff0000, #663399);
+           -webkit-background-clip: text;
+           color: transparent;
+           font-weight: bold;
+           text-shadow: 2px 2px 4px (255, 0, 0, 1);
+         }
+
 .intro_container{
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     top: 25%;
-    left: -10%
+    left: -12%
 }
 .img-container {
   position: relative;
@@ -103,6 +118,7 @@ body {
 @import "compass/css3";
 
 .container {
+
   width: 200px;
   height: 100%;
   margin: 0 auto 0;

@@ -86,4 +86,14 @@ public class CommentController {
     redirectAttributes.addFlashAttribute("ActionCheck",ActionCheck);
     return String.format("redirect:/board/article/detail/%s", comment.getArticle().getId());
   }
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/admindelete")
+  public String delete(@RequestParam Integer adminDeleteId){
+
+    Comment comment = this.commentService.getComment(adminDeleteId);
+    this.commentService.delete(comment);
+
+
+    return String.format("redirect:/board/article/detail/%s", comment.getArticle().getId());
+  }
 }

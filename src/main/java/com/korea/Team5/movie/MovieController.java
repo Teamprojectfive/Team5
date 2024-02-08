@@ -44,38 +44,30 @@ public class MovieController {
         int gap = 10;
         int start = 0;
         int end = start + gap;
-        int displayCount = 120;
-        int subListCount = (int) Math.ceil((double) displayCount / gap);
+        int displayCount = 150;
+        int subListCount = displayCount / gap;
         List<MovieInfo> movieInfo = this.movieService.infoList();
         List<List<Movie>> movieSubListList = new ArrayList<List<Movie>>();
-
         for (int i = 0; i < subListCount; i++) {
-            if (end > movieList.size()) {
-                end = movieList.size();
-            }
             movieSubListList.add(movieList.subList(start, end));
             start = end;
-            end = start + gap;
+            end = end + gap;
         }
-
-
         model.addAttribute("movieInfo", movieInfo);
         model.addAttribute("movieList", movieList);
         model.addAttribute("movieSubList", movieSubListList);
 
 
-
         return "Movie/boxOffice";
-
     }
     @PostMapping("/saveSelectedGenre")
     @ResponseBody
     public ResponseEntity<String> saveSelectedGenre(@RequestParam("genreId") String genreId, HttpSession session) {
         // 세션에 선택한 장르 정보 저장
         session.setAttribute("selectedGenreId", genreId);
+
         return ResponseEntity.ok("Selected genre saved to session");
     }
-
     @GetMapping("/top100")
     public String test(Model model, @RequestParam(required = false) Integer genreId) {
         List movieList = new ArrayList<>();
@@ -96,9 +88,7 @@ public class MovieController {
         model.addAttribute("genres", genres);
         model.addAttribute("movie", movie);
         model.addAttribute("movieSubList", movieSubListList);
-
         return "Movie/top100";
-
     }
 
 
@@ -153,6 +143,11 @@ public class MovieController {
         return "Movie/movie";
     }
 
+
+
+
+
+
     @GetMapping("/addDetail")
     public String addDetail(Model model) {
         MovieInfo movieInfo = this.movieService.getMovieDetail();
@@ -160,6 +155,9 @@ public class MovieController {
         return "Movie/movie";
     }
 
+
+
+    // api 데이터 넣는 메서드
     @GetMapping("/weeklyMovie")
     public String getMovies(@RequestParam(name = "key") String apiKey, Model model, String targetDt) {
         // weeklyMovie인 경우 기본값 설정
@@ -195,7 +193,6 @@ public class MovieController {
 
 
         return "Movie/top100";
-
     }
 
 }
