@@ -1,0 +1,141 @@
+html{
+    background-color: white;
+}
+
+body{
+    margin: 0;
+    background-color: white;
+}
+nav{
+    width:100%;
+}
+
+.login_container{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 34px;
+    color: black;
+}
+
+.movie_name{
+    color:white;
+}
+
+.movie_name a{
+    text-decoration: none;
+    color: white;
+}
+
+
+
+.login> a {
+    background-color: black;
+    margin-right: 20px;
+    padding: 10px;
+    color: white;
+    transition: inherit;
+    border: solid 2px red;
+    border-radius: 10px;
+    text-decoration-line: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.Sign_in:active{
+    box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+    position: relative;
+    top:2px;
+}
+
+.Sing_up:active{
+    box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+    position: relative;
+    top:2px;
+}
+
+.sub_nav{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.sub_nav a{
+    text-decoration:none;
+}
+
+.btn{
+
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    border: 0px;
+    font-size: 27px;
+    color: black;
+    text-align:center;
+
+}
+.btn:hover{
+    background: rgb(204, 204, 204);
+}
+
+.p-2{
+    background: white;
+}
+ .m_p {
+    color: red;
+    text-shadow: 2px 2px 4px rgba(255,000,051);
+}
+
+.m_o, .m_v, .m_i, .m_e {
+    text-shadow: 2px 2px 4px rgba(251,251,251);
+}
+
+ul{
+    display: flex;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+}
+
+    .search-input {
+      display: none;
+      padding: 10px;
+      background: border-box;
+      color:white;
+      outline: none;
+      width: 0;
+      opacity: 0;
+      transition: width 0.5s ease, opacity 0.5s ease;
+    }
+
+.search-button {
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: margin 0.3s ease;
+}
+
+.search-container:hover .search-input {
+    width: 170px;
+}
+      .phantom-film {
+           background: linear-gradient(to right,#663399, #ff0000, #663399);
+           -webkit-background-clip: text;
+           color: transparent;
+           font-weight: bold;
+           text-shadow: 2px 2px 4px (255, 0, 0, 1);
+         }

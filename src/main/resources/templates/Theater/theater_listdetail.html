@@ -1,0 +1,79 @@
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./listdetail.css">
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+</head>
+<body style="background: #f2f2f2; width:1900px;">
+<div layout:fragment="content" class="container" style="height:82vh">
+    <div class="theater_title_cont">
+        <h2>극장 상세정보</h2>
+    </div>
+    <section class="information_cont">
+        <div class="information_title">
+            <input type="text" th:value="${theaterName.name}" id="formGroupExampleInput"
+                   placeholder="Example input placeholder">
+        </div>
+        <div style="font-size:18px;  margin-left: 5%;">
+            <label for="formGroupExampleInput">사업자명</label>
+            <input type="text" th:value="${theaterName.businessname}" id="formGroupExampleInput3"
+                   placeholder="Example input placeholder">
+        </div>
+        <div class="Screening_cont">
+            <div>
+                <i class="fa-solid fa-tv"></i>
+                <label for="formGroupExampleInput">2D 상영관</label>
+                <input type="text" th:value="${theaterName.twoDnum + ' 관'}" id="formGroupExampleInput5"
+                       placeholder="Example input placeholder">
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div>
+                <i class="fa-solid fa-tv"></i>
+                <label for="formGroupExampleInput2">3D 상영관</label>
+                <input type="text" th:value="${theaterName.threeDnum  + ' 관'}" id="formGroupExampleInput6"
+                       placeholder="Another input placeholder">
+            </div>
+        </div>
+        <form th:action="@{/theater/navermap}" method="get">
+            <div class="address_cont">
+                <label for="formGroupExampleInput2">주소:</label>
+                <input class="address" type="text" name="address" th:value="${theaterName.address}"
+                       id="formGroupExampleInput2"
+                       placeholder="Another input placeholder"> &nbsp;
+                <div class="address_btn_cont">
+                    <i class="fa-solid fa-share" style="    font-size: 55px;"></i>
+                    <button class="address_btn" type="submit"><i class="fa-solid fa-location-dot" style="font-size: 22px;"></i>&nbsp;지도 길찾기</button>
+                </div>
+            </div>
+        </form>
+        <div class="ticketing_cont">
+            <label for="formGroupExampleInput2">극장 홈페이지 :</label>
+            <input type="text" th:value="${theaterName.homepage}" id="formGroupExampleInput4"
+                   placeholder="Another input placeholder"> &nbsp;
+            <div th:if="${theaterName.name.contains('메가박스')}"  class="ticketing_box" >
+                <i class="fa-solid fa-share" style="    font-size: 55px;"></i>
+                <a class="ticketing_btn" href="https://www.megabox.co.kr/booking"><input type="text">
+                    <i class="fa-solid fa-right-to-bracket" style="font-size: 22px;"></i>
+                    영화 예매하러가기
+                </a>
+            </div>
+            <div th:if="${theaterName.name.contains('CGV')}" class="ticketing_box" >
+                <i class="fa-solid fa-share" style="    font-size: 55px;"></i>
+                <a class="ticketing_btn" href="http://www.cgv.co.kr/ticket/">
+                    <i class="fa-solid fa-right-to-bracket" style="font-size: 22px;"></i>
+                    영화 예매하러가기
+                </a>
+            </div>
+            <div th:if="${theaterName.name.contains('롯데시네마')}" class="ticketing_box" >
+                <i class="fa-solid fa-share" style="font-size: 55px;"></i>
+                <a class="ticketing_btn" href="https://www.lottecinema.co.kr/NLCHS/Ticketing">
+                    <i class="fa-solid fa-right-to-bracket" style="font-size: 22px;"></i>
+                    영화 예매하러가기
+                </a>
+            </div>
+        </div>
+
+    </section>
+</div>
+</body>
+</html>

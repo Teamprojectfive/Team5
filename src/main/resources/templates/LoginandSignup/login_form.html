@@ -1,0 +1,104 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<head>
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/movie/main.css">
+</head>
+<body style="background:black; width:1920px;">
+<div layout:fragment="content" class="container my-3" style="position: relative; top:10%; padding:0;width:1920px">
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <form th:action="@{/member/login}" method="post" style="position: relative; top: 25%; display:flex;
+        -webkit-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 3px 12px rgba(0, 0, 0, 0.22);
+        -moz-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(255,255,255);
+        -ms-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(255,255,255);
+        -o-box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(255,255,255);
+        box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 3px 12px rgba(255,255,255);
+        background:; height: 75vh;">
+        <div style="margin-left:50px; padding:180px; width: 57.5%;">
+            <div style="font-size:23px;">
+                <i class="fa-solid fa-video" style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                <a th:href="@{/main}" style="text-decoration:none;">
+                    <span class="phantom-film">Phantom Film</span>
+                </a>
+            </div>
+            <h2 style="text-align: center; color:white;"><strong>로그인</strong></h2>
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">
+                    사용자ID 또는 비밀번호를 확인해 주세요.
+                </div>
+            </div>
+            <div style="width:95%;">
+                <div class="mb-3">
+                    <label for="username" class="form-label" style="font-weight: bold; color:white;">사용자ID</label>
+                    <input type="text" name="username" id="username" class="form-control" placeholder="ID를 입력해주세요.">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label" style="font-weight: bold; color:white;">비밀번호</label>
+                    <input type="password" name="password" id="password" class="form-control"
+                           placeholder="비빌번호를 입력해주세요.">
+                </div>
+            </div>
+            <section style="display: flex; justify-content: space-between;">
+                <button type="submit" class="btn btn-primary"
+                        style="background:lightskyblue; border: 0px; font-weight: bold;">로그인
+                </button>
+                <div>
+                    <a th:href="@{/member/findId}">
+                        <button  type="button" style="border-radius: 10px;background: content-box;color: white;">아이디찾기</button>
+                    </a>
+                </div>
+                <div>
+                    <a th:href="@{/member/findpassword}">
+                        <button type="button" style="border-radius: 10px;background: content-box;color: white;">비밀번호찾기</button>
+                    </a>
+                </div>
+            </section>
+            <div id="socialLoginButtons"
+                 style="display: flex; justify-content:center; align-items: center; margin-top: 50px;   margin-right: 15px;">
+                <a href="/oauth2/authorization/google" onclick="checkNickname('google')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/160px-Google_%22G%22_logo.svg.png"
+                         alt="Google Login" style="width: 50px; height: 50px; margin-right: 100px;">
+                </a>
+                <a href="/oauth2/authorization/naver" onclick="checkNickname('naver')">
+                    <img src="http://wiki.hash.kr/images/thumb/c/cf/%EB%84%A4%EC%9D%B4%EB%B2%84%E3%88%9C_%EB%A1%9C%EA%B3%A0.png/200px-%EB%84%A4%EC%9D%B4%EB%B2%84%E3%88%9C_%EB%A1%9C%EA%B3%A0.png"
+                         alt="Naver Login"
+                         style="width: 50px; height: 50px; margin-right: 100px;">
+                </a>
+                <a href="/oauth2/authorization/kakao" onclick="checkNickname('kakao')">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Kakao_logo.jpg" alt="Kakao Login"
+                         style="width: 50px; height: 50px; margin-right: 0; border-radius:10px;">
+                </a>
+            </div>
+        </div>
+        <div>
+            <img src="https://search.pstatic.net/common?quality=75&direct=true&src=https%3A%2F%2Fmovie-phinf.pstatic.net%2F20240103_132%2F1704256822900I1c3f_JPEG%2Fmovie_image.jpg" alt=""
+                 style="height:100%; width:102%; box-shadow: 0 152px 28px rgba(0,0,0,0.25), 0 12px 35px rgba(255,255,255)">
+        </div>
+    </form>
+</div>
+<script>
+    function checkNickname(provider) {
+    console.log("checkNickname 함수가 실행되었습니다.");
+        // Ajax를 사용하여 서버에 중복 여부를 확인
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/duplicate?, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              console.log("서버 응답을 받았습니다.");
+                var isNicknameDuplicated = JSON.parse(xhr.responseText).isNicknameDuplicated;
+                console.log(isNicknameDuplicated);
+                if (isNicknameDuplicated) {
+                    alert("닉네임이 중복이여서 재설정하셔야합니다");
+                    // 중복이면 다른 폼으로 이동
+                    window.location.href = "/LoginandSignup/socialIndex_form";
+                } else {
+                    // 중복이 아니면 소셜 로그인을 진행
+                    window.location.href = "/oauth2/authorization/" + provider;
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+</body>
+</html>

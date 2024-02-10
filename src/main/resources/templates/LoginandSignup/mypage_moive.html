@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/LoginandSignup/mymovie.css">
+</head>
+<body style="width:1900px">
+<a th:href="@{/member/mypage}">
+    <i id="back" class="fa-solid fa-left-long" style="position: absolute;top: 3%;left: 10%;color: white;font-size: 60px;"></i>
+</a>
+<h1>내 찜한 영화 리스트</h1>
+<ul style="list-style-type:none;">
+    <li th:each="movie : ${wishList}" style="margin-right: 110px;">
+        <a th:href="@{|/movie/detail/${movie.id}|}" >
+            <img th:src="${movie.posters}" alt="" style="width: 150px; height: auto;">
+        </a>
+            <div style="color: white; font-size: 14px; text-align: center; margin-top: 5px;">
+                <h3 th:text="${movie.movieNm}"></h3>
+            </div>
+
+    </li>
+</ul>
+</body>
+</html>

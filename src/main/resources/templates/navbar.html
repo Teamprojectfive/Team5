@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html lang="en" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="">
+<head>
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+</head>
+<body style="background: #f2f2f2; width: 100%; max-width: 1900px; ">
+<nav th:fragment="navbarFragment" style="z-index:99; ">
+    <div class="login_container">
+        <div class="movie_name">
+            <a href="/main" style="  text-decoration: none;">
+                <i class="fa-solid fa-video" style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                <span class="phantom-film">Phantom Film</span>
+            </a>
+        </div>
+        <div class="login">
+            <a class="Sign_in" role="button" sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
+            <a class="Sign_in" role="button" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Sign_out</a>
+            <a class="Sing_up" role="button" th:href="@{/member/signup}">Sing_up</a>
+        </div>
+    </div>
+    <div class="sub_nav">
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px; font-weight:bold;">영화</div>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
+                <li><a href="/movie/boxOffice">박스오피스</a></li>
+                <li><a href="/movie/top100">전체영화</a></li>
+            </ul>
+        </div>
+        <div class="dropdown dropdown-hover">
+            <a href="/theater/smallRegion" tabindex="0" role="button" class="btn m-1" style="background: white; font-size:20px;font-weight:bold;">극장</a>
+        </div>
+        <div class="dropdown dropdown-hover">
+            <div tabindex="0" role="button" class="btn m-1"  style="background: white; font-size:20px; font-weight:bold;">공지</div>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
+                <li><a href="/notice/list">공지사항</a></li>
+                <li><a href="/board/movie">자유게시판</a></li>
+            </ul>
+        </div>
+        <div class="search-container">
+            <button class="search-button" onclick="toggleSearch()">
+                <i class="fa-solid fa-magnifying-glass" style="font-size: 35px;color:white;"></i>
+            </button>
+            <form th:action="@{/movie/search}" method="get">
+            <input type="text" class="search-input" name="enterMovie" th:value="${entermovie}" placeholder="찾으실 영화를 입력하세요" required>
+            </form>
+        </div>
+    </div>
+    <script>
+        function toggleSearch() {
+          var searchInput = document.querySelector('.search-input');
+          searchInput.style.display = 'block';
+          searchInput.style.width = (searchInput.style.width === '0px' || searchInput.style.width === '') ? '170px' : '0';
+          searchInput.style.opacity = (searchInput.style.width === '170px') ? '1' : '0';
+        }
+    </script>
+</nav>
+</body>
+</html>

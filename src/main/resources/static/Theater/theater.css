@@ -1,0 +1,149 @@
+*{
+    box-sizing:border-box;
+}
+body{
+    height: 100vh;
+    background-size: cover;
+    background-image: url('https://media.istockphoto.com/id/1093915698/ko/%EC%82%AC%EC%A7%84/%EA%B7%B9%EC%9E%A5%EC%97%90%EC%84%9C-%EB%B9%A8%EA%B0%84-%EC%84%9D-%ED%96%89.jpg?s=612x612&w=0&k=20&c=LkMSL4Es0nrs1iXJM2PmnOueK62eMLCPnZmOCDFQOLk=');
+    margin:0;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:700');
+
+
+.slide_cont {
+  background-color: #111;
+  background-image: radial-gradient(#333, #111);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+  text-align: center;
+  width: 100vw;
+  font-weight: 700;
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+  height:300px;
+}
+
+#fly-in {
+    font-size: 3em;
+    margin: 6%;
+    text-transform: uppercase;
+}
+
+#fly-in span {
+  display: block;
+  font-size: .4em;
+  opacity: .8;
+}
+
+#fly-in div {
+ position: fixed; <!--codepen.io/h-kod/-->
+  margin: 2vh 0;
+  opacity: 0;
+  left: 10vw;
+  width: 80vw;
+  animation: switch 32s linear infinite;
+}
+
+#fly-in div:nth-child(2) { animation-delay: 4s}
+#fly-in div:nth-child(3) { animation-delay: 8s}
+#fly-in div:nth-child(4) { animation-delay: 12s}
+#fly-in div:nth-child(5) { animation-delay: 16s}
+#fly-in div:nth-child(6) { animation-delay: 20s}
+#fly-in div:nth-child(7) { animation-delay: 24s}
+#fly-in div:nth-child(8) { animation-delay: 28s}
+
+@keyframes switch {
+    0% { opacity: 0;filter: blur(20px); transform:scale(12)}
+    3% { opacity: 1;filter: blur(0); transform:scale(1)}
+    10% { opacity: 1;filter: blur(0); transform:scale(.9)}
+    13% { opacity: 0;filter: blur(10px); transform:scale(.1)}
+    80% { opacity: 0}
+    100% { opacity: 0}
+}
+.select{
+    background: bottom;
+    color:white;
+}
+.theater_warp{
+    margin-top: 20px;
+    position: relative;
+    top: 40%;
+    width:1230px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.theater_cont{
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 190px;
+    border: 3px solid #686571;
+    border-radius: 10px;
+    background:white;
+}
+
+.theater_title{
+    width: 100%;
+    height: 48px
+
+}
+
+.theater_title ul{
+    text-align: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.theater_title ul li{
+    width: 140px;
+}
+.theater_title ul li div{
+    float: left;
+    width: 136px;
+    height: 48px;
+    line-height: 48px;
+    border: 3px solid #686571;
+    border-width: 0 1px 1px 0;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+
+
+.theater_sub_menu{
+    left: 0;
+    top: 48px;
+    width: 100%;
+    min-height: 85px;
+    padding: 30px 0;
+    border-radius: 10px;
+}
+
+.theater_sub_menu ul{
+    overflow: hidden;
+    width: 100%;
+    display: flow;
+
+}
+
+.theater_sub_menu ul li{
+    margin-left: -1px;
+    position: relative;
+    float: left;
+    width: 25%;
+    line-height: 26px;
+    text-align: left;
+    padding-left: 40px;
+    border-left: solid 1px gray;
+}
+
+.nav-link:hover{
+    background:black;
+    color:white;
+}

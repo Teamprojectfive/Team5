@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/review.css">
+</head>
+<body>
+<div class="title">
+    <a th:href="@{/main}"><strong>Logo</strong></a>
+</div>
+<h2>리뷰등록하기</h2>
+<!-- 리뷰 폼 -->
+<form class="input_cont" th:action="@{|/review/create/${id}|}" th:object="${reviewForm}" method="post">
+    <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+    <textarea name="content" id="content" placeholder="Content"></textarea>
+    <!-- 별점 입력 -->
+    <div class="star-rating">
+        <span class="star" data-rating="1">&#9734;</span>
+        <span class="star" data-rating="2">&#9734;</span>
+        <span class="star" data-rating="3">&#9734;</span>
+        <span class="star" data-rating="4">&#9734;</span>
+        <span class="star" data-rating="5">&#9734;</span>
+        <input type="hidden" name="starRating" id="starRating" value="0">
+    </div>
+    <!-- id 변수 전달을 위한 hidden 필드 -->
+    <input type="hidden" name="id" th:value="${movie.id}">
+    <!-- 제출 버튼 -->
+    <button type="submit">리뷰 등록</button>
+</form>
+<script>
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('starRating');
+
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            const rating = star.getAttribute('data-rating');
+            highlightStars(rating);
+        });
+
+        star.addEventListener('mouseout', () => {
+            const currentRating = ratingInput.value || 0;
+            highlightStars(currentRating);
+        });
+
+        star.addEventListener('click', () => {
+            const rating = star.getAttribute('data-rating');
+            ratingInput.value = rating;
+            highlightStars(rating);
+        });
+    });
+
+    function highlightStars(rating) {
+        stars.forEach(star => {
+            const starRating = star.getAttribute('data-rating');
+            if (starRating <= rating) {
+                star.classList.add('filled');
+            } else {
+                star.classList.remove('filled');
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

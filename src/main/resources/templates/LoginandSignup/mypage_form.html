@@ -1,0 +1,180 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/LoginandSignup/mypage.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+</head>
+<body style="width:1920px">
+<div class="shooting-stars">
+    <div class="shooting-star"></div>
+    <div class="shooting-star shooting-star--mid"></div>
+    <div class="shooting-star shooting-star--fast"></div>
+    <div class="shooting-star shooting-star--mis"></div>
+    <div class="shooting-star shooting-star--mit"></div>
+    <div class="shooting-star shooting-star--miq"></div>
+</div>
+<div class="sub_nav">
+    <div class="dropdown dropdown-hover">
+        <div tabindex="0" role="button" class="btn m-1"
+             style="background: white; font-size:20px; font-weight:bold; width:145px;">영화
+        </div>
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52"
+            style="background: aliceblue; width: 155px;">
+            <li><a href="/movie/boxOffice">박스오피스</a></li>
+            <li><a href="/movie/top100">top100</a></li>
+        </ul>
+    </div>
+    <div class="dropdown dropdown-hover">
+        <a href="/movie/intro" tabindex="0" role="button" class="btn m-1"
+           style="background: white; font-size:20px; font-weight:bold; width:145px;">소개</a>
+    </div>
+    <div class="dropdown dropdown-hover">
+        <div tabindex="0" role="button" class="btn m-1"
+             style="background: white; font-size:20px;font-weight:bold; width:145px;">극장
+        </div>
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52"
+            style="background: aliceblue; width: 155px;">
+            <li><a href="#">지역</a></li>
+            <li><a href="#">위치</a></li>
+        </ul>
+    </div>
+</div>
+
+<section class="pro_cont" style="position: relative; z-index:99;">
+    <div class="profile_cont">
+        <div style=" position: relative;top: 15%;">
+            <a th:href="@{/main}"><i class="fa-solid fa-video"
+                                     style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i></a>
+            <h1><span style="color:red;">M</span>&nbsp;o&nbsp;v&nbsp;i&nbsp;e</h1>
+
+        </div>
+    </div>
+
+
+    <div layout:fragment="content" class="container my-3" style="width:50%;  height: 825px">
+        <form th:action="@{/member/mypage}" method="get" id="myPageForm" class="correction_cont">
+            <div class="correction_title">내프로필</div>
+            <section>
+                <div class="crn_box">
+                    <label for="loginId" class="form-label">아이디</label>
+                    <input type="hidden" name="loginId" th:value="${member}">
+                    <input type="text" name="loginId" th:value="${member.loginId}" class="form-control" readonly>
+                </div>
+                <div class="crn_box">
+                    <div class="nick_t_cont">
+                        <label for="nickName" class="form-label">닉네임</label>
+                        <input type="text" name="nickName" th:value="${member.nickName}" class="form-control" readonly>
+                    </div>
+                    <input type="submit" value="수정하기" class="btn btn-primary my-2"
+                           onclick="submitForm('myPageForm', '/member/mypage/nickName')">
+                </div>
+            </section>
+            <section>
+                <div class="crn_box">
+                    <label for="createDate" class="form-label">가입일시</label>
+                    <input type="text" name="createDate" th:value="${member.createDate}" class="form-control" readonly>
+                </div>
+                <div class="crn_box">
+                    <label for="email" class="form-label">이메일</label>
+                    <input type="text" name="email" th:value="${member.email}" class="form-control" readonly>
+                    <input type="submit" value="수정하기" class="btn btn-primary my-2"
+                           onclick="submitForm('myPageForm', '/member/mypage/email')">
+                </div>
+            </section>
+            <section>
+                <div style="width: 32%;">
+                    <input type="submit" value="비밀번호 수정" class="btn btn-primary my-2"
+                           onclick="submitForm('myPageForm', '/member/mypage/password')">
+                </div>
+                <div class="crn_box" style="margin-left:75px;">
+                    <label for="phone" class="form-label">전화번호</label>
+                    <input type="text" name="phone" th:value="${member.phone}" class="form-control" readonly>
+                    <input type="submit" value="수정하기" class="btn btn-primary my-2"
+                           onclick="submitForm('myPageForm', '/member/updatePhone')">
+                </div>
+            </section>
+        </form>
+        <div style="position: absolute;top: 45%;left: 60%;">
+            <a th:href="@{/member/mypagereview}">
+                <input type="submit" value="내가 작성한 리뷰" class="btn btn-primary my-2">
+            </a>
+        </div>
+        <a href="/member/my_movie">더보기</a>
+        <section style="width: 58%; height: 280px; white-space: nowrap; display: flex; align-items: center;">
+            <div th:each="wishList, iterStat : ${wishList}" th:if="${iterStat.index} &lt; 3" style="flex: 0 0 calc(100% / 3); max-width: calc(100% / 3);    margin-right: 10px;">
+                <a th:href="@{|/movie/detail/${wishList.id}|}">
+                    <img th:src="${wishList.posters}" alt="" style="border: solid 1px black;width: 100%; height: auto; border-radius: 10px;">
+                </a>
+            </div>
+        </section>
+        <div style="display:flex; justify-content: flex-end; position:relative; bottom: 65px;">
+            <a th:href="@{/member/mypagedelete}">
+                <input class="btn btn-primary my-2" style="font-weight: bold; background: red; font-size: 20px;"
+                       type="submit" value="회원탈퇴">
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    function submitForm(formId, action) {
+        var form = document.getElementById(formId);
+        form.action = action; // 액션을 동적으로 설정
+        form.submit(); // 폼 제출
+    }
+</script>
+
+
+
+<script>
+    function createStar() {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.top = `${Math.random() * 100}vh`;
+      document.body.appendChild(star);
+    }
+
+    // 별빛 여러 개 생성
+    for (let i = 0; i < 500; i++) {
+      createStar();
+    }
+</script>
+
+
+<script>
+    function createGalaxy() {
+      const galaxy = document.createElement('div');
+      galaxy.className = 'galaxy';
+      galaxy.style.left = `${Math.random() * 100}vw`;
+      galaxy.style.top = `${Math.random() * 100}vh`;
+      document.body.appendChild(galaxy);
+    }
+
+
+    for (let i = 0; i < 100; i++) {
+      createGalaxy();
+    }
+</script>
+
+
+<script>
+    const bigPlanet = document.createElement('div');
+    bigPlanet.className = 'planet big-planet';
+    bigPlanet.style.left = '80vw';
+    bigPlanet.style.top = '30vh';
+    document.body.appendChild(bigPlanet);
+
+
+    const moon = document.createElement('div');
+    moon.className = 'planet moon';
+    moon.style.left = '20vw';
+    moon.style.top = '60vh';
+    document.body.appendChild(moon);
+</script>
+</body>
+</html>

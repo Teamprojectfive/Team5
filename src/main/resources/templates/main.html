@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.21/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/9b3b71a088.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/movie/main.css">
+    <link rel="stylesheet" href="/movie/movie_btn.css">
+</head>
+<body>
+<div class="main_container">
+    <!-- 배너컨테이터 -->
+    <div class="baner_container" id="bannerContainer">
+        <div class="baner">
+            <img src="https://cdn.pixabay.com/photo/2017/11/24/10/43/ticket-2974645_1280.jpg" alt="img">
+        </div>
+        <div class="baner">
+            <img src="https://cdn.pixabay.com/photo/2016/09/14/08/18/film-1668918_1280.jpg" alt="img">
+        </div>
+        <div class="baner">
+            <img src="https://cdn.pixabay.com/photo/2014/02/02/17/40/photographs-256888_1280.jpg" alt="img">
+        </div>
+    </div>
+    <!-- 배너컨테이터 여기까지-->
+
+    <!-- 로그인컨테이너 -->
+    <div class="title_container">
+        <div class="logo">
+             <span class="icon-container">
+                 <i class="fa-solid fa-video" style="background: linear-gradient(45deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+             </span>
+            <span class="phantom-film" >Phantom Film</span>
+        </div>
+        <div class="sub_nav">
+            <div class=" dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="btn m-1" style="color:white; background-color:black;">영화</div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
+                    <li><a href="/movie/boxOffice">박스오피스</a></li>
+                    <li><a href="/movie/top100">전체영화</a></li>
+
+
+                </ul>
+            </div>
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="btn m-1" style="color:white; background-color:black;"><a
+                        href="/theater/smallRegion">극장</a></div>
+            </div>
+            <div class="dropdown dropdown-hover">
+                <div tabindex="0" role="button" class="btn m-1" style="color:white; background-color:black;">공지</div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2  rounded-box w-52">
+                    <li><a href="/notice/list">공지사항</a></li>
+                    <li><a href="/board/movie">자유게시판</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="login_container">
+            <a class="admin" role="button"
+               th:if="${#authorization.expression('isAuthenticated() and hasRole(''ADMIN'')')}"
+               th:href="@{/admin/adminpage}">관리자</a>
+            <a class="mypage" role="button" th:if="${#authorization.expression('isAuthenticated()')}"
+               th:href="@{/member/mypage}">mypage</a>
+            <a class="Sign_in" role="button" sec:authorize="isAnonymous()" th:href="@{/member/login}">Sign_in</a>
+            <a class="Sign_in" role="button" sec:authorize="isAuthenticated()" th:href="@{/member/logout}">Sign_out</a>
+            <a class="Sing_up" role="button" th:href="@{/member/signup}">Sing_up</a>
+        </div>
+    </div>
+    <!-- 로그인컨테이너 여기까지-->
+    <!-- 비디오컨테이너 -->
+    <div class="video_container">
+        <div class="video_bg" style="background-image: url('pexels-blockhaus-malung-19298575 (Original).mp4');"></div>
+        <div class="video">
+            <div style="position: relative; height:0; padding-bottom: 56.25%; margin: 40px 0px;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/w99yyjtYanE?autoplay=1&mute=1&controls=0&loop=1&&playlist=w99yyjtYanE&"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen style="position: absolute; width: 81%; height: 70%; z-index: 99;"></iframe>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- 비디오컨테이너 여기까지 -->
+    <!-- 검색컨테이너 -->
+
+    <section class="frame">
+        <form th:action="@{/movie/search}" method="get">
+            <div class="serch_container">
+                <input class="search" type="text" name="enterMovie" th:value="${entermovie}"
+                       placeholder="검색할 영화를입력하세요." required>&nbsp;
+                <button class="button button-first" data-type="square"> 검색</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- 검색컨테이너 여기까지 -->
+    <section class="card_container">
+        <div class="list_container">
+            <ul class="list">
+                <li th:each="movie : ${movieInfoList}" class="list_item" style="    text-align: center;">
+                    <div class="card" th:style="'background-image: url(' + ${movie.posters } + ');'">
+                        <section class="additional-info">
+                            <div>
+                                <div style="padding-top: 10px;text-align: center;font-weight: bold;font-size: 25px;"
+                                     th:text="${movie.movieNm}"></div>
+                            </div>
+                            <div class="sub_info">
+                                <label>개봉일:</label>
+                                <p style="margin: 5px 0 0 0;">개봉일 : <span th:text="${movie.openDt}"></span></p>
+                                <a th:href="@{|/movie/detail/${movie.id}|}">상세보기</a>
+                            </div>
+                            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+                               th:data-uri="@{|/movie/vote/${movie.id}|}" onclick="voteMovie(${movie.id})"
+                               style=" width: 98%;">
+                                찜하기
+                            </a>
+                        </section>
+                    </div>
+                    <div class="dropdown dropdown-hover" style="top: -34px;width: 202px;">
+                        <div tabindex="0" role="button" class="custom-btn btn-4 btn m-1"
+                             style="color:white; background-color:black;">예매
+                        </div>
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 rounded-box w-52">
+                            <li><a href="https://www.megabox.co.kr/booking">메가박스</a></li>
+                            <li><a href="http://www.cgv.co.kr/ticket/">CGV</a></li>
+                            <li><a href="https://www.lottecinema.co.kr/NLCHS/Ticketing">롯데시네마</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </section>
+</div>
+
+</body>
+<script src="main.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    const recommendElements = document.getElementsByClassName('recommend');
+    Array.from(recommendElements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if (confirm('이 영화를 찜하시겠습니까?')) {
+                location.href = this.dataset.uri;
+
+                // 추가된 부분: AJAX를 이용한 로그인 상태 확인
+                $.ajax({
+                    url: "/check-login-status",
+                    method: "GET",
+                    success: function(response) {
+                        if (response.loggedIn) {
+                            // 로그인된 경우 리뷰 작성 페이지로 이동
+                            location.href = element.dataset.uri;
+                        } else {
+                            // 로그인되지 않은 경우 알림 메시지 표시
+                            alert("로그인이 필요합니다.");
+                            // 로그인 페이지로 리다이렉트
+                            window.location.href = "/member/login";
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    // 페이지 로드 시 자동 재생 시도
+    window.onload = function() {
+      document.querySelector('iframe').src += '?autoplay=1';
+    };
+</script>
+</html>
